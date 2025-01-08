@@ -6,9 +6,17 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+
 // michelle
 
 public class Robot extends TimedRobot {
+
+  private SparkMax motor = new SparkMax(9, MotorType.kBrushless);
+
+
   public Robot() {}
 
   @Override
@@ -36,7 +44,10 @@ public class Robot extends TimedRobot {
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    motor.set(0.2);
+    
+  }
 
   @Override
   public void teleopExit() {}
