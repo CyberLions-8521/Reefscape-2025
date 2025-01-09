@@ -12,7 +12,7 @@ public class Constants {
         final static double turnPIDControllerI = 0.0;
         final static double turnPIDControllerD = 0.0;
 
-        final static double chassisWidth = Units
+        // final static double chassisWidth = Units
 
     }
 }
