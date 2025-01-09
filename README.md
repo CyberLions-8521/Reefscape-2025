@@ -2,5 +2,5 @@
 ```
 git add --all
 git commit -m "message"
-git push
+git push origin HEAD
 ```
