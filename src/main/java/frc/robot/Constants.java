@@ -2,10 +2,13 @@ package frc.robot;
 
 public class Constants {
 
-    public static class SwerveConstants {
+    public static final class SwerveConstants {
 
-        final static int kTopRightDriveID = 0; //placeholder
-        final static int kTopRightTurnID = 1; //placeholder    
+        public static final int kFrontLeftDriveID = 0;
+        public static final int kFrontLeftTurnID = 0;
+        public static final int kFrontRightDriveID = 0; //placeholder
+        public static final int kFrontRightTurnID = 1; //placeholder
+        
 
     }
 }
