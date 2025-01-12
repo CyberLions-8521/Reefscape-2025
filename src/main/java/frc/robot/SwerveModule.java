@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.proto.Kinematics;
 import frc.robot.Constants.SwerveConstants;
@@ -12,21 +13,30 @@ import frc.robot.Constants.SwerveConstants;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkRelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import frc.robot.Configs.SwerveModuleConfigs;
 
 /** Add your docs here. */
 public class SwerveModule {
-    SparkMax m_driveMotor; 
-    SparkMax m_turnMotor; 
-    private SwerveModuleState m_currentState;
-    private SwerveModuleState m_desiredState;
-    SparkClosedLoopController m_drivePID;
-    SparkClosedLoopController m_turnPID;
-    SparkMaxConfig m_configDrive;
-    SparkMaxConfig m_configTurn;
+    private SparkMax m_driveMotor; 
+    private SparkMax m_turnMotor; 
+
+    private SparkClosedLoopController m_drivePID;
+    private SparkClosedLoopController m_turnPID;
+
+    private SparkMaxConfig m_configDrive;
+    private SparkMaxConfig m_configTurn;
+
+    private SparkRelativeEncoder m_driveEncoder;
+    private SparkRelativeEncoder m_turnEncoder;
+
     
 
     public SwerveModule(int driveMotorPort, int turnMotorPort) {
@@ -39,30 +49,19 @@ public class SwerveModule {
         m_configDrive = new SparkMaxConfig();
         m_configTurn = new SparkMaxConfig();
 
-        
+        m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        m_driveEncoder.setPosition(0); 
     }
 
-    public void configureMotors() {
-        m_configDrive.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        m_configTurn.idleMode(SparkBaseConfig.IdleMode.kBrake);
+    public void setDesiredState(SwerveModuleState targetState) {
+        Rotation2d currentRotation = Rotation2d.fromDegrees(m_turnEncoder.getPosition());
+        targetState.optimize(currentRotation);
+
+        m_drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity);
+        m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
         
-        m_configDrive.inverted(true);
-        m_configTurn.inverted(true);
-
-        m_configDrive.smartCurrentLimit(SwerveConstants.driveMotorStallLimit, SwerveConstants.driveMotorFreeLimit);
-        m_configTurn.smartCurrentLimit(SwerveConstants.turnMotorStallLimit, SwerveConstants.turnMotorFreeLimit);
-
-
-        
-        
-    }
-
-    public SwerveModuleState getSwerveModuleState() {
-        return m_currentState;
-    }
-
-    public void setDesiredSwerveModuleState(SwerveModuleState desiredState) {
-        m_desiredState = desiredState;
     }
 
 
