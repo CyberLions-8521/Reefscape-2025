@@ -7,12 +7,15 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
     public static final class DriveConstants {
+
+        
+
         public static final double kMaxSpeedMetersPerSecond = 0; //need to be assigned
         public static final double kMaxAngularSpeed = 2 * Math.PI;
 
         //Chassis Configuration
 
-        public static final double kTrackWidth = Units.inchesToMeters(23.5);
+        public static final double kTrackWidth = Units.inchesToMeters(23.25);
         //Distance between centers of right and left wheels on robot
 
         public static final double kWheelBase = Units.inchesToMeters(23.25);
