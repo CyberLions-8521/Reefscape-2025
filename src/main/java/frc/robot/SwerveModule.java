@@ -6,13 +6,13 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
+// import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
-import frc.robot.Constants.SwerveConstants;
+// import frc.robot.Constants.DriveConstants;
 import frc.robot.Configs.SwerveModuleConfig;
 
 public class SwerveModule {
