@@ -15,6 +15,7 @@ public final class Configs {
         public static final SparkMaxConfig turnConfig = new SparkMaxConfig();
 
         static {
+            // TODO: Get gear ratios and determine conversion factors
             double driveConversionFactor = 1.0;
             double turnConversionFactor = 2 * Math.PI;
 
