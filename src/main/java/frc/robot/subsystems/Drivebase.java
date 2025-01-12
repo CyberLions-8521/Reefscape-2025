@@ -34,6 +34,8 @@ public class Drivebase extends SubsystemBase {
         DriveConstants.kBackRightTurnID);
 
     // Given as frontLeft, frontRight, backLeft, backRight
+    // +x is forwards relative to the robot
+    // +y is left relative to the robot when the front of the robot is facing away from you
     private final SwerveDriveKinematics m_driveKinematics = new SwerveDriveKinematics(
         new Translation2d(DriveConstants.kWheelBase / 2, DriveConstants.kTrackWidth / 2),
         new Translation2d(DriveConstants.kWheelBase / 2, -DriveConstants.kTrackWidth / 2),
@@ -53,6 +55,8 @@ public class Drivebase extends SubsystemBase {
    */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         SwerveModuleState[] swerveModuleStates;
+
+        // Using the SwerveDriveKinematics object, convert a ChassisSpeeds into SwerveModuleStates
         if (fieldRelative) {
             swerveModuleStates = m_driveKinematics.toSwerveModuleStates(
                 ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_gyro.getAngle())));
@@ -60,13 +64,11 @@ public class Drivebase extends SubsystemBase {
             swerveModuleStates = m_driveKinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
         }
         
-        // var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        //     fieldRelative
-        //         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-        //             Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)))
-        //         : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+        // Desaturate wheel speeds to keep speed ratios the same while ensuring that none of the speeds
+        // go above the maximum physical speed given by the hardware
         SwerveDriveKinematics.desaturateWheelSpeeds(
             swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
         m_frontRight.setDesiredState(swerveModuleStates[1]);
         m_backLeft.setDesiredState(swerveModuleStates[2]);

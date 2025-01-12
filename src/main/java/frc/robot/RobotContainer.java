@@ -32,6 +32,14 @@ public class RobotContainer {
     return Commands.print("No autonomous command configured");
   }
 
+  /**
+   * Creates a command that runs the drive method from the Drivebase object
+   * @param xSpeed  A method reference or lambda that returns the speed of the chassis in the x-direction
+   * @param ySpeed  A method reference or lambda that returns the speed of the chassis in the y-direction
+   * @param rot     A method reference or lambda that returns the speed of the chassis in the z-rotational direction
+   * @param fieldRelative   Whether or not you are driving the robot with speeds relative to the field
+   * @return  The drive command
+   */
   public Command getDriveCommand(Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rot, boolean fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(

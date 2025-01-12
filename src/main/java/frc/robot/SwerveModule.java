@@ -45,6 +45,8 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState) {
         Rotation2d currentRotation = new Rotation2d(m_turnEncoder.getPosition());
+        // Optimize to allow module to make the smallest turn to arrive at the rotational setpoint
+        // e.g., it will turn through 0 degrees when going from 350 degrees to 10 degrees
         desiredState.optimize(currentRotation);
 
         // Taken from WPILib exapmle; comment out if it doesn't work
