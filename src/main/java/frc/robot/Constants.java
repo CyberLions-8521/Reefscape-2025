@@ -6,11 +6,16 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
 
+    public static final class ControllerConstants {
+        public static final double kDeadBand = 0.02;    
+        public static final int kDriverControllerPort = 0; //NEED TO BE ASSIGNED
+    }
+
     public static final class DriveConstants {
 
         
 
-        public static final double kMaxSpeedMetersPerSecond = 0; //need to be assigned
+        public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAngularSpeed = 2 * Math.PI;
 
         //Chassis Configuration
@@ -34,27 +39,30 @@ public class Constants {
         public static final double kBackRightChassisAngularOffset = Math.PI / 2; //NEED TO BE ASSIGNED
 
         //SparkMax CAN IDs
-        public static final int kFrontLeftDriveCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kFrontRightDriveCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kBackLeftDriveCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kBackRightDriveCanID = 0; //NEED TO BE ASSIGNED
+        public static final int kFrontLeftDriveCanID = 7;
+        public static final int kFrontRightDriveCanID = 5; 
+        public static final int kBackLeftDriveCanID = 1;
+        public static final int kBackRightDriveCanID = 3;
 
-        public static final int kFrontLeftTurnCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kFrontRightTurnCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kBackLeftTurnCanID = 0; //NEED TO BE ASSIGNED
-        public static final int kBackRightTurnCanID = 0; //NEED TO BE ASSIGNED
+        public static final int kFrontLeftTurnCanID = 8; 
+        public static final int kFrontRightTurnCanID = 6; 
+        public static final int kBackLeftTurnCanID = 2; 
+        public static final int kBackRightTurnCanID = 4;
 
         public static final boolean kGyroReversed = false;
     }
 
     public static final class ModuleConstants { 
         
+        public static final double kDriveGearRatio = ;
+        public static final double kTurnGearRatio = ;
+
 
         public static final int kDrivingMotorPinionTeeth = 14;
 
         //Calculations required for driving motor conversion factors and feed forward
         public static final double kDriveMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRPM / 60;
-        public static final double kWheelDiameterMeters = 0.1016;
+        public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
         public static final double kWheelCircumferenceMeters = Math.PI * kWheelDiameterMeters;
 
         // __ teeth on the wheel's bevel gear, __ teeth on the first-stage spur gear, __ teeth on the bevel pinion
