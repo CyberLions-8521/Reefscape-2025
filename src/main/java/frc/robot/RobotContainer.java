@@ -4,17 +4,41 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.Drivebase;
+
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
+  private final CommandXboxController m_gamepad = new CommandXboxController(0);
+  private final Drivebase m_db = new Drivebase();
+
   public RobotContainer() {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    m_db.setDefaultCommand(getDriveCommand(m_gamepad::getLeftY, m_gamepad::getLeftX, m_gamepad::getRightX, true));
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
+  }
+
+  public Command getDriveCommand(Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rot, boolean fieldRelative) {
+    return new RunCommand(
+      () -> m_db.drive(
+        -MathUtil.applyDeadband(xSpeed.get(), ControllerConstants.kDeadband) * DriveConstants.kMaxSpeedMetersPerSecond,
+        -MathUtil.applyDeadband(ySpeed.get(), ControllerConstants.kDeadband) * DriveConstants.kMaxSpeedMetersPerSecond,
+        -MathUtil.applyDeadband(rot.get(), ControllerConstants.kDeadband) * DriveConstants.kMaxAngularSpeed,
+        fieldRelative),
+      m_db);
   }
 }
