@@ -6,6 +6,7 @@ public class Constants {
     public static final class ControllerConstants {
         public static final double kDeadband = 0.02;
     }
+
     public static class SwerveConstants {
         public static final double driveP = 0;
         public static final double driveI = 0;
@@ -19,7 +20,15 @@ public class Constants {
         public static final int driveMotorFreeLimit = 40;
         public static final int driveMotorStallLimit = 40;
 
-        static final double positionWrappingUpperLimit = 360; //placeholder
+        public static final double positionWrappingUpperLimit = 360; //placeholder
+
+        public static final double kWheelDiameter = Units.inchesToMeters(4);
+        public static final double kDriveGearRatio = 6.75; 
+        public static final double kTurnGearRatio = (150.0 / 7.0); 
+        public static final double kWheelCircumference = Math.PI * kWheelDiameter;
+
+        public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
+        public static final double kTurnConversionFactor = 360 / kTurnGearRatio;
 
     }
 
@@ -41,5 +50,11 @@ public class Constants {
 
         public static final double kMaxMetersPerSecond = 5.0;
         public static final double kMaxAngularSpeed = 360;
+
+        //Angular Offsets of the modules relative to the chassis in degrees
+        public static final double kFrontLeftChassisAngularOffset = -90;//NEED TO BE ASSIGNED
+        public static final double kFrontRightChassisAngularOffset = 0;//NEED TO BE ASSIGNED
+        public static final double kBackLeftChassisAngularOffset = 180;//NEED TO BE ASSIGNED
+        public static final double kBackRightChassisAngularOffset = 90; //NEED TO BE ASSIGNED
     }
 }

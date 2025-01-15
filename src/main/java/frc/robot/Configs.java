@@ -18,8 +18,6 @@ public class Configs {
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();    
 
         static {
-            double m_driveConversionFactor = 1; //placeholder
-            double m_turnConversionFactor = 360; //placeholder
             m_configDrive
                 .idleMode(SparkBaseConfig.IdleMode.kBrake)
                 .inverted(true)
@@ -31,12 +29,12 @@ public class Configs {
                 .smartCurrentLimit(SwerveConstants.turnMotorStallLimit, SwerveConstants.turnMotorFreeLimit);
 
             m_configDrive.encoder
-                .positionConversionFactor(m_driveConversionFactor)
-                .velocityConversionFactor(m_driveConversionFactor / 60.0);
+                .positionConversionFactor(SwerveConstants.kDriveConversionFactor)
+                .velocityConversionFactor(SwerveConstants.kDriveConversionFactor / 60.0);
 
             m_configTurn.encoder
-                .positionConversionFactor(m_turnConversionFactor) 
-                .velocityConversionFactor(m_turnConversionFactor / 60.0);
+                .positionConversionFactor(SwerveConstants.kTurnConversionFactor) 
+                .velocityConversionFactor(SwerveConstants.kTurnConversionFactor / 60.0);
 
             m_configDrive.closedLoop
                 .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
