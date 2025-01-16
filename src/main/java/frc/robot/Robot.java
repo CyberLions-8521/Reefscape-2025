@@ -5,36 +5,72 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+
+import org.ejml.dense.block.MatrixOps_DDRB;
+
+import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+//a Timed Robot is a robot that 
 
 public class Robot extends TimedRobot {
-  public Robot() {}
+  private SparkMax m_leftMotor;
+  private SparkMax m_rightMotor;
+  private XboxController m_controller;
+
+  public Robot(int leftID, int rightID) {
+    m_leftMotor = new SparkMax(leftID, MotorType.kBrushless);
+    m_rightMotor = new SparkMax(rightID, MotorType.kBrushless);
+
+    m_controller = new XboxController(0);
+
+    SparkMaxConfig config = new SparkMaxConfig();
+
+    config.inverted(true);
+    m_rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
 
   @Override
   public void robotPeriodic() {}
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {} //the setup for when we enter disabled mode -- no code runs in disabled
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {} //runs while disabled -- ignore
 
   @Override
   public void disabledExit() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {} //as soon as you hit enable in automous, it runs this code
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {} //as long as you are in autonomous mode
 
   @Override
   public void autonomousExit() {}
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {} //runs when you turn on teleop
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double left_stick = -m_controller.getLeftY();
+    double right_stick = -m_controller.getRightY();
+    
+    tankDrive(left_stick, right_stick);
+
+  } //runs as long as you are in 
+
+  public void tankDrive(double left, double right) {
+    m_leftMotor.set(left);
+    m_rightMotor.set(right);
+  }
 
   @Override
   public void teleopExit() {}
