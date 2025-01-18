@@ -8,12 +8,12 @@ public class Constants {
     }
 
     public static class SwerveConstants {
-        public static final double driveP = 1;
-        public static final double driveI = 0;
-        public static final double driveD = 0;
-        public static final double turnP = 1;
-        public static final double turnI = 0;
-        public static final double turnD = 0;
+        public static double driveP = 1;
+        public static double driveI = 0;
+        public static double driveD = 0;
+        public static double turnP = 1;
+        public static double turnI = 0;
+        public static double turnD = 0;
 
         public static final int turnMotorFreeLimit = 40; 
         public static final int turnMotorStallLimit = 40;

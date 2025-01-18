@@ -55,13 +55,17 @@ public class SwerveModule {
         m_driveEncoder.setPosition(0); 
     }
 
+    public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
+        m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_turnMotor.configure(turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
     public void setDesiredState(SwerveModuleState targetState) {
         Rotation2d currentRotation = Rotation2d.fromDegrees(m_turnEncoder.getPosition());
         targetState.optimize(currentRotation);
 
         m_drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity);
         m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
-        
     }
 
 

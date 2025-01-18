@@ -7,6 +7,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.SwerveModule;
+import frc.robot.Configs.SwerveModuleConfigs;
 
 import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
 
@@ -19,6 +20,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.proto.Kinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 
 import java.util.function.Supplier;
@@ -63,6 +66,18 @@ public class Swerve extends SubsystemBase {
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, -SwerveDrivebaseConstants.kTrackWidth / 2)
     );
 
+    putSmartDashboard();
+  }
+
+  public void putSmartDashboard(){
+    
+    SmartDashboard.putNumber("driveP", 0);
+    SmartDashboard.putNumber("driveI", 0);
+    SmartDashboard.putNumber("driveD", 0);
+
+    SmartDashboard.putNumber("turnP", 0);
+    SmartDashboard.putNumber("turnI", 0);
+    SmartDashboard.putNumber("turnD", 0);
   }
 
  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
@@ -89,6 +104,32 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboardTunePID();
+  }
+
+  public void SmartDashboardTunePID()
+  {
+    double driveP = SmartDashboard.getNumber("driveP", 0);
+    double driveI = SmartDashboard.getNumber("driveI", 0);
+    double driveD = SmartDashboard.getNumber("driveD", 0);
+
+    double turnP = SmartDashboard.getNumber("turnP", 0);
+    double turnI = SmartDashboard.getNumber("turnI", 0);
+    double turnD = SmartDashboard.getNumber("turnD", 0);
+    if ((SwerveConstants.driveP != driveP) || (SwerveConstants.driveI != driveI) || (SwerveConstants.driveD != driveD) || (SwerveConstants.turnP != turnP) || (SwerveConstants.turnI != turnI) || (SwerveConstants.turnD != turnD) ){
+      SwerveConstants.driveP = driveP;
+      SwerveConstants.driveI = driveI;
+      SwerveConstants.driveD = driveD;
+      SwerveConstants.turnP = turnP;
+      SwerveConstants.turnI = turnI;
+      SwerveConstants.turnD = turnD;
+      SwerveModuleConfigs.m_configDrive.closedLoop.pid(driveP, driveI, driveD);
+      SwerveModuleConfigs.m_configTurn.closedLoop.pid(turnP, turnI, turnD);
+      m_frontLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+      m_frontRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+      m_backLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+      m_backRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+        
+    }
   }
 }
