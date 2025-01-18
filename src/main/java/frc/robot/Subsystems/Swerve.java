@@ -83,6 +83,10 @@ public class Swerve extends SubsystemBase {
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
   }
 
+  public void resetGyro() {
+    m_gyro.reset();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
