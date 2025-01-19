@@ -13,7 +13,7 @@ import frc.robot.Constants.SwerveConstants;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -34,14 +34,17 @@ public class SwerveModule {
     private SparkMaxConfig m_configDrive;
     private SparkMaxConfig m_configTurn;
 
-    private SparkRelativeEncoder m_driveEncoder;
-    private SparkRelativeEncoder m_turnEncoder;
+    private RelativeEncoder m_driveEncoder;
+    private RelativeEncoder m_turnEncoder;
 
     
 
     public SwerveModule(int driveMotorPort, int turnMotorPort) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
+
+        m_driveEncoder = m_driveMotor.getEncoder();
+        m_turnEncoder = m_turnMotor.getEncoder();
 
         m_drivePID = m_driveMotor.getClosedLoopController();
         m_turnPID = m_turnMotor.getClosedLoopController();

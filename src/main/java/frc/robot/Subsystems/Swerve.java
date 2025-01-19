@@ -104,7 +104,7 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboardTunePID();
+    // SmartDashboardTunePID();
   }
 
   public void SmartDashboardTunePID()
