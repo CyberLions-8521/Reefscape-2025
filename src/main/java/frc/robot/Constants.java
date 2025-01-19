@@ -8,4 +8,15 @@ public class Constants {
         final static int kTopRightTurnID = 1; //placeholder    
 
     }
+
+    public static class ElevatorConstants {
+
+        public static final double ELEVATOR_KP = .1;
+        public static final double ELEVATOR_KD = 0;
+        public static final double ELEVATOR_KI = 0;
+        public static final double ELEVATOR_KFF = 0;
+        public static final double ELEVATOR_GEAR_RATIO = 0;
+        
+        public static final double CIRCUMFERENCE = 0;
+    }
 }
