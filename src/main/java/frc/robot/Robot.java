@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import org.ejml.dense.block.MatrixOps_DDRB;
 
-import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -22,9 +22,9 @@ public class Robot extends TimedRobot {
   private SparkMax m_rightMotor;
   private XboxController m_controller;
 
-  public Robot(int leftID, int rightID) {
-    m_leftMotor = new SparkMax(leftID, MotorType.kBrushless);
-    m_rightMotor = new SparkMax(rightID, MotorType.kBrushless);
+  public Robot() {
+    m_leftMotor = new SparkMax(14, MotorType.kBrushless);
+    m_rightMotor = new SparkMax(3, MotorType.kBrushless);
 
     m_controller = new XboxController(0);
 
