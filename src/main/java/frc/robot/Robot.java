@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import org.ejml.dense.block.MatrixOps_DDRB;
 
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -21,6 +23,12 @@ public class Robot extends TimedRobot {
   private SparkMax m_leftMotor;
   private SparkMax m_rightMotor;
   private XboxController m_controller;
+
+  private RelativeEncoder m_leftEncoder = m_leftMotor.getEncoder();
+  private RelativeEncoder m_rightEncoder = m_leftMotor.getEncoder();
+
+  private SparkClosedLoopController m_leftPID = m_drive;
+  private SparkClosedLoopController m_rightPID;
 
   public Robot() {
     m_leftMotor = new SparkMax(14, MotorType.kBrushless);
