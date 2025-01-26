@@ -42,14 +42,14 @@ public class Configs {
             m_configDrive.closedLoop
                 .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
                 .outputRange(-1, 1)
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                // .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
 
             m_configTurn.closedLoop
                 .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
                 .outputRange(-1, 1)
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                // .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
 

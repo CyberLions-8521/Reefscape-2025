@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.EncoderConfig;
+import com.revrobotics.spark.config.EncoderConfigAccessor;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /** Add your docs here. */
 public class Debug {
     
@@ -11,8 +18,6 @@ public class Debug {
         
     }
 
-    public static 
-
-
+   
 
 }
