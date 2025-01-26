@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -19,12 +21,13 @@ public class Configs {
 
         static {
             m_configDrive
-                .idleMode(SparkBaseConfig.IdleMode.kBrake)
+                .idleMode(SparkBaseConfig.IdleMode.kCoast)
                 .inverted(true)
                 .smartCurrentLimit(SwerveConstants.driveMotorStallLimit, SwerveConstants.driveMotorFreeLimit);
 
+
             m_configTurn
-                .idleMode(SparkBaseConfig.IdleMode.kBrake)
+                .idleMode(SparkBaseConfig.IdleMode.kCoast)
                 .inverted(true)
                 .smartCurrentLimit(SwerveConstants.turnMotorStallLimit, SwerveConstants.turnMotorFreeLimit);
 
@@ -51,6 +54,7 @@ public class Configs {
                 .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
 
         }
+        
         
     }
 }

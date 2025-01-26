@@ -23,10 +23,12 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
   }
-
+ 
   private void configureBindings() {
-    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, true));
+     m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
   }
+
+  
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");

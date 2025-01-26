@@ -66,7 +66,11 @@ public class Swerve extends SubsystemBase {
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, -SwerveDrivebaseConstants.kTrackWidth / 2)
     );
 
-    putSmartDashboard();
+    // putSmartDashboard();
+
+  
+    
+    
   }
 
   public void putSmartDashboard(){
@@ -92,6 +96,8 @@ public class Swerve extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         m_swerveModuleStates, SwerveDrivebaseConstants.kMaxMetersPerSecond);
+    SmartDashboard.putNumber("vx", vx);
+    SmartDashboard.putNumber("front left speed", m_swerveModuleStates[0].speedMetersPerSecond);
     m_frontLeft.setDesiredState(m_swerveModuleStates[0]);
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);

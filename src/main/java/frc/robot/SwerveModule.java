@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.proto.Kinematics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
 
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -55,7 +56,12 @@ public class SwerveModule {
         m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+
         m_driveEncoder.setPosition(0); 
+
+        SmartDashboard.putNumber("P", m_driveMotor.configAccessor.closedLoop.getP());
+        SmartDashboard.putNumber("I", m_driveMotor.configAccessor.closedLoop.getI());
+        SmartDashboard.putNumber("D", m_driveMotor.configAccessor.closedLoop.getD());
     }
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
