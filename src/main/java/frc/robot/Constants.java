@@ -13,8 +13,19 @@ public class Constants {
 
     public static final class DriveConstants {
 
-        
+        public static double driveP = 1;
+        public static double driveI = 0;
+        public static double driveD = 0;
+        public static double turnP = 1;
+        public static double turnI = 0;
+        public static double turnD = 0;
 
+
+        public static final int turnMotorFreeLimit = 40;
+        public static final int turnMotorStallLimit = 40;
+        public static final int driveMotorFreeLimit = 40;
+        public static final int driveMotorStallLimit = 40;
+        
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAngularSpeed = 2 * Math.PI;
 
@@ -39,23 +50,22 @@ public class Constants {
         public static final double kBackRightChassisAngularOffset = Math.PI / 2; //NEED TO BE ASSIGNED
 
         //SparkMax CAN IDs
-        public static final int kFrontLeftDriveCanID = 7;
-        public static final int kFrontRightDriveCanID = 5; 
-        public static final int kBackLeftDriveCanID = 1;
-        public static final int kBackRightDriveCanID = 3;
+        public static final int kBackLeftDriveID = 8;
+        public static final int kBackLeftTurnID = 7;
 
-        public static final int kFrontLeftTurnCanID = 8; 
-        public static final int kFrontRightTurnCanID = 6; 
-        public static final int kBackLeftTurnCanID = 2; 
-        public static final int kBackRightTurnCanID = 4;
+        public static final int kBackRightDriveID = 3;
+        public static final int kBackRightTurnID = 14;
+
+        public static final int kFrontLeftDriveID = 50;
+        public static final int kFrontLeftTurnID = 2;
+
+        public static final int kFrontRightDriveID = 4;
+        public static final int kFrontRightTurnID = 6;
 
         public static final boolean kGyroReversed = false;
-    }
-
-    public static final class ModuleConstants { 
         
-        public static final double kDriveGearRatio = ;
-        public static final double kTurnGearRatio = ;
+        public static final double kDriveGearRatio = 6.75;
+        public static final double kTurnGearRatio = (150.0 / 7.0);
 
 
         public static final int kDrivingMotorPinionTeeth = 14;
