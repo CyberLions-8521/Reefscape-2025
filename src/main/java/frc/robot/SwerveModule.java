@@ -14,11 +14,13 @@ import frc.robot.Constants.SwerveConstants;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkMaxConfigAccessor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -57,11 +59,8 @@ public class SwerveModule {
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
-        m_driveEncoder.setPosition(0); 
+        resetEncoder();
 
-        SmartDashboard.putNumber("P", m_driveMotor.configAccessor.closedLoop.getP());
-        SmartDashboard.putNumber("I", m_driveMotor.configAccessor.closedLoop.getI());
-        SmartDashboard.putNumber("D", m_driveMotor.configAccessor.closedLoop.getD());
     }
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
@@ -75,6 +74,27 @@ public class SwerveModule {
 
         m_drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity);
         m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
+    }
+
+    public void resetEncoder() {
+        m_driveEncoder.setPosition(0);
+        m_turnEncoder.setPosition(0);
+    }
+
+    public double getDistance() {
+        return m_turnEncoder.getPosition();
+    }
+
+    public void periodic() {
+        logData();
+    }
+
+    public void logData() {
+        SmartDashboard.putNumber("driveEncoderPosition ", getDistance());
+    }
+
+    public SparkMaxConfigAccessor getConfigAccessor() {
+        return m_driveMotor.configAccessor;
     }
 
 

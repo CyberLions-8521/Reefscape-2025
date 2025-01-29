@@ -5,7 +5,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Configs;
 import frc.robot.SwerveModule;
 import frc.robot.Configs.SwerveModuleConfigs;
 
@@ -66,11 +66,8 @@ public class Swerve extends SubsystemBase {
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, -SwerveDrivebaseConstants.kTrackWidth / 2)
     );
 
-    
 
-  
-    
-    
+    putSmartDashboard();
   }
 
   public void putSmartDashboard(){
@@ -103,13 +100,14 @@ public class Swerve extends SubsystemBase {
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
+    
   }
 
   public void resetGyro() {
     m_gyro.reset();
   }
 
-  @Override
+ 
   public void periodic() {
     SmartDashboardTunePID();
   }
@@ -119,11 +117,18 @@ public class Swerve extends SubsystemBase {
     double driveP = SmartDashboard.getNumber("driveP", 0);
     double driveI = SmartDashboard.getNumber("driveI", 0);
     double driveD = SmartDashboard.getNumber("driveD", 0);
-
     double turnP = SmartDashboard.getNumber("turnP", 0);
     double turnI = SmartDashboard.getNumber("turnI", 0);
     double turnD = SmartDashboard.getNumber("turnD", 0);
-    if ((SwerveConstants.driveP != driveP) || (SwerveConstants.driveI != driveI) || (SwerveConstants.driveD != driveD) || (SwerveConstants.turnP != turnP) || (SwerveConstants.turnI != turnI) || (SwerveConstants.turnD != turnD) ){
+    
+    SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
+    
+    if ((SwerveConstants.driveP != driveP) || 
+    (SwerveConstants.driveI != driveI) || 
+    (SwerveConstants.driveD != driveD) || 
+    (SwerveConstants.turnP != turnP) || 
+    (SwerveConstants.turnI != turnI) || 
+    (SwerveConstants.turnD != turnD) ){
       SwerveConstants.driveP = driveP;
       SwerveConstants.driveI = driveI;
       SwerveConstants.driveD = driveD;
