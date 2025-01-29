@@ -66,7 +66,7 @@ public class Swerve extends SubsystemBase {
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, -SwerveDrivebaseConstants.kTrackWidth / 2)
     );
 
-    // putSmartDashboard();
+    
 
   
     
@@ -82,6 +82,7 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("turnP", 0);
     SmartDashboard.putNumber("turnI", 0);
     SmartDashboard.putNumber("turnD", 0);
+
   }
 
  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
@@ -110,7 +111,7 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboardTunePID();
+    SmartDashboardTunePID();
   }
 
   public void SmartDashboardTunePID()
