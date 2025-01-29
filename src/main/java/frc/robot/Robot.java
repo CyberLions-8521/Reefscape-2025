@@ -24,15 +24,15 @@ public class Robot extends TimedRobot {
   private SparkMax m_rightMotor;
   private XboxController m_controller;
 
-  private RelativeEncoder m_leftEncoder = m_leftMotor.getEncoder();
-  private RelativeEncoder m_rightEncoder = m_leftMotor.getEncoder();
+  // private RelativeEncoder m_leftEncoder = m_leftMotor.getEncoder();
+  // private RelativeEncoder m_rightEncoder = m_leftMotor.getEncoder();
 
-  private SparkClosedLoopController m_leftPID = m_drive;
-  private SparkClosedLoopController m_rightPID;
-
+  // private SparkClosedLoopController m_leftPID = m_drive;
+  // private SparkClosedLoopController m_rightPID;
+// 
   public Robot() {
-    m_leftMotor = new SparkMax(14, MotorType.kBrushless);
-    m_rightMotor = new SparkMax(3, MotorType.kBrushless);
+    m_leftMotor = new SparkMax(6, MotorType.kBrushless);
+    m_rightMotor = new SparkMax(4, MotorType.kBrushless);
 
     m_controller = new XboxController(0);
 
