@@ -15,6 +15,8 @@ public class Constants {
         public static double turnI = 0;
         public static double turnD = 0;
 
+        public static double encoderPort = 0.0;
+
         public static final int turnMotorFreeLimit = 40; 
         public static final int turnMotorStallLimit = 40;
         public static final int driveMotorFreeLimit = 40;
@@ -29,6 +31,12 @@ public class Constants {
 
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
         public static final double kTurnConversionFactor = 360 / kTurnGearRatio;
+        
+        public static final int kFrontLeftCANCoderID = 3;
+        public static final int kFrontRightCANCoderID = 4;
+        public static final int kBackLeftCANCoderID = 1;
+        public static final int kBackRightCANCoderID = 2;
+        public static final String kCANCoderBus = "ryan";
 
     }
 
@@ -50,6 +58,7 @@ public class Constants {
 
         public static final double kMaxMetersPerSecond = 5.0;
         public static final double kMaxAngularSpeed = 360;
+
 
         //Angular Offsets of the modules relative to the chassis in degrees
         public static final double kFrontLeftChassisAngularOffset = -90;//NEED TO BE ASSIGNED

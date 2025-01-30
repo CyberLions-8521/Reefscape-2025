@@ -16,6 +16,7 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.jni.CANCommonJNI;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -25,6 +26,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Configs.SwerveModuleConfigs;
+
+import com.ctre.phoenix6.hardware.CANcoder;
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -40,11 +43,15 @@ public class SwerveModule {
     private RelativeEncoder m_driveEncoder;
     private RelativeEncoder m_turnEncoder;
 
+    private CANcoder m_CANcoder;
+
     
 
-    public SwerveModule(int driveMotorPort, int turnMotorPort) {
+    public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
+
+        m_CANcoder = new CANcoder(CANCoderPort, SwerveConstants.kCANCoderBus);
 
         m_driveEncoder = m_driveMotor.getEncoder();
         m_turnEncoder = m_turnMotor.getEncoder();
@@ -57,7 +64,6 @@ public class SwerveModule {
 
         m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
 
         resetEncoder();
 
@@ -96,6 +102,8 @@ public class SwerveModule {
     public SparkMaxConfigAccessor getConfigAccessor() {
         return m_driveMotor.configAccessor;
     }
+
+
 
 
 }

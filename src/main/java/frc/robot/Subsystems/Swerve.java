@@ -41,22 +41,26 @@ public class Swerve extends SubsystemBase {
   public Swerve() {
     m_frontLeft = new SwerveModule(
       SwerveDrivebaseConstants.kFrontLeftDriveID,
-      SwerveDrivebaseConstants.kFrontLeftTurnID
+      SwerveDrivebaseConstants.kFrontLeftTurnID,
+      SwerveConstants.kFrontLeftCANCoderID
     );
 
     m_frontRight = new SwerveModule(
       SwerveDrivebaseConstants.kFrontRightDriveID,
-      SwerveDrivebaseConstants.kFrontRightTurnID
+      SwerveDrivebaseConstants.kFrontRightTurnID,
+      SwerveConstants.kFrontRightCANCoderID
     );
 
     m_backLeft = new SwerveModule(
       SwerveDrivebaseConstants.kBackLeftDriveID,
-      SwerveDrivebaseConstants.kBackLeftTurnID
+      SwerveDrivebaseConstants.kBackLeftTurnID,
+      SwerveConstants.kBackLeftCANCoderID
     );
 
     m_backRight = new SwerveModule(
       SwerveDrivebaseConstants.kBackRightDriveID,
-      SwerveDrivebaseConstants.kBackRightTurnID
+      SwerveDrivebaseConstants.kBackRightTurnID,
+      SwerveConstants.kBackRightCANCoderID
     );
 
     m_kinematics = new SwerveDriveKinematics(
@@ -105,6 +109,13 @@ public class Swerve extends SubsystemBase {
 
   public void resetGyro() {
     m_gyro.reset();
+  }
+
+  public void resetEncoders(){
+    m_frontLeft.resetEncoder();
+    m_frontRight.resetEncoder();
+    m_backLeft.resetEncoder();
+    m_backRight.resetEncoder();
   }
 
  
