@@ -26,8 +26,12 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Configs.SwerveModuleConfigs;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -45,7 +49,6 @@ public class SwerveModule {
 
     private CANcoder m_CANcoder;
 
-    
 
     public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
@@ -64,10 +67,25 @@ public class SwerveModule {
 
         m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+        
+        m_CANcoder.getConfigurator().apply(SwerveModuleConfigs.m_CANcoderConfigs);
+        m_CANcoder.getConfigurator().apply(SwerveModuleConfigs.m_magnetConfigs);
+        
         resetEncoder();
+    
 
     }
+
+//put this in configs.java
+    // public void configCANcoder(double angleOffset){
+    //     CANcoderConfiguration m_config = new CANcoderConfiguration();
+    //     m_config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+    //     m_config.MagnetSensor.MagnetOffset = angleOffset;
+    //     m_config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    
+    //  }
+
+    
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -102,6 +120,7 @@ public class SwerveModule {
     public SparkMaxConfigAccessor getConfigAccessor() {
         return m_driveMotor.configAccessor;
     }
+
 
 
 

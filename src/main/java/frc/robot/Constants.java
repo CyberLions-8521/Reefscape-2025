@@ -32,14 +32,22 @@ public class Constants {
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
         public static final double kTurnConversionFactor = 360 / kTurnGearRatio;
         
-        public static final int kFrontLeftCANCoderID = 3;
-        public static final int kFrontRightCANCoderID = 4;
-        public static final int kBackLeftCANCoderID = 1;
-        public static final int kBackRightCANCoderID = 2;
         public static final String kCANCoderBus = "ryan";
+
+        public static final double kCANCoderMagnetOffset = 0; //config later
+        public static final double kCANCoderAbsoluteSensorDiscontinuityPoint = 0; //config later
 
     }
 
+
+
+
+
+
+
+
+
+    
     public static class SwerveDrivebaseConstants {
         public static final int kBackLeftDriveID = 8;
         public static final int kBackLeftTurnID = 7;
@@ -59,6 +67,10 @@ public class Constants {
         public static final double kMaxMetersPerSecond = 5.0;
         public static final double kMaxAngularSpeed = 360;
 
+        public static final int kFrontLeftCANCoderID = 3;
+        public static final int kFrontRightCANCoderID = 4;
+        public static final int kBackLeftCANCoderID = 1;
+        public static final int kBackRightCANCoderID = 2;
 
         //Angular Offsets of the modules relative to the chassis in degrees
         public static final double kFrontLeftChassisAngularOffset = -90;//NEED TO BE ASSIGNED

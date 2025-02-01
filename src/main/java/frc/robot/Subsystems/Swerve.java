@@ -9,8 +9,9 @@ import frc.robot.Configs;
 import frc.robot.SwerveModule;
 import frc.robot.Configs.SwerveModuleConfigs;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
-
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.studica.frc.AHRS;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
@@ -42,25 +43,25 @@ public class Swerve extends SubsystemBase {
     m_frontLeft = new SwerveModule(
       SwerveDrivebaseConstants.kFrontLeftDriveID,
       SwerveDrivebaseConstants.kFrontLeftTurnID,
-      SwerveConstants.kFrontLeftCANCoderID
+      SwerveDrivebaseConstants.kFrontLeftCANCoderID
     );
 
     m_frontRight = new SwerveModule(
       SwerveDrivebaseConstants.kFrontRightDriveID,
       SwerveDrivebaseConstants.kFrontRightTurnID,
-      SwerveConstants.kFrontRightCANCoderID
+      SwerveDrivebaseConstants.kFrontRightCANCoderID
     );
 
     m_backLeft = new SwerveModule(
       SwerveDrivebaseConstants.kBackLeftDriveID,
       SwerveDrivebaseConstants.kBackLeftTurnID,
-      SwerveConstants.kBackLeftCANCoderID
+      SwerveDrivebaseConstants.kBackLeftCANCoderID
     );
 
     m_backRight = new SwerveModule(
       SwerveDrivebaseConstants.kBackRightDriveID,
       SwerveDrivebaseConstants.kBackRightTurnID,
-      SwerveConstants.kBackRightCANCoderID
+      SwerveDrivebaseConstants.kBackRightCANCoderID
     );
 
     m_kinematics = new SwerveDriveKinematics(
@@ -106,6 +107,8 @@ public class Swerve extends SubsystemBase {
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
     
   }
+
+  
 
   public void resetGyro() {
     m_gyro.reset();

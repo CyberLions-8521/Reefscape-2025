@@ -11,7 +11,9 @@ import frc.robot.Constants.SwerveConstants;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.DeviceIdentifier;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -21,13 +23,16 @@ public class Configs {
     public static final class SwerveModuleConfigs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
-        public static final CANcoderConfiguration m_CANcoderConfiguration = new CANcoderConfiguration();
-        
+        public static final CANcoderConfiguration m_CANcoderConfigs = new CANcoderConfiguration();
+        public static final MagnetSensorConfigs m_magnetConfigs = new MagnetSensorConfigs();
 
-        public static final CANcoderConfigurator m_frontLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        public static final CANcoderConfigurator m_frontRightCANConderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        public static final CANcoderConfigurator m_backLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        public static final CANcoderConfigurator m_backRightCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
+        
+        
+        //don't know where to put
+        // public static final CANcoderConfigurator m_frontLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
+        // public static final CANcoderConfigurator m_frontRightCANConderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
+        // public static final CANcoderConfigurator m_backLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
+        // public static final CANcoderConfigurator m_backRightCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
 
         static {
             m_configDrive
@@ -63,11 +68,11 @@ public class Configs {
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
 
-        }
+            m_magnetConfigs
+                .withMagnetOffset(SwerveConstants.kCANCoderMagnetOffset)
+                .withAbsoluteSensorDiscontinuityPoint(SwerveConstants.kCANCoderAbsoluteSensorDiscontinuityPoint)
+                .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
 
-        public static void configureCANCoder (CANcoderConfigurator configurator, CANcoderConfiguration configurations) {
-            
-            configurator.apply(configurations);
         }
         
         
