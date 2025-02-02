@@ -17,8 +17,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 public final class Configs {
     public static final class SwerveModuleConfig {
         public static final SparkMaxConfig driveConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig turnConfig = new SparkMaxConfig();
-
+        public static final SparkMaxConfig turnConfig  = new SparkMaxConfig();
         public static final MagnetSensorConfigs magnetConfigs = new MagnetSensorConfigs();
 
         static {
@@ -26,7 +25,7 @@ public final class Configs {
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50);
             driveConfig.encoder
-                .positionConversionFactor(DriveConstants.kDriveConversionFactor)    // meters
+                .positionConversionFactor(DriveConstants.kDriveConversionFactor)            // meters
                 .velocityConversionFactor(DriveConstants.kDriveConversionFactor / 60.0);    // meters per second
             driveConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -37,15 +36,15 @@ public final class Configs {
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50);
             turnConfig.encoder
-                .positionConversionFactor(DriveConstants.kTurnConversionFactor)    // rotations of output shaft
+                .positionConversionFactor(DriveConstants.kTurnConversionFactor)            // rotations of output shaft
                 .velocityConversionFactor(DriveConstants.kTurnConversionFactor / 60.0);    // rotations per second
             turnConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pid(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD)
-                .outputRange(-1.0, 1.0)
+                .outputRange(-1, 1)
                 .positionWrappingEnabled(true)  // allows the controller to wrap through 0 to get to setpoint
                                                         // e.g., going from 350 to 10 degrees goes through 0 instead of going all the way around
-                .positionWrappingInputRange(0, 2 * Math.PI);
+                .positionWrappingInputRange(-0.5, 0.5); // Based on CANcoder Sensor Discont. Point; needs testing
             
             magnetConfigs
                 .withAbsoluteSensorDiscontinuityPoint(0.5)
