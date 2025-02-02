@@ -1,5 +1,9 @@
 package frc.robot;
 
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -25,9 +29,11 @@ public class SwerveModule {
     private final SparkClosedLoopController m_drivePID;
     private final SparkClosedLoopController m_turnPID;
 
+    private final CANcoder m_canCoder;
+
     // private SwerveModuleState m_state = new SwerveModuleState(0.0, new Rotation2d());
 
-    public SwerveModule(int driveID, int turnID) {
+    public SwerveModule(int driveID, int turnID, int canCoderID, double magnetOffset) {
         m_driveMotor = new SparkMax(driveID, MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnID, MotorType.kBrushless);
 
@@ -40,7 +46,14 @@ public class SwerveModule {
         m_driveMotor.configure(SwerveModuleConfig.driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_turnMotor.configure(SwerveModuleConfig.turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        m_canCoder = new CANcoder(canCoderID, "rio");
+        m_canCoder.getConfigurator().apply(SwerveModuleConfig.magnetConfigs.withMagnetOffset(magnetOffset));
         m_driveEncoder.setPosition(0);
+        reCalibrateTurnEncoder();
+    }
+
+    public void reCalibrateTurnEncoder() {
+        m_turnEncoder.setPosition(m_canCoder.getAbsolutePosition().getValueAsDouble());
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
@@ -53,7 +66,7 @@ public class SwerveModule {
         desiredState.cosineScale(currentRotation);
 
         m_drivePID.setReference(desiredState.speedMetersPerSecond, ControlType.kVelocity);
-        m_turnPID.setReference(desiredState.angle.getRadians(), ControlType.kPosition);
+        m_turnPID.setReference(desiredState.angle.getRotations(), ControlType.kPosition);
     }
 
 }

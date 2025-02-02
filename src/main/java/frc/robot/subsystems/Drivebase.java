@@ -22,16 +22,24 @@ public class Drivebase extends SubsystemBase {
 
     private final SwerveModule m_frontLeft = new SwerveModule(
         DriveConstants.kFrontLeftDriveID,
-        DriveConstants.kFrontLeftTurnID);
+        DriveConstants.kFrontLeftTurnID,
+        DriveConstants.kFrontLeftCANcoderID,
+        DriveConstants.kFrontLeftMagnetOffset);
     private final SwerveModule m_frontRight = new SwerveModule(
         DriveConstants.kFrontRightDriveID,
-        DriveConstants.kFrontRightTurnID);
+        DriveConstants.kFrontRightTurnID,
+        DriveConstants.kFrontRightCANcoderID,
+        DriveConstants.kFrontRightMagnetOffset);
     private final SwerveModule m_backLeft = new SwerveModule(
         DriveConstants.kBackLeftDriveID,
-        DriveConstants.kBackLeftTurnID);
+        DriveConstants.kBackLeftTurnID,
+        DriveConstants.kBackLeftCANcoderID,
+        DriveConstants.kBackLeftMagnetOffset);
     private final SwerveModule m_backRight = new SwerveModule(
         DriveConstants.kBackRightDriveID,
-        DriveConstants.kBackRightTurnID);
+        DriveConstants.kBackRightTurnID,
+        DriveConstants.kBackRightCANcoderID,
+        DriveConstants.kBackRightMagnetOffset);
 
     // Given as frontLeft, frontRight, backLeft, backRight
     // +x is forwards relative to the robot
@@ -45,7 +53,8 @@ public class Drivebase extends SubsystemBase {
     public Drivebase() {}
 
     /**
-   * Method to drive the robot using joystick info.
+   * Method to drive the robot using joystick info. Taken and modified from REVrobotics
+   * MAXSwerve-Java-Template https://github.com/REVrobotics/MAXSwerve-Java-Template
    *
    * @param xSpeed        Speed of the robot in the x direction (forward).
    * @param ySpeed        Speed of the robot in the y direction (sideways).
