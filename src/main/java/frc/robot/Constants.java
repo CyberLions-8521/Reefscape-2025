@@ -8,4 +8,11 @@ public class Constants {
         final static int kTopRightTurnID = 1; //placeholder    
 
     }
+
+    public static final class KitbotConstants {
+        public static final int ROLLER_MOTOR_ID=0;
+        public static final int ROLLER_MOTOR_CURRENT_LIMIT = 0;
+        public static final double ROLLER_MOTOR_VOLTAGE_COMP = 0;
+        public static final double ROLLER_EJECT_VALUE=0;
+    }
 }
