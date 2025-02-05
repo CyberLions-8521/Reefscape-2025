@@ -14,8 +14,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Kitbot extends SubsystemBase {
   /** Creates a new Kitbot. */
+  SparkMax rollerMotor = new SparkMax(KitbotConstants.ROLLER_MOTOR_ID, MotorType.kBrushed);
+  
   public Kitbot() {
-    SparkMax rollerMotor = new SparkMax(KitbotConstants.ROLLER_MOTOR_ID, MotorType.kBrushless);
     SparkMaxConfig rollerConfig = new SparkMaxConfig();
     rollerConfig.voltageCompensation(KitbotConstants.ROLLER_MOTOR_VOLTAGE_COMP);
     rollerConfig.smartCurrentLimit(KitbotConstants.ROLLER_MOTOR_CURRENT_LIMIT);
@@ -27,7 +28,7 @@ public class Kitbot extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void runRoller(){
-    //rollerMotor.set
+  public void runRoller(double speed){
+    rollerMotor.set(speed);
   }
 }
