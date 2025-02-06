@@ -26,6 +26,9 @@ public class RobotContainer {
   // "tx" value from the Limelight.
   private double limelight_aim_proportional()
   {    
+    // Check to see if there is a valid target
+    if ( !LimelightHelpers.getTV("limelight") ) return 0.0;
+
     // kP (constant of proportionality)
     // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
     // if it is too high, the robot will oscillate.
@@ -51,6 +54,9 @@ public class RobotContainer {
   // if your limelight and target are mounted at the same or similar heights, use "ta" (area) for target ranging rather than "ty"
   private double limelight_range_proportional()
   {    
+    // Check to see if there is a valid target
+    if ( !LimelightHelpers.getTV("limelight") ) return 0.0;
+
     double kP = .1;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
     targetingForwardSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
