@@ -85,11 +85,11 @@ public class RobotContainer {
     // to get the angular velocity.
     //
     // Hopefully this will rotate and turn the robot to face the target.
-    m_gamepad.a().onTrue(
+    m_gamepad.a().whileTrue(
         getDriveCommand(
             () -> 0.0,
             () -> 0.0,
-            () -> limelight_aim_proportional(),
+            RobotContainer::limelight_aim_proportional,
             false // When using limelight turn off field relative driving
         )
     );
