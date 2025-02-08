@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
@@ -23,23 +24,12 @@ public class Configs {
     public static final class SwerveModuleConfigs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
-        public static final CANcoderConfiguration m_CANcoderConfigs = new CANcoderConfiguration();
-        public static final MagnetSensorConfigs m_magnetConfigs = new MagnetSensorConfigs();
-
-        
-        
-        //don't know where to put
-        // public static final CANcoderConfigurator m_frontLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        // public static final CANcoderConfigurator m_frontRightCANConderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kFrontRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        // public static final CANcoderConfigurator m_backLeftCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackLeftCANCoderID, "idk", SwerveConstants.kCANCoderBus));
-        // public static final CANcoderConfigurator m_backRightCANCoderConfigurator = new CANcoderConfigurator(new DeviceIdentifier(SwerveConstants.kBackRightCANCoderID, "idk", SwerveConstants.kCANCoderBus));
 
         static {
             m_configDrive
                 .idleMode(SparkBaseConfig.IdleMode.kCoast)
                 .inverted(true)
                 .smartCurrentLimit(SwerveConstants.driveMotorStallLimit, SwerveConstants.driveMotorFreeLimit);
-
 
             m_configTurn
                 .idleMode(SparkBaseConfig.IdleMode.kCoast)
@@ -68,10 +58,6 @@ public class Configs {
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
 
-            m_magnetConfigs
-                .withMagnetOffset(SwerveConstants.kCANCoderMagnetOffset)
-                .withAbsoluteSensorDiscontinuityPoint(SwerveConstants.kCANCoderAbsoluteSensorDiscontinuityPoint)
-                .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
 
         }
         

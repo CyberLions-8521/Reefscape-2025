@@ -28,8 +28,6 @@ public class RobotContainer {
      m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
   }
 
-  
-
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }

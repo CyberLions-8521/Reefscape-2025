@@ -121,6 +121,12 @@ public class Swerve extends SubsystemBase {
     m_backRight.resetEncoder();
   }
 
+  public void configureCANCoders() {
+    m_frontLeft.configMagnets(SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint);
+    m_frontRight.configMagnets(SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint);
+    m_backLeft.configMagnets(SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint);
+    m_backRight.configMagnets(SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint);
+  }
  
   public void periodic() {
     SmartDashboardTunePID();

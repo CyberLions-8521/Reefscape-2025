@@ -68,24 +68,9 @@ public class SwerveModule {
         m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
-        m_CANcoder.getConfigurator().apply(SwerveModuleConfigs.m_CANcoderConfigs);
-        m_CANcoder.getConfigurator().apply(SwerveModuleConfigs.m_magnetConfigs);
-        
         resetEncoder();
     
-
-    }
-
-//put this in configs.java
-    // public void configCANcoder(double angleOffset){
-    //     CANcoderConfiguration m_config = new CANcoderConfiguration();
-    //     m_config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-    //     m_config.MagnetSensor.MagnetOffset = angleOffset;
-    //     m_config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-    
-    //  }
-
-    
+    }  
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -102,11 +87,23 @@ public class SwerveModule {
 
     public void resetEncoder() {
         m_driveEncoder.setPosition(0);
-        m_turnEncoder.setPosition(0);
+        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble());
     }
 
     public double getDistance() {
         return m_turnEncoder.getPosition();
+    }
+
+    public void configMagnets(double kCANCoderMagnetOffset, double kCANCoderAbsoluteSensorDiscontinuityPoint) {
+        MagnetSensorConfigs m_magnetConfigs = new MagnetSensorConfigs();
+
+        m_magnetConfigs
+            .withMagnetOffset(kCANCoderMagnetOffset)
+            .withAbsoluteSensorDiscontinuityPoint(kCANCoderAbsoluteSensorDiscontinuityPoint)
+            .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
+        
+        m_CANcoder.getConfigurator().apply(m_magnetConfigs);
+        
     }
 
     public void periodic() {
@@ -120,9 +117,5 @@ public class SwerveModule {
     public SparkMaxConfigAccessor getConfigAccessor() {
         return m_driveMotor.configAccessor;
     }
-
-
-
-
 
 }
