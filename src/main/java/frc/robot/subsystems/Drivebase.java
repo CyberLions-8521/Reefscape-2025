@@ -83,4 +83,24 @@ public class Drivebase extends SubsystemBase {
         m_backLeft.setDesiredState(swerveModuleStates[2]);
         m_backRight.setDesiredState(swerveModuleStates[3]);
     }
+
+    public void resetDriveEncoders() {
+        m_frontLeft.resetDriveEncoder();
+        m_frontRight.resetDriveEncoder();
+        m_backLeft.resetDriveEncoder();
+        m_backRight.resetDriveEncoder();
+    }
+
+    public void reCalibrateTurnEncoders() {
+        m_frontLeft.reCalibrateTurnEncoder();
+        m_frontRight.reCalibrateTurnEncoder();
+        m_backLeft.reCalibrateTurnEncoder();
+        m_backRight.reCalibrateTurnEncoder();
+    }
+
+    @Override
+    public void periodic() {
+        m_frontLeft.logData("FL");
+        m_frontRight.logData("FR");
+    }
 }
