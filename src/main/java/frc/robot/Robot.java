@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.ejml.dense.block.MatrixOps_DDRB;
 
@@ -16,6 +17,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.studica.frc.AHRS;
 
 //a Timed Robot is a robot that 
 
@@ -23,6 +25,10 @@ public class Robot extends TimedRobot {
   private SparkMax m_leftMotor;
   private SparkMax m_rightMotor;
   private XboxController m_controller;
+  private RelativeEncoder m_RightEncoder;
+  private RelativeEncoder m_LeftEncoder;
+  private AHRS m_gyro;
+
 
   // private RelativeEncoder m_leftEncoder = m_leftMotor.getEncoder();
   // private RelativeEncoder m_rightEncoder = m_leftMotor.getEncoder();
@@ -40,7 +46,12 @@ public class Robot extends TimedRobot {
 
     config.inverted(true);
     m_rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  }
+    
+    m_LeftEncoder = m_leftMotor.getEncoder();
+    m_RightEncoder = m_rightMotor.getEncoder();
+
+    m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+    }
 
   @Override
   public void robotPeriodic() {}
@@ -64,7 +75,9 @@ public class Robot extends TimedRobot {
   public void autonomousExit() {}
 
   @Override
-  public void teleopInit() {} //runs when you turn on teleop
+  public void teleopInit() {
+
+  } //runs when you turn on teleop
 
   @Override
   public void teleopPeriodic() {
@@ -73,11 +86,34 @@ public class Robot extends TimedRobot {
     
     tankDrive(left_stick, right_stick);
 
+    logData();
   } //runs as long as you are in 
 
   public void tankDrive(double left, double right) {
     m_leftMotor.set(left);
     m_rightMotor.set(right);
+  }
+
+  public double getEncoderValue(RelativeEncoder encoder) {
+    return encoder.getPosition();
+  }
+
+  public void configure() {
+    m_LeftEncoder.setPosition(0.0);
+    m_RightEncoder.setPosition(0.0);
+
+    m_gyro.reset();
+  }
+
+  public double getGyroPos(AHRS gyro) {
+    return -m_gyro.getAngle();
+  }
+
+  public void logData() {
+    SmartDashboard.putNumber("leftEncoderVal", getEncoderValue(m_LeftEncoder));
+    SmartDashboard.putNumber("rightEncoderVal", getEncoderValue(m_RightEncoder));
+    
+    SmartDashboard.putNumber("gyroVal", getGyroPos(m_gyro));
   }
 
   @Override
