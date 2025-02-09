@@ -22,8 +22,8 @@ public final class Configs {
 
         static {
             driveConfig
-                .idleMode(IdleMode.kBrake)
-                .smartCurrentLimit(50);
+                .idleMode(IdleMode.kCoast)  // set to kCoast for testing purposes
+                .smartCurrentLimit(DriveConstants.kDriveSmartCurrentLimit);
             driveConfig.encoder
                 .positionConversionFactor(DriveConstants.kDriveConversionFactor)            // meters
                 .velocityConversionFactor(DriveConstants.kDriveConversionFactor / 60.0);    // meters per second
@@ -33,8 +33,8 @@ public final class Configs {
                 .outputRange(-1.0, 1.0);
 
             turnConfig
-                .idleMode(IdleMode.kBrake)
-                .smartCurrentLimit(50);
+                .idleMode(IdleMode.kCoast)  // set to kCoast for testing purposes
+                .smartCurrentLimit(DriveConstants.kTurnSmartCurrentLimit);
             turnConfig.encoder
                 .positionConversionFactor(DriveConstants.kTurnConversionFactor)            // rotations of output shaft
                 .velocityConversionFactor(DriveConstants.kTurnConversionFactor / 60.0);    // rotations per second
