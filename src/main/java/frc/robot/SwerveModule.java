@@ -95,6 +95,16 @@ public class SwerveModule {
         return m_turnEncoder.getPosition();
     }
 
+    //for smartdashboard debugging
+    public double getDriveDistance() {
+        return m_driveEncoder.getPosition();
+    }
+
+    //for smartdashboard logging purposes
+    public double getCANCoderPosition() {
+        return m_CANcoder.getAbsolutePosition().getValueAsDouble();
+    }
+
     public void configMagnets(double kCANCoderMagnetOffset, double kCANCoderAbsoluteSensorDiscontinuityPoint) {
         MagnetSensorConfigs m_magnetConfigs = new MagnetSensorConfigs();
 
@@ -108,7 +118,7 @@ public class SwerveModule {
     }
 
     public void periodic() {
-        logData();
+        // logData();
     }
 
     public void logData() {

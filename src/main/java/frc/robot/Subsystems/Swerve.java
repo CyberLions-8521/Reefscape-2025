@@ -150,6 +150,11 @@ public class Swerve extends SubsystemBase {
     double turnD = SmartDashboard.getNumber("turnD", 0);
     
     SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
+
+    SmartDashboard.putNumber("back right module enc", m_backLeft.getDistance());
+    SmartDashboard.putNumber("back right module CANcoder", m_backLeft.getCANCoderPosition());
+
+    SmartDashboard.putNumber("back right module driveEnc", m_backLeft.getDriveDistance());
     
     if ((SwerveConstants.driveP != driveP) || 
     (SwerveConstants.driveI != driveI) || 

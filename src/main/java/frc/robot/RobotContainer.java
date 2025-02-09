@@ -10,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.Constants.ControllerConstants;
@@ -25,7 +26,8 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-     m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
+    m_XboxController.b().onTrue(new InstantCommand(() -> m_db.resetEncoders(), m_db));
+    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
   }
 
   public Command getAutonomousCommand() {
