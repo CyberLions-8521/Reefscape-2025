@@ -37,8 +37,8 @@ public class Robot extends TimedRobot {
   // private SparkClosedLoopController m_rightPID;
 // 
   public Robot() {
-    m_leftMotor = new SparkMax(6, MotorType.kBrushless);
-    m_rightMotor = new SparkMax(4, MotorType.kBrushless);
+    m_leftMotor = new SparkMax(50, MotorType.kBrushless);
+    m_rightMotor = new SparkMax(2, MotorType.kBrushless);
 
     m_controller = new XboxController(0);
 
@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 
     config.inverted(true);
     m_rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_leftMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     
     m_LeftEncoder = m_leftMotor.getEncoder();
     m_RightEncoder = m_rightMotor.getEncoder();
