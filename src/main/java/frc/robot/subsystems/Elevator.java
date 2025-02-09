@@ -31,6 +31,10 @@ public StatusCode setControl(PositionDutyCycle setpoint) {
 public double getPositon() {
     return m_motor.getPosition().getValueAsDouble();
 }
+
+public void setSpeed(double speed) {
+    m_motor.set(speed);
+}
     
 
 }
