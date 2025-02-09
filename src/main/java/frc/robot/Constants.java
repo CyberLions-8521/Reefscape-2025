@@ -4,7 +4,7 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
     public static final class ControllerConstants {
-        public static final double kDeadband = 0.02;
+        public static final double kDeadband = 0.2;
     }
 
     public static class SwerveConstants {
@@ -32,7 +32,7 @@ public class Constants {
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
         public static final double kTurnConversionFactor = 1 / kTurnGearRatio;
         
-        public static final String kCANCoderBus = "ryan";
+        public static final String kCANCoderBus = "Ryan";
 
     }
 
@@ -57,27 +57,29 @@ public class Constants {
         public static final double kMaxMetersPerSecond = 5.0;
         public static final double kMaxAngularSpeed = 360;
 
-        public static final int kFrontLeftCANCoderID = 3;
-        public static final int kFrontRightCANCoderID = 4;
-        public static final int kBackLeftCANCoderID = 1;
-        public static final int kBackRightCANCoderID = 2;
+        public static final int kFrontLeftCANCoderID = 10;
+        public static final int kFrontRightCANCoderID = 11;
+        public static final int kBackLeftCANCoderID = 9;
+        public static final int kBackRightCANCoderID = 12;
 
         //Angular Offsets of the modules relative to the chassis in degrees
+        /* 
         public static final double kFrontLeftChassisAngularOffset = -90;//NEED TO BE ASSIGNED
         public static final double kFrontRightChassisAngularOffset = 0;//NEED TO BE ASSIGNED
         public static final double kBackLeftChassisAngularOffset = 180;//NEED TO BE ASSIGNED
         public static final double kBackRightChassisAngularOffset = 90; //NEED TO BE ASSIGNED
+        */
 
-        public static final double kFrontLeftCANCoderMagnetOffset = 0; //config later
-        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0; //config later
+        public static final double kFrontLeftCANCoderMagnetOffset = -0.179931640625; //config later
+        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kFrontRightCANCoderMagnetOffset = 0; //config later
-        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 0; //config later
+        public static final double kFrontRightCANCoderMagnetOffset = 0.396728515625; //config later
+        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kBackLeftCANCoderMagnetOffset = 0; //config later
-        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0; //config later
+        public static final double kBackLeftCANCoderMagnetOffset = 0.35595703125; //config later
+        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kBackRightCANCoderMagnetOffset = 0; //config later
-        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 0; //config later
+        public static final double kBackRightCANCoderMagnetOffset = -0.286376953125; //config later
+        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
     }
 }

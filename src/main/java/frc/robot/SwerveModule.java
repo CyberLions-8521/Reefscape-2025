@@ -50,7 +50,7 @@ public class SwerveModule {
     private CANcoder m_CANcoder;
 
 
-    public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort) {
+    public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort, double magnetOffset, double absoluteSensorDiscont) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
 
@@ -69,8 +69,9 @@ public class SwerveModule {
         m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         resetEncoder();
-    
-    }  
+
+        configMagnets(magnetOffset, absoluteSensorDiscont);
+        }  
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

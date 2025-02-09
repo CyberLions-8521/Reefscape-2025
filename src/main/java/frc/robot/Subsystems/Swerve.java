@@ -43,25 +43,33 @@ public class Swerve extends SubsystemBase {
     m_frontLeft = new SwerveModule(
       SwerveDrivebaseConstants.kFrontLeftDriveID,
       SwerveDrivebaseConstants.kFrontLeftTurnID,
-      SwerveDrivebaseConstants.kFrontLeftCANCoderID
+      SwerveDrivebaseConstants.kFrontLeftCANCoderID,
+      SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset,
+      SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint
     );
 
     m_frontRight = new SwerveModule(
       SwerveDrivebaseConstants.kFrontRightDriveID,
       SwerveDrivebaseConstants.kFrontRightTurnID,
-      SwerveDrivebaseConstants.kFrontRightCANCoderID
+      SwerveDrivebaseConstants.kFrontRightCANCoderID,
+      SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset,
+      SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint
     );
 
     m_backLeft = new SwerveModule(
       SwerveDrivebaseConstants.kBackLeftDriveID,
       SwerveDrivebaseConstants.kBackLeftTurnID,
-      SwerveDrivebaseConstants.kBackLeftCANCoderID
+      SwerveDrivebaseConstants.kBackLeftCANCoderID,
+      SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset,
+      SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint
     );
 
     m_backRight = new SwerveModule(
       SwerveDrivebaseConstants.kBackRightDriveID,
       SwerveDrivebaseConstants.kBackRightTurnID,
-      SwerveDrivebaseConstants.kBackRightCANCoderID
+      SwerveDrivebaseConstants.kBackRightCANCoderID,
+      SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset,
+      SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint
     );
 
     m_kinematics = new SwerveDriveKinematics(
