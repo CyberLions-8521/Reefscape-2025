@@ -10,10 +10,12 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule {
     private final SparkMax m_driveMotor;
@@ -23,6 +25,7 @@ public class SwerveModule {
     private final SparkClosedLoopController m_drivePID;
     private final SparkClosedLoopController m_turnPID;
     private final CANcoder m_canCoder;
+    private SwerveModuleState m_desiredState = new SwerveModuleState();    // for debugging purposes
 
     public SwerveModule(int driveID, int turnID, int canCoderID, double magnetOffset) {
         m_driveMotor   = new SparkMax(driveID, MotorType.kBrushless);
@@ -42,12 +45,16 @@ public class SwerveModule {
         reCalibrateTurnEncoder();
     }
 
-    public void reCalibrateTurnEncoder() {
-        m_turnEncoder.setPosition(m_canCoder.getAbsolutePosition().getValueAsDouble());
+    public REVLibError resetDriveEncoder() {
+        return m_driveEncoder.setPosition(0.0);
+    }
+
+    public REVLibError reCalibrateTurnEncoder() {
+        return m_turnEncoder.setPosition(m_canCoder.getAbsolutePosition().getValueAsDouble());
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-        Rotation2d currentRotation = new Rotation2d(m_turnEncoder.getPosition());
+        Rotation2d currentRotation = Rotation2d.fromRotations(m_turnEncoder.getPosition());
         // Optimize to allow module to make the smallest turn to arrive at the rotational setpoint
         // e.g., it will turn through 0 degrees when going from 350 degrees to 10 degrees
         desiredState.optimize(currentRotation);
@@ -56,7 +63,17 @@ public class SwerveModule {
         desiredState.cosineScale(currentRotation);
 
         m_drivePID.setReference(desiredState.speedMetersPerSecond, ControlType.kVelocity);
-        m_turnPID.setReference(desiredState.angle.getRotations(), ControlType.kPosition);
+        m_turnPID.setReference(desiredState.angle.getRotations() , ControlType.kPosition);
+
+        m_desiredState = desiredState;  // for debugging purposes
+    }
+
+    public void logData(String description) {
+        SmartDashboard.putNumber(String.format("%5s Drive Encoder", description), m_driveEncoder.getPosition());
+        SmartDashboard.putNumber(String.format("%6s Turn Encoder" , description), m_turnEncoder.getPosition());
+        SmartDashboard.putNumber(String.format("%10s CANcoder"    , description), m_canCoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber(String.format("%5s Desired Angle", description), m_desiredState.angle.getDegrees());
+        SmartDashboard.putNumber(String.format("%5s Desired Speed", description), m_desiredState.speedMetersPerSecond);
     }
 
 }
