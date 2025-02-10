@@ -46,12 +46,13 @@ public class Constants {
         private static final double kTurnGearRatio = 150.0 / 7.0;   // found in https://www.swervedrivespecialties.com/products/mk4i-swerve-module
         public  static final double kTurnConversionFactor = 1.0 / kTurnGearRatio;
 
-        public static final double kDriveP = 1.0;
-        public static final double kDriveI = 0.0;
-        public static final double kDriveD = 0.0;
+        // Non-final for tuning purposes; make final once values have been tuned
+        public static double kDriveP = 1.0;
+        public static double kDriveI = 0.0;
+        public static double kDriveD = 0.0;
 
-        public static final double kTurnP = 1.0;
-        public static final double kTurnI = 0.0;
-        public static final double kTurnD = 0.0;
+        public static double kTurnP = 1.0;
+        public static double kTurnI = 0.0;
+        public static double kTurnD = 0.0;
     }
 }

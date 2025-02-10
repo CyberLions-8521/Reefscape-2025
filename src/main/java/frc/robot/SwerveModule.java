@@ -68,6 +68,9 @@ public class SwerveModule {
         m_desiredState = desiredState;  // for debugging purposes
     }
 
+    /*
+     * All methods below are for dynamic PID tuning in SmartDashboard
+     */
     public void logData(String description) {
         SmartDashboard.putNumber(String.format("%5s Drive Encoder", description), m_driveEncoder.getPosition());
         SmartDashboard.putNumber(String.format("%6s Turn Encoder" , description), m_turnEncoder.getPosition());
@@ -76,4 +79,24 @@ public class SwerveModule {
         SmartDashboard.putNumber(String.format("%5s Desired Speed", description), m_desiredState.speedMetersPerSecond);
     }
 
+    public void logPID() {
+        logPID("");
+    }
+
+    public void logPID(String description) {
+        SmartDashboard.putNumber(description + "driveP", m_driveMotor.configAccessor.closedLoop.getP());
+        SmartDashboard.putNumber(description + "driveI", m_driveMotor.configAccessor.closedLoop.getI());
+        SmartDashboard.putNumber(description + "driveD", m_driveMotor.configAccessor.closedLoop.getD());
+        SmartDashboard.putNumber(description + "turnP", m_turnMotor.configAccessor.closedLoop.getP());
+        SmartDashboard.putNumber(description + "turnI", m_turnMotor.configAccessor.closedLoop.getI());
+        SmartDashboard.putNumber(description + "turnD", m_turnMotor.configAccessor.closedLoop.getD());
+    }
+
+    public void configureDriveMotor() {
+        m_driveMotor.configure(SwerveModuleConfig.driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+    public void configureTurnMotor() {
+        m_turnMotor.configure(SwerveModuleConfig.turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
 }

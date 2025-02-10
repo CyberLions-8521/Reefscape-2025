@@ -5,14 +5,16 @@ package frc.robot.subsystems;
 import com.studica.frc.AHRS;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Configs.SwerveModuleConfig;    // for PID tuning purposes
 import frc.robot.SwerveModule;
 // import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-// import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -84,11 +86,19 @@ public class Drivebase extends SubsystemBase {
         m_backRight.setDesiredState(swerveModuleStates[3]);
     }
 
+    public Command resetDriveEncodersCommand() {
+        return this.runOnce(this::resetDriveEncoders);
+    }
+
     public void resetDriveEncoders() {
         m_frontLeft.resetDriveEncoder();
         m_frontRight.resetDriveEncoder();
         m_backLeft.resetDriveEncoder();
         m_backRight.resetDriveEncoder();
+    }
+
+    public Command reCalibrateTurnEncodersCommand() {
+        return this.runOnce(this::reCalibrateTurnEncoders);
     }
 
     public void reCalibrateTurnEncoders() {
@@ -100,7 +110,40 @@ public class Drivebase extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_frontLeft.logData("FL");
-        m_frontRight.logData("FR");
+        tunePIDSmartDashboard();
+    }
+
+    // As of Feb 9, 2025: Until examples get udated, see the Position Closed Loop Control example project in
+    // https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java
+    private void tunePIDSmartDashboard() {
+        m_frontLeft.logData("FL");  // logs encoder, cancoder, and desired state values
+        m_frontLeft.logPID();   // logs pid values from the module
+        double driveP = SmartDashboard.getNumber("driveP", 0);
+        double driveI = SmartDashboard.getNumber("driveI", 0);
+        double driveD = SmartDashboard.getNumber("driveD", 0);
+        double turnP = SmartDashboard.getNumber("turnP", 0);
+        double turnI = SmartDashboard.getNumber("turnI", 0);
+        double turnD = SmartDashboard.getNumber("turnD", 0);
+        if (driveP != DriveConstants.kDriveP || driveI != DriveConstants.kDriveI || driveD != DriveConstants.kDriveD) {
+            DriveConstants.kDriveP = driveP;
+            DriveConstants.kDriveI = driveI;
+            DriveConstants.kDriveD = driveD;
+            SwerveModuleConfig.driveConfig.closedLoop.pid(driveP, driveI, driveD);
+            m_frontLeft.configureDriveMotor();
+            m_frontRight.configureDriveMotor();
+            m_backLeft.configureDriveMotor();
+            m_backRight.configureDriveMotor();
+        }
+
+        if (turnP != DriveConstants.kTurnP || turnI != DriveConstants.kTurnI || turnD != DriveConstants.kTurnD) {
+            DriveConstants.kTurnP = turnP;
+            DriveConstants.kTurnI = turnI;
+            DriveConstants.kTurnD = turnD;            
+            SwerveModuleConfig.turnConfig.closedLoop.pid(turnP, turnI, turnD);
+            m_frontLeft.configureTurnMotor();
+            m_frontRight.configureTurnMotor();
+            m_backLeft.configureTurnMotor();
+            m_backRight.configureTurnMotor();
+        }
     }
 }
