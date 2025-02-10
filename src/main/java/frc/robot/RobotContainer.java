@@ -26,6 +26,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     m_db.setDefaultCommand(getDriveCommand(m_gamepad::getLeftY, m_gamepad::getLeftX, m_gamepad::getLeftTriggerAxis, false));
+    m_gamepad.b().onTrue(Commands.parallel(m_db.reCalibrateTurnEncodersCommand(), m_db.resetDriveEncodersCommand()));
   }
 
   public Command getAutonomousCommand() {
