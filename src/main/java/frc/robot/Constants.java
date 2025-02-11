@@ -55,4 +55,12 @@ public class Constants {
         public static double kTurnI = 0.0;
         public static double kTurnD = 0.0;
     }
+
+    public static final class ElevatorConstants
+    {
+        // All values are placeholders
+        public static final int kLeaderID = 13;
+        public static final int kFollowerID = 14;
+        public static final double kGearRatio = 1.0;
+    }
 }
