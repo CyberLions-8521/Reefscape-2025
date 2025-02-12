@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-// import java.util.function.Supplier;
+import java.util.function.Supplier;
 
 import com.studica.frc.AHRS;
 
@@ -108,6 +108,17 @@ public class Drivebase extends SubsystemBase {
         m_backRight.reCalibrateTurnEncoder();
     }
 
+    public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
+        return this.run(() -> testMotors(speed.get(), steer.get()));
+    }
+
+    private void testMotors(double speed, double steer) {
+        m_frontLeft.testMotors(speed, steer);
+        m_frontRight.testMotors(speed, steer);
+        m_backLeft.testMotors(speed, steer);
+        m_backRight.testMotors(speed, steer);
+    }
+
     @Override
     public void periodic() {
         tunePIDSmartDashboard();
@@ -117,6 +128,9 @@ public class Drivebase extends SubsystemBase {
     // https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java
     private void tunePIDSmartDashboard() {
         m_frontLeft.logData("FL");  // logs encoder, cancoder, and desired state values
+        m_frontRight.logData("FR");
+        m_backLeft.logData("BL");
+        m_backRight.logData("BR");
         m_frontLeft.logPID();   // logs pid values from the module
         double driveP = SmartDashboard.getNumber("driveP", 0);
         double driveI = SmartDashboard.getNumber("driveI", 0);

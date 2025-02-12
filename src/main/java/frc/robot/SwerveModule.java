@@ -68,13 +68,18 @@ public class SwerveModule {
         m_desiredState = desiredState;  // for debugging purposes
     }
 
+    public void testMotors(double drive, double turn) {
+        m_driveMotor.set(drive);
+        m_turnMotor.set(turn);
+    }
+
     /*
      * All methods below are for dynamic PID tuning in SmartDashboard
      */
     public void logData(String description) {
         SmartDashboard.putNumber(String.format("%5s Drive Encoder", description), m_driveEncoder.getPosition());
         SmartDashboard.putNumber(String.format("%6s Turn Encoder" , description), m_turnEncoder.getPosition());
-        SmartDashboard.putNumber(String.format("%10s CANcoder"    , description), m_canCoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber(String.format("%10s CAN-coder"    , description), m_canCoder.getAbsolutePosition().getValueAsDouble());
         SmartDashboard.putNumber(String.format("%5s Desired Angle", description), m_desiredState.angle.getDegrees());
         SmartDashboard.putNumber(String.format("%5s Desired Speed", description), m_desiredState.speedMetersPerSecond);
     }
