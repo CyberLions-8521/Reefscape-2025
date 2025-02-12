@@ -15,7 +15,7 @@ public class Constants {
         public static final double ELEVATOR_KD = 0;
         public static final double ELEVATOR_KI = 0;
         public static final double ELEVATOR_KFF = 0;
-        public static final double ELEVATOR_GEAR_RATIO = 0;
+        public static final double ELEVATOR_GEAR_RATIO = 25;
         
         public static final double CIRCUMFERENCE = 0;
     }

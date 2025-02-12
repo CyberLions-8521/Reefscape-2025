@@ -5,6 +5,11 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkBase.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,15 +17,16 @@ import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorGoToSetpoint extends Command {
-  private PositionDutyCycle m_setpoint;
+  private double  m_setpoint;
   private double m_doubSetpoint;
   private Elevator m_elevator;
-  /** Creates a new ElevatorGoToSetpoint. */
+
+
   public ElevatorGoToSetpoint(double setpoint, Elevator elevator) {
-    m_setpoint = new PositionDutyCycle(setpoint);
     m_doubSetpoint = setpoint;
     m_elevator = elevator;
 
+    m_setpoint = setpoint;
     addRequirements(elevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,7 +38,9 @@ public class ElevatorGoToSetpoint extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.setControl(m_setpoint);
+   // m_elevator.setControl(m_setpoint);
+
+   m_elevator.getController().setReference(m_setpoint, ControlType.kPosition);
   }
 
   // Called once the command ends or is interrupted.

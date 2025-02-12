@@ -13,14 +13,14 @@ import frc.robot.commands.ElevatorGoToSetpoint;
 import frc.robot.subsystems.Elevator;
 
 public class RobotContainer {
-  private final Elevator m_elevator = new Elevator(0);
+  private final Elevator m_elevator = new Elevator(10 ,5);
   private final CommandXboxController m_controller = new CommandXboxController(0);
   public RobotContainer() {
     configureBindings();
   }
 
   private void configureBindings() {
-    m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
+    //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
     m_controller.b().whileTrue(new ElevatorGo(m_elevator));
   }
 
