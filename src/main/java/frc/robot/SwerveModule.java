@@ -65,8 +65,8 @@ public class SwerveModule {
         m_configDrive = new SparkMaxConfig();
         m_configTurn = new SparkMaxConfig();
 
-        m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         resetEncoder();
 
@@ -95,6 +95,11 @@ public class SwerveModule {
         return m_turnEncoder.getPosition();
     }
 
+    public void turnMotors(double speed, double steer) {
+        m_driveMotor.set(speed);
+        m_turnMotor.set(steer);
+    }
+
     //for smartdashboard debugging
     public double getDriveDistance() {
         return m_driveEncoder.getPosition();
@@ -117,12 +122,12 @@ public class SwerveModule {
         
     }
 
-    public void periodic() {
-        // logData();
-    }
 
-    public void logData() {
-        SmartDashboard.putNumber("driveEncoderPosition ", getDistance());
+    public void logData(String motor){
+        SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
+        SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
+        SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
+        
     }
 
     public SparkMaxConfigAccessor getConfigAccessor() {

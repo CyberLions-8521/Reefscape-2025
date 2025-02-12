@@ -116,7 +116,17 @@ public class Swerve extends SubsystemBase {
     
   }
 
-  
+public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
+  return this.run(() -> runMotors(speed.get(), steer.get()));
+}
+
+  //for debugging
+  private void runMotors(double speed, double steer) {
+    m_frontLeft.turnMotors(speed, steer);
+    m_frontRight.turnMotors(speed, steer);
+    m_backLeft.turnMotors(speed, steer);
+    m_backRight.turnMotors(speed, steer);
+  }
 
   public void resetGyro() {
     m_gyro.reset();
@@ -142,6 +152,11 @@ public class Swerve extends SubsystemBase {
 
   public void SmartDashboardTunePID()
   {
+    m_frontLeft.logData("FL");
+    m_frontRight.logData("FR");
+    m_backLeft.logData("BL");
+    m_backRight.logData("BR");
+    
     double driveP = SmartDashboard.getNumber("driveP", 0);
     double driveI = SmartDashboard.getNumber("driveI", 0);
     double driveD = SmartDashboard.getNumber("driveD", 0);
@@ -177,4 +192,5 @@ public class Swerve extends SubsystemBase {
         
     }
   }
+
 }

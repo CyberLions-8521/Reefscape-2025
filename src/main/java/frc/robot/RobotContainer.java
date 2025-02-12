@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.TestTickles;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 
@@ -20,6 +21,7 @@ import frc.robot.Constants.SwerveDrivebaseConstants;
 public class RobotContainer {
   private final CommandXboxController m_XboxController = new CommandXboxController(0);
   private final Swerve m_db = new Swerve();
+  //private final TestTickles m_db = new TestTickles();
 
   public RobotContainer() {
     configureBindings();
@@ -27,13 +29,22 @@ public class RobotContainer {
  
   private void configureBindings() {
     m_XboxController.b().onTrue(new InstantCommand(() -> m_db.resetEncoders(), m_db));
+    
+    //m_db.setDefaultCommand(m_db.testMotorsCommand(m_XboxController::getLeftY, m_XboxController::getRightY));
+
+    // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
+    // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
+    // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
     m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return Commands.print(
+      
+    "No autonomous command configured");
   }
 
+    
     public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, boolean fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(
@@ -42,6 +53,6 @@ public class RobotContainer {
         -MathUtil.applyDeadband(omega.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
         fieldRelative),
       m_db);
-    
   }
+  
 }

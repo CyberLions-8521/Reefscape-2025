@@ -24,7 +24,7 @@ public class Constants {
 
         public static final double positionWrappingUpperLimit = 360; //placeholder
 
-        public static final double kWheelDiameter = Units.inchesToMeters(4);
+        public static final double kWheelDiameter = Units.inchesToMeters(4);   //inches
         public static final double kDriveGearRatio = 6.75; 
         public static final double kTurnGearRatio = (150.0 / 7.0); 
         public static final double kWheelCircumference = Math.PI * kWheelDiameter;
@@ -45,11 +45,12 @@ public class Constants {
         public static final int kFrontRightTurnID = 6;
 
         public static final int kBackLeftDriveID = 8;
-        public static final int kBackLeftTurnID = 7;
+        public static final int kBackLeftTurnID = 5;
 
         public static final int kBackRightDriveID = 3;
         public static final int kBackRightTurnID = 14;
-    
+
+        //public static final int kElevatorID;
 
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
