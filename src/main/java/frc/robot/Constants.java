@@ -30,7 +30,7 @@ public class Constants {
         public static final double kWheelCircumference = Math.PI * kWheelDiameter;
 
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
-        public static final double kTurnConversionFactor = 1 / kTurnGearRatio;
+        public static final double kTurnConversionFactor = 2 * Math.PI / kTurnGearRatio;
         
         public static final String kCANCoderBus = "Ryan";
 
@@ -38,17 +38,17 @@ public class Constants {
 
 
     public static class SwerveDrivebaseConstants {
-        public static final int kFrontLeftDriveID = 50;
-        public static final int kFrontLeftTurnID = 2;
+        public static final int kFrontLeftDriveID = 4;
+        public static final int kFrontLeftTurnID = 6;
 
-        public static final int kFrontRightDriveID = 4;
-        public static final int kFrontRightTurnID = 6;
+        public static final int kFrontRightDriveID = 3;
+        public static final int kFrontRightTurnID = 14;
 
-        public static final int kBackLeftDriveID = 8;
-        public static final int kBackLeftTurnID = 5;
+        public static final int kBackLeftDriveID = 50;
+        public static final int kBackLeftTurnID = 2;
 
-        public static final int kBackRightDriveID = 3;
-        public static final int kBackRightTurnID = 14;
+        public static final int kBackRightDriveID = 8;
+        public static final int kBackRightTurnID = 7;
 
         //public static final int kElevatorID;
 
@@ -72,15 +72,15 @@ public class Constants {
         */
 
         public static final double kFrontLeftCANCoderMagnetOffset = -0.179931640625; //config later
-        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
+        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
 
         public static final double kFrontRightCANCoderMagnetOffset = 0.396728515625; //config later
-        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
+        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
 
         public static final double kBackLeftCANCoderMagnetOffset = 0.35595703125; //config later
-        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
+        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
 
         public static final double kBackRightCANCoderMagnetOffset = -0.286376953125; //config later
-        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
+        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
     }
 }
