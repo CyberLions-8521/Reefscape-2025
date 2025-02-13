@@ -19,12 +19,15 @@ import frc.robot.subsystems.Elevator;
 public class ElevatorGoToSetpoint extends Command {
   private double  m_setpoint;
   private double m_doubSetpoint;
+  private double m_currentPos;
   private Elevator m_elevator;
 
 
   public ElevatorGoToSetpoint(double setpoint, Elevator elevator) {
     m_doubSetpoint = setpoint;
     m_elevator = elevator;
+    
+    m_currentPos = m_elevator.getPositon();
 
     m_setpoint = setpoint;
     addRequirements(elevator);

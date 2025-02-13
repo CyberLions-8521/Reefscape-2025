@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -40,6 +41,8 @@ public class Elevator extends SubsystemBase {
         m_motorMaster = new SparkMax(masterMotorPort, MotorType.kBrushless);
         m_motorSlave = new SparkMax(slaveMotorPort, MotorType.kBrushless);
 
+        m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
         m_motorSlave.configure(MotorConfigs.SPARK_CONFIGURATION, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         m_encoder = m_motorMaster.getEncoder();
@@ -62,6 +65,14 @@ public SparkClosedLoopController getController() {
 
 public void setSpeed(double speed) {
     m_motorMaster.set(speed);
+}
+
+public Command resetEncoderCommand() {
+    return this.run(() -> resetEncoder());
+}
+
+public void resetEncoder() {
+    m_encoder.setPosition(0.00);
 }
 
 public void logData() {

@@ -16,6 +16,7 @@ public class ElevatorGo extends Command {
     m_elevator = elevator;
     
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -25,16 +26,18 @@ public class ElevatorGo extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.setSpeed(40);
+    m_elevator.setSpeed(.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_elevator.setSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_elevator.getPositon() >= 30);
+    return false;
   }
 }

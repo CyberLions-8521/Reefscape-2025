@@ -14,6 +14,7 @@ public class Configs {
         public static final TalonFXConfiguration KRAKEN_CONFIGURATION = new TalonFXConfiguration();
 
         public static final SparkMaxConfig SPARK_CONFIGURATION = new SparkMaxConfig();
+        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
 
         static {
             KRAKEN_CONFIGURATION.Slot0
@@ -31,8 +32,15 @@ public class Configs {
             KRAKEN_CONFIGURATION.Feedback
                 .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
 
+
             SPARK_CONFIGURATION.follow(10)
                 .inverted(true);
+
+            ELEV_MASTER_CONFIG.inverted(true);
+
+            ELEV_MASTER_CONFIG.encoder
+                .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
+                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
 
             SPARK_CONFIGURATION.encoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
