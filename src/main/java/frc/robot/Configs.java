@@ -33,9 +33,7 @@ public class Configs {
                 .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
 
 
-            SPARK_CONFIGURATION.follow(10)
-                .inverted(true);
-
+            SPARK_CONFIGURATION.follow(10, true);
             ELEV_MASTER_CONFIG.inverted(true);
 
             ELEV_MASTER_CONFIG.encoder
