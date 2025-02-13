@@ -49,10 +49,14 @@ public class SwerveModule {
 
     private CANcoder m_CANcoder;
 
+    // for debugging
+    private SwerveModuleState m_desiredState = new SwerveModuleState();
+
 
     public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort, double magnetOffset, double absoluteSensorDiscont) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
+
 
         m_CANcoder = new CANcoder(CANCoderPort, SwerveConstants.kCANCoderBus);
 
@@ -79,16 +83,18 @@ public class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState targetState) {
-        Rotation2d currentRotation = Rotation2d.fromDegrees(m_turnEncoder.getPosition());
+        Rotation2d currentRotation = Rotation2d.fromRadians(m_turnEncoder.getPosition());
         targetState.optimize(currentRotation);
 
         m_drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity);
-        m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
+        m_turnPID.setReference(targetState.angle.getRadians(), ControlType.kPosition);
+
+        m_desiredState = targetState; 
     }
 
     public void resetEncoder() {
         m_driveEncoder.setPosition(0);
-        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble());
+        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (2 * Math.PI));  //rotations
     }
 
     public double getDistance() {
@@ -102,12 +108,12 @@ public class SwerveModule {
 
     //for smartdashboard debugging
     public double getDriveDistance() {
-        return m_driveEncoder.getPosition();
+        return m_driveEncoder.getPosition(); //rotations
     }
 
     //for smartdashboard logging purposes
     public double getCANCoderPosition() {
-        return m_CANcoder.getAbsolutePosition().getValueAsDouble();
+        return m_CANcoder.getAbsolutePosition().getValueAsDouble(); //rotations 
     }
 
     public void configMagnets(double kCANCoderMagnetOffset, double kCANCoderAbsoluteSensorDiscontinuityPoint) {
@@ -117,7 +123,7 @@ public class SwerveModule {
             .withMagnetOffset(kCANCoderMagnetOffset)
             .withAbsoluteSensorDiscontinuityPoint(kCANCoderAbsoluteSensorDiscontinuityPoint)
             .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
-        
+         
         m_CANcoder.getConfigurator().apply(m_magnetConfigs);
         
     }
@@ -127,6 +133,8 @@ public class SwerveModule {
         SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
         SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
         SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
+        SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber(motor + "desiredRotation", m_desiredState.angle.getDegrees());
         
     }
 

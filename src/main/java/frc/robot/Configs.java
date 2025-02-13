@@ -56,7 +56,7 @@ public class Configs {
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
-                .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
+                .positionWrappingInputRange(0, 2* Math.PI); //radians
 
 
         }

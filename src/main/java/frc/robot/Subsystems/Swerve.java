@@ -107,8 +107,6 @@ public class Swerve extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         m_swerveModuleStates, SwerveDrivebaseConstants.kMaxMetersPerSecond);
-    SmartDashboard.putNumber("vx", vx);
-    SmartDashboard.putNumber("front left speed", m_swerveModuleStates[0].speedMetersPerSecond);
     m_frontLeft.setDesiredState(m_swerveModuleStates[0]);
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
@@ -165,11 +163,6 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
     double turnD = SmartDashboard.getNumber("turnD", 0);
     
     SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
-
-    SmartDashboard.putNumber("back right module enc", m_backLeft.getDistance());
-    SmartDashboard.putNumber("back right module CANcoder", m_backLeft.getCANCoderPosition());
-
-    SmartDashboard.putNumber("back right module driveEnc", m_backLeft.getDriveDistance());
     
     if ((SwerveConstants.driveP != driveP) || 
     (SwerveConstants.driveI != driveI) || 
