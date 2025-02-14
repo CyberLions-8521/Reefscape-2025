@@ -10,10 +10,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ElevatorGo;
 import frc.robot.commands.ElevatorGoToSetpoint;
+import frc.robot.commands.Intake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   private final Elevator m_elevator = new Elevator(10,5);
+  private final Shooter m_shooter = new Shooter(0, 0);
   private final CommandXboxController m_controller = new CommandXboxController(0);
   public RobotContainer() {
     configureBindings();
@@ -21,8 +24,12 @@ public class RobotContainer {
 
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
-    m_controller.b().whileTrue(new ElevatorGo(m_elevator));
-    m_controller.a().onTrue(m_elevator.resetEncoderCommand());
+    m_controller.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .45));
+    m_controller.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
+    //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
+
+    m_controller.a().whileTrue(new Intake(m_shooter, .4));
+    m_controller.x().whileTrue(new Intake(m_shooter, -.4));
   }
 
   public Command getAutonomousCommand() {

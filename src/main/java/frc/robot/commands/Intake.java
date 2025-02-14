@@ -4,21 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorGo extends Command {
-  private Elevator m_elevator;
-  private double m_speed;
- 
-  public ElevatorGo(Elevator elevator, double speed) {
-    m_elevator = elevator;
-    m_speed = speed;
-
+public class Intake extends Command {
+  /** Creates a new Intake. */
+  public Intake() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -27,19 +19,15 @@ public class ElevatorGo extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_elevator.setSpeed(m_speed);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_elevator.setSpeed(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //max is 5.6
+    return false;
   }
 }
