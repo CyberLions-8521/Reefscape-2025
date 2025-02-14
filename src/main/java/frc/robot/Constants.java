@@ -29,8 +29,9 @@ public class Constants {
         public static final double kTurnGearRatio = (150.0 / 7.0); 
         public static final double kWheelCircumference = Math.PI * kWheelDiameter;
 
-        public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio; 
-        public static final double kTurnConversionFactor = 2 * Math.PI / kTurnGearRatio;
+        public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio;
+        public static final double kAngleConversion = 360;
+        public static final double kTurnConversionFactor = kAngleConversion / kTurnGearRatio;
         
         public static final String kCANCoderBus = "Ryan";
 

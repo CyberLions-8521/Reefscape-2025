@@ -48,15 +48,14 @@ public class Configs {
                 .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .positionWrappingEnabled(true)
-                .positionWrappingInputRange(0, SwerveConstants.positionWrappingUpperLimit);
+                .positionWrappingEnabled(false);
 
             m_configTurn.closedLoop
                 .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
-                .positionWrappingInputRange(0, 2* Math.PI); //radians
+                .positionWrappingInputRange(0, SwerveConstants.kAngleConversion); //radians
 
 
         }

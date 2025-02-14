@@ -4,34 +4,23 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.proto.Kinematics;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.SwerveConstants;
-
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.AbsoluteEncoder;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.jni.CANCommonJNI;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import frc.robot.Configs.SwerveModuleConfigs;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
-import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -57,20 +46,16 @@ public class SwerveModule {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
 
-
         m_CANcoder = new CANcoder(CANCoderPort, SwerveConstants.kCANCoderBus);
-
         m_driveEncoder = m_driveMotor.getEncoder();
         m_turnEncoder = m_turnMotor.getEncoder();
-
         m_drivePID = m_driveMotor.getClosedLoopController();
         m_turnPID = m_turnMotor.getClosedLoopController();
-
         m_configDrive = new SparkMaxConfig();
         m_configTurn = new SparkMaxConfig();
 
-        // m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        // m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        //m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        //m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         resetEncoder();
 
@@ -83,18 +68,18 @@ public class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState targetState) {
-        Rotation2d currentRotation = Rotation2d.fromRadians(m_turnEncoder.getPosition());
+        Rotation2d currentRotation = Rotation2d.fromDegrees(m_turnEncoder.getPosition());
         targetState.optimize(currentRotation);
 
         m_drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity);
-        m_turnPID.setReference(targetState.angle.getRadians(), ControlType.kPosition);
+        m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
 
         m_desiredState = targetState; 
     }
 
     public void resetEncoder() {
         m_driveEncoder.setPosition(0);
-        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (2 * Math.PI));  //rotations
+        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  //degrees
     }
 
     public double getDistance() {
@@ -130,11 +115,15 @@ public class SwerveModule {
 
 
     public void logData(String motor){
-        SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
-        SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
-        SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
-        SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble());
-        SmartDashboard.putNumber(motor + "desiredRotation", m_desiredState.angle.getDegrees());
+        
+        //SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
+        //SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
+        //SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
+        //SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble())
+        SmartDashboard.putNumber(motor + "desired Position ", m_desiredState.angle.getRadians());
+        SmartDashboard.putNumber(motor + "desired Velocity", m_desiredState.speedMetersPerSecond);  
+        SmartDashboard.putNumber(motor + "Ramp Rate", m_turnMotor.configAccessor.getClosedLoopRampRate());  
+            
         
     }
 
@@ -143,3 +132,4 @@ public class SwerveModule {
     }
 
 }
+

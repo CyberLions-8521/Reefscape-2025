@@ -112,6 +112,7 @@ public class Swerve extends SubsystemBase {
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
     
+    
   }
 
 public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
@@ -124,6 +125,7 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
     m_frontRight.turnMotors(speed, steer);
     m_backLeft.turnMotors(speed, steer);
     m_backRight.turnMotors(speed, steer);
+
   }
 
   public void resetGyro() {
