@@ -55,7 +55,7 @@ public class TestTickles extends SubsystemBase {
   }
  
   public void periodic() {
-    SmartDashboardTunePID();
+    // SmartDashboardTunePID();
   }
 
   public void setSpeed1(){

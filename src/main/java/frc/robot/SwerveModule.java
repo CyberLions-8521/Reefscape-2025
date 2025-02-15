@@ -24,7 +24,7 @@ import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
 public class SwerveModule {
-    private SparkMax m_driveMotor; 
+    private SparkMax m_driveMotor;
     private SparkMax m_turnMotor; 
 
     private SparkClosedLoopController m_drivePID;
@@ -117,12 +117,12 @@ public class SwerveModule {
     public void logData(String motor){
         
         //SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
-        //SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
-        //SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
-        //SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble())
-        SmartDashboard.putNumber(motor + "desired Position ", m_desiredState.angle.getRadians());
-        SmartDashboard.putNumber(motor + "desired Velocity", m_desiredState.speedMetersPerSecond);  
-        SmartDashboard.putNumber(motor + "Ramp Rate", m_turnMotor.configAccessor.getClosedLoopRampRate());  
+        SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
+        SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition());
+        SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble()*SwerveConstants.kAngleConversion);
+        // SmartDashboard.putNumber(motor + "desired Position ", m_desiredState.angle.getRadians());
+        // SmartDashboard.putNumber(motor + "desired Velocity", m_desiredState.speedMetersPerSecond);  
+        // SmartDashboard.putNumber(motor + "Ramp Rate", m_turnMotor.configAccessor.getClosedLoopRampRate());  
             
         
     }

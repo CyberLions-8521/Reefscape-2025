@@ -4,20 +4,11 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.SwerveConstants;
-
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.CANcoderConfigurator;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-import com.ctre.phoenix6.hardware.DeviceIdentifier;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
 public class Configs {
@@ -25,7 +16,11 @@ public class Configs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
 
+        
+
         static {
+
+            double drivingVelocityFeedForward = 1 / SwerveConstants.kDrivingMotorFreeSpeedRps;
             m_configDrive
                 .idleMode(SparkBaseConfig.IdleMode.kCoast)
                 .inverted(true)
@@ -45,7 +40,8 @@ public class Configs {
                 .velocityConversionFactor(SwerveConstants.kTurnConversionFactor / 60.0);
 
             m_configDrive.closedLoop
-                .pid(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD)
+                .pidf(SwerveConstants.driveP, SwerveConstants.driveI, SwerveConstants.driveD, SwerveConstants.driveFF)
+                //drivingVelocityFeedForward1
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(false);
@@ -55,7 +51,7 @@ public class Configs {
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
-                .positionWrappingInputRange(0, SwerveConstants.kAngleConversion); //radians
+                .positionWrappingInputRange(0, SwerveConstants.kAngleConversion); 
 
 
         }

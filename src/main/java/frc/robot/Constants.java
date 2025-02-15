@@ -8,21 +8,24 @@ public class Constants {
     }
 
     public static class SwerveConstants {
-        public static double driveP = 1;
-        public static double driveI = 0;
-        public static double driveD = 0;
-        public static double turnP = 1;
-        public static double turnI = 0;
-        public static double turnD = 0;
+        public static final double kS = 0.002800; //minimum speed to overcome friction and moving, when at this value 3 drive motors overcome friction but not the 4th. the last motor requries 0.005.
+        public static final double kV = 0; //voltage per unit of velocity
+        public static final double kA = 0; //voltage per unit of acceleration
+        public static  double driveFF = 0;
+        public static  double driveP = 1;
+        public static  double driveI = 0;
+        public static  double driveD = 0;
+        public static  double turnFF = 0;
+        public static  double turnP = 1;
+        public static  double turnI = 0;
+        public static  double turnD = 0;
 
-        public static double encoderPort = 0.0;
+        public static final double encoderPort = 0.0;
 
         public static final int turnMotorFreeLimit = 40; 
         public static final int turnMotorStallLimit = 40;
         public static final int driveMotorFreeLimit = 40;
         public static final int driveMotorStallLimit = 40;
-
-        public static final double positionWrappingUpperLimit = 360; //placeholder
 
         public static final double kWheelDiameter = Units.inchesToMeters(4);   //inches
         public static final double kDriveGearRatio = 6.75; 
@@ -32,6 +35,7 @@ public class Constants {
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio;
         public static final double kAngleConversion = 360;
         public static final double kTurnConversionFactor = kAngleConversion / kTurnGearRatio;
+        public static final double kDrivingMotorFreeSpeedRps = 5776 / 60;
         
         public static final String kCANCoderBus = "Ryan";
 

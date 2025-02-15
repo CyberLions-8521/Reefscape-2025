@@ -84,7 +84,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void putSmartDashboard(){
-    
+    SmartDashboard.putNumber("driveFF", 0);
     SmartDashboard.putNumber("driveP", 0);
     SmartDashboard.putNumber("driveI", 0);
     SmartDashboard.putNumber("driveD", 0);
@@ -157,29 +157,37 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
     m_backLeft.logData("BL");
     m_backRight.logData("BR");
     
+    double driveFF = SmartDashboard.getNumber("driveFF", 0);
     double driveP = SmartDashboard.getNumber("driveP", 0);
     double driveI = SmartDashboard.getNumber("driveI", 0);
     double driveD = SmartDashboard.getNumber("driveD", 0);
     double turnP = SmartDashboard.getNumber("turnP", 0);
     double turnI = SmartDashboard.getNumber("turnI", 0);
     double turnD = SmartDashboard.getNumber("turnD", 0);
-    
+
     SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
     
-    if ((SwerveConstants.driveP != driveP) || 
+    if ((SwerveConstants.driveFF != driveFF) ||
+    (SwerveConstants.driveP != driveP) || 
     (SwerveConstants.driveI != driveI) || 
     (SwerveConstants.driveD != driveD) || 
     (SwerveConstants.turnP != turnP) || 
     (SwerveConstants.turnI != turnI) || 
     (SwerveConstants.turnD != turnD) ){
+      SwerveConstants.driveFF = driveFF;
       SwerveConstants.driveP = driveP;
       SwerveConstants.driveI = driveI;
       SwerveConstants.driveD = driveD;
       SwerveConstants.turnP = turnP;
       SwerveConstants.turnI = turnI;
       SwerveConstants.turnD = turnD;
-      SwerveModuleConfigs.m_configDrive.closedLoop.pid(driveP, driveI, driveD);
-      SwerveModuleConfigs.m_configTurn.closedLoop.pid(turnP, turnI, turnD);
+      SwerveModuleConfigs.m_configDrive.closedLoop
+        .pidf(driveP, driveI, driveD, driveFF);
+
+      SwerveModuleConfigs.m_configTurn.closedLoop
+        .pid(turnP, turnI, turnD);
+
+      
       m_frontLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
       m_frontRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
       m_backLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
