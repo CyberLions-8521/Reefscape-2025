@@ -16,7 +16,7 @@ public class Configs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
 
-        
+
 
         static {
 
@@ -55,7 +55,7 @@ public class Configs {
 
 
         }
-        
-        
+
+
     }
 }
