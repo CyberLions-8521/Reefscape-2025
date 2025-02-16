@@ -84,10 +84,10 @@ public class Swerve extends SubsystemBase {
   }
 
   public void putSmartDashboard(){
-    SmartDashboard.putNumber("driveFF", 0);
-    SmartDashboard.putNumber("driveP", 0);
-    SmartDashboard.putNumber("driveI", 0);
-    SmartDashboard.putNumber("driveD", 0);
+    // SmartDashboard.putNumber("driveFF", SwerveConstants.driveFF);
+    // SmartDashboard.putNumber("driveP", 0);
+    // SmartDashboard.putNumber("driveI", 0);
+    // SmartDashboard.putNumber("driveD", 0);
 
     SmartDashboard.putNumber("turnP", 0);
     SmartDashboard.putNumber("turnI", 0);
@@ -153,36 +153,36 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
   public void SmartDashboardTunePID()
   {
     m_frontLeft.logData("FL");
-    m_frontRight.logData("FR");
-    m_backLeft.logData("BL");
-    m_backRight.logData("BR");
+    // m_frontRight.logData("FR");
+    // m_backLeft.logData("BL");
+    // m_backRight.logData("BR");
     
-    double driveFF = SmartDashboard.getNumber("driveFF", 0);
-    double driveP = SmartDashboard.getNumber("driveP", 0);
-    double driveI = SmartDashboard.getNumber("driveI", 0);
-    double driveD = SmartDashboard.getNumber("driveD", 0);
+    // double driveFF = SmartDashboard.getNumber("driveFF", SwerveConstants.driveFF);
+    // double driveP = SmartDashboard.getNumber("driveP", 0);
+    // double driveI = SmartDashboard.getNumber("driveI", 0);
+    // double driveD = SmartDashboard.getNumber("driveD", 0);
     double turnP = SmartDashboard.getNumber("turnP", 0);
     double turnI = SmartDashboard.getNumber("turnI", 0);
     double turnD = SmartDashboard.getNumber("turnD", 0);
 
-    SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
+    // SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
     
-    if ((SwerveConstants.driveFF != driveFF) ||
+    if (/*(SwerveConstants.driveFF != driveFF) ||
     (SwerveConstants.driveP != driveP) || 
     (SwerveConstants.driveI != driveI) || 
-    (SwerveConstants.driveD != driveD) || 
+    (SwerveConstants.driveD != driveD) || */ 
     (SwerveConstants.turnP != turnP) || 
     (SwerveConstants.turnI != turnI) || 
-    (SwerveConstants.turnD != turnD) ){
-      SwerveConstants.driveFF = driveFF;
-      SwerveConstants.driveP = driveP;
-      SwerveConstants.driveI = driveI;
-      SwerveConstants.driveD = driveD;
+    (SwerveConstants.turnD != turnD) ) {
+      // SwerveConstants.driveFF = driveFF;
+      // SwerveConstants.driveP = driveP;
+      // SwerveConstants.driveI = driveI;
+      // SwerveConstants.driveD = driveD;
       SwerveConstants.turnP = turnP;
       SwerveConstants.turnI = turnI;
       SwerveConstants.turnD = turnD;
-      SwerveModuleConfigs.m_configDrive.closedLoop
-        .pidf(driveP, driveI, driveD, driveFF);
+      // SwerveModuleConfigs.m_configDrive.closedLoop
+      //   .pidf(driveP, driveI, driveD, driveFF);
 
       SwerveModuleConfigs.m_configTurn.closedLoop
         .pid(turnP, turnI, turnD);

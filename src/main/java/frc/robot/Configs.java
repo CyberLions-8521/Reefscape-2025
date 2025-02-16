@@ -20,14 +20,14 @@ public class Configs {
 
         static {
 
-            double drivingVelocityFeedForward = 1 / SwerveConstants.kDrivingMotorFreeSpeedRps;
+            // double drivingVelocityFeedForward = 1 / SwerveConstants.kDrivingMotorFreeSpeedRps;
             m_configDrive
-                .idleMode(SparkBaseConfig.IdleMode.kCoast)
+                .idleMode(SparkBaseConfig.IdleMode.kBrake)
                 .inverted(true)
                 .smartCurrentLimit(SwerveConstants.driveMotorStallLimit, SwerveConstants.driveMotorFreeLimit);
 
             m_configTurn
-                .idleMode(SparkBaseConfig.IdleMode.kCoast)
+                .idleMode(SparkBaseConfig.IdleMode.kBrake)
                 .inverted(true)
                 .smartCurrentLimit(SwerveConstants.turnMotorStallLimit, SwerveConstants.turnMotorFreeLimit);
 
@@ -51,7 +51,7 @@ public class Configs {
                 .outputRange(-1, 1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
-                .positionWrappingInputRange(0, SwerveConstants.kAngleConversion); 
+                .positionWrappingInputRange(-SwerveConstants.kAngleConversion / 2.0, SwerveConstants.kAngleConversion / 2.0); 
 
 
         }

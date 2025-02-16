@@ -8,24 +8,12 @@ public class Constants {
     }
 
     public static class SwerveConstants {
-        public static final double kS = 0.002800; //minimum speed to overcome friction and moving, when at this value 3 drive motors overcome friction but not the 4th. the last motor requries 0.005.
-        public static final double kV = 0; //voltage per unit of velocity
-        public static final double kA = 0; //voltage per unit of acceleration
-        public static  double driveFF = 0;
-        public static  double driveP = 1;
-        public static  double driveI = 0;
-        public static  double driveD = 0;
-        public static  double turnFF = 0;
-        public static  double turnP = 1;
-        public static  double turnI = 0;
-        public static  double turnD = 0;
-
         public static final double encoderPort = 0.0;
 
         public static final int turnMotorFreeLimit = 40; 
         public static final int turnMotorStallLimit = 40;
-        public static final int driveMotorFreeLimit = 40;
-        public static final int driveMotorStallLimit = 40;
+        public static final int driveMotorFreeLimit = 50;
+        public static final int driveMotorStallLimit = 50;
 
         public static final double kWheelDiameter = Units.inchesToMeters(4);   //inches
         public static final double kDriveGearRatio = 6.75; 
@@ -35,7 +23,20 @@ public class Constants {
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio;
         public static final double kAngleConversion = 360;
         public static final double kTurnConversionFactor = kAngleConversion / kTurnGearRatio;
-        public static final double kDrivingMotorFreeSpeedRps = 5776 / 60;
+        public static final double kDrivingMotorFreeSpeedRps = 5676.0 / 60.0; //neo free rpm = 5676 rpm
+        public static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps * kDriveConversionFactor;
+
+        public static final double kS = 473; //static constant, probably not needed
+        public static final double kV = 0; //velocity constant, definitely needed
+        public static final double kA = 0; //acceleration constant, probably not needed
+        public static  double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
+        public static  double driveP = 0.025;
+        public static  double driveI = 0;
+        public static  double driveD = 0;
+        public static  double turnP = 0.1;
+        public static  double turnI = 0;
+        public static  double turnD = 0;
+
         
         public static final String kCANCoderBus = "Ryan";
 
@@ -60,8 +61,8 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
 
-        public static final double kMaxMetersPerSecond = 5.0;
-        public static final double kMaxAngularSpeed = 360;
+        public static final double kMaxMetersPerSecond = 4.5;
+        public static final double kMaxAngularSpeed = 2 * Math.PI; //radians
 
         public static final int kFrontLeftCANCoderID = 10;
         public static final int kFrontRightCANCoderID = 11;
@@ -76,16 +77,16 @@ public class Constants {
         public static final double kBackRightChassisAngularOffset = 90; //NEED TO BE ASSIGNED
         */
 
-        public static final double kFrontLeftCANCoderMagnetOffset = -0.179931640625; //config later
-        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
+        public static final double kFrontLeftCANCoderMagnetOffset = -0.175049; //config later
+        public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kFrontRightCANCoderMagnetOffset = 0.396728515625; //config later
-        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
+        public static final double kFrontRightCANCoderMagnetOffset = -0.603516; //config later
+        public static final double kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kBackLeftCANCoderMagnetOffset = 0.35595703125; //config later
-        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
+        public static final double kBackLeftCANCoderMagnetOffset = -0.645508; //config later
+        public static final double kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 
-        public static final double kBackRightCANCoderMagnetOffset = -0.286376953125; //config later
-        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 1; //config later
+        public static final double kBackRightCANCoderMagnetOffset = -0.271484; //config later
+        public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
     }
 }
