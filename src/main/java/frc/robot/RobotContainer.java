@@ -29,7 +29,7 @@ public class RobotContainer {
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
     m_controller.a().whileTrue(new Intake(m_shooter, .4));
-    m_controller.x().whileTrue(new Intake(m_shooter, -.4));
+    m_controller.x().whileTrue(new Intake(m_shooter, .6));
   }
 
   public Command getAutonomousCommand() {
