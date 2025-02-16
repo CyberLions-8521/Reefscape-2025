@@ -40,6 +40,6 @@ public class ElevatorGo extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //max is 5.6
+    return (m_elevator.getPositon() >= 5.6); //max is 5.6
   }
 }

@@ -43,7 +43,7 @@ public class Elevator extends SubsystemBase {
 
         m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        m_motorSlave.configure(MotorConfigs.SPARK_CONFIGURATION, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         m_encoder = m_motorMaster.getEncoder();
 
@@ -67,10 +67,12 @@ public void setSpeed(double speed) {
     m_motorMaster.set(speed);
 }
 
+//for testing purposes
 public Command resetEncoderCommand() {
     return this.run(() -> resetEncoder());
 }
 
+//for testing purposes
 public void resetEncoder() {
     m_encoder.setPosition(0.00);
 }
@@ -81,7 +83,7 @@ public void logData() {
 
 @Override
 public void periodic() {
-    logData();
+    //logData();
 }
 
 }
