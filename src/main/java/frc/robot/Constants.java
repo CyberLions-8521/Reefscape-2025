@@ -29,13 +29,13 @@ public class Constants {
         public static final double kS = 473; //static constant, probably not needed
         public static final double kV = 0; //velocity constant, definitely needed
         public static final double kA = 0; //acceleration constant, probably not needed
-        public static  double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
-        public static  double driveP = 0.025;
-        public static  double driveI = 0;
-        public static  double driveD = 0;
-        public static  double turnP = 0.1;
-        public static  double turnI = 0;
-        public static  double turnD = 0;
+        public static final double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
+        public static final double driveP = 0.025;
+        public static final double driveI = 0;
+        public static final double driveD = 0;
+        public static final double turnP = 0.004;
+        public static final double turnI = 0;
+        public static final double turnD = 0.01;
 
         
         public static final String kCANCoderBus = "Ryan";
@@ -61,7 +61,7 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
 
-        public static final double kMaxMetersPerSecond = 4.5;
+        public static final double kMaxMetersPerSecond = 1;
         public static final double kMaxAngularSpeed = 2 * Math.PI; //radians
 
         public static final int kFrontLeftCANCoderID = 10;
