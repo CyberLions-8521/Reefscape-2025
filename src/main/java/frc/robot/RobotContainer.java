@@ -35,7 +35,7 @@ public class RobotContainer {
     // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
     // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
     // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
-    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
+    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftX, m_XboxController::getLeftY, m_XboxController::getRightX, false));
   }
 
   public Command getAutonomousCommand() {
