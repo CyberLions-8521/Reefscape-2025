@@ -89,4 +89,15 @@ public class Constants {
         public static final double kBackRightCANCoderMagnetOffset = -0.271484; //config later
         public static final double kBackRightCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
     }
+
+    public static class ElevatorConstants {
+
+        public static final double ELEVATOR_KP = .1;
+        public static final double ELEVATOR_KD = 0;
+        public static final double ELEVATOR_KI = 0;
+        public static final double ELEVATOR_KFF = 0;
+        public static final double ELEVATOR_GEAR_RATIO = 25;
+        
+        public static final double CIRCUMFERENCE = 0;
+    }
 }

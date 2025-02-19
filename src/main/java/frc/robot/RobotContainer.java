@@ -7,35 +7,46 @@ package frc.robot;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ElevatorGo;
+import frc.robot.commands.ElevatorGoToSetpoint;
+import frc.robot.commands.Intake;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.Subsystems.TestTickles;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 
-
 public class RobotContainer {
-  private final CommandXboxController m_XboxController = new CommandXboxController(0);
+  private final Elevator m_elevator = new Elevator(10,5);
+  private final Shooter m_shooter = new Shooter(0, 0);
+  private final CommandXboxController m_controller = new CommandXboxController(0);
   private final Swerve m_db = new Swerve();
-  //private final TestTickles m_db = new TestTickles();
 
   public RobotContainer() {
     configureBindings();
   }
  
   private void configureBindings() {
-    m_XboxController.b().onTrue(new InstantCommand(() -> m_db.resetEncoders(), m_db));
-    
-    //m_db.setDefaultCommand(m_db.testMotorsCommand(m_XboxController::getLeftY, m_XboxController::getRightY));
+    //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
+    m_controller.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .45));
+    m_controller.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
+    //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
+
+    m_controller.a().whileTrue(new Intake(m_shooter, .4));
+    m_controller.x().whileTrue(new Intake(m_shooter, .6));
 
     // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
     // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
     // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
     m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, m_XboxController.getHID()::getRightBumperButton));
+
   }
 
   public Command getAutonomousCommand() {
