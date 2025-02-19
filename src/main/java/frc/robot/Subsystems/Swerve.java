@@ -132,6 +132,7 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
     m_gyro.reset();
   }
 
+
   public void resetEncoders(){
     m_frontLeft.resetEncoder();
     m_frontRight.resetEncoder();
@@ -147,7 +148,7 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
   }
  
   public void periodic() {
-    SmartDashboardTunePID();
+    //SmartDashboardTunePID();
   }
 
   public void SmartDashboardTunePID()
@@ -178,9 +179,10 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
       // SwerveConstants.driveP = driveP;
       // SwerveConstants.driveI = driveI;
       // SwerveConstants.driveD = driveD;
-      SwerveConstants.turnP = turnP;
-      SwerveConstants.turnI = turnI;
-      SwerveConstants.turnD = turnD;
+      // SwerveConstants.turnP = turnP;
+      // SwerveConstants.turnI = turnI;
+      // SwerveConstants.turnD = turnD;
+      
       // SwerveModuleConfigs.m_configDrive.closedLoop
       //   .pidf(driveP, driveI, driveD, driveFF);
 

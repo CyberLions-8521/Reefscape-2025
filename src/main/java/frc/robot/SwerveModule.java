@@ -125,7 +125,7 @@ public class SwerveModule {
         // SmartDashboard.putNumber(motor + "Ramp Rate", m_turnMotor.configAccessor.getClosedLoopRampRate());  
 
         //SmartDashboard.putNumber(motor + "turn angle", Math.abs(m_turnEncoder.getPosition()));
-        SmartDashboard.putNumber(motor + "desired position", Math.abs(m_desiredState.angle.getDegrees()));
+        SmartDashboard.putNumber(motor + "desired position", m_desiredState.angle.getDegrees());
 
             
         

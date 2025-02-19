@@ -35,7 +35,7 @@ public class RobotContainer {
     // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
     // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
     // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
-    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, false));
+    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, m_XboxController.getHID()::getRightBumperButton));
   }
 
   public Command getAutonomousCommand() {
@@ -45,13 +45,13 @@ public class RobotContainer {
   }
 
     
-    public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, boolean fieldRelative) {
+    public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(
         -MathUtil.applyDeadband(vx.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
         -MathUtil.applyDeadband(vy.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
         -MathUtil.applyDeadband(omega.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
-        fieldRelative),
+        !fieldRelative.get()),
       m_db);
   }
   
