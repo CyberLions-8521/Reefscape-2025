@@ -27,6 +27,7 @@ import frc.robot.Constants.SwerveDrivebaseConstants;
 
 import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 
 public class Swerve extends SubsystemBase {
@@ -95,6 +96,8 @@ public class Swerve extends SubsystemBase {
 
   }
 
+
+
  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
 
     SwerveModuleState[] m_swerveModuleStates;
@@ -115,10 +118,6 @@ public class Swerve extends SubsystemBase {
     
   }
 
-public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
-  return this.run(() -> runMotors(speed.get(), steer.get()));
-}
-
   //for debugging
   private void runMotors(double speed, double steer) {
     m_frontLeft.turnMotors(speed, steer);
@@ -133,6 +132,15 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
   }
 
 
+  public Command resetEncodersCommand() {
+    return this.runOnce(this::resetEncoders);
+    // this.runOnce(lambda or function pointer)        == new InstantCommand(lambda, this)
+  }
+
+  public Command resetGyroCommand() {
+    return this.runOnce(this::resetGyro);
+  }
+
   public void resetEncoders(){
     m_frontLeft.resetEncoder();
     m_frontRight.resetEncoder();
@@ -145,6 +153,10 @@ public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer)
     m_frontRight.configMagnets(SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint);
     m_backLeft.configMagnets(SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint);
     m_backRight.configMagnets(SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint);
+  }
+
+  public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
+    return this.run(() -> runMotors(speed.get(), steer.get()));
   }
  
   public void periodic() {
