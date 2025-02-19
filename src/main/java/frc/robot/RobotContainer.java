@@ -7,26 +7,24 @@ package frc.robot;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ElevatorGo;
-import frc.robot.commands.ElevatorGoToSetpoint;
-import frc.robot.commands.Intake;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Shooter;
-import frc.robot.Subsystems.Swerve;
-import frc.robot.Subsystems.TestTickles;
+import frc.robot.Commands.ElevatorGo;
+import frc.robot.Commands.Intake;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
   private final Elevator m_elevator = new Elevator(10,5);
   private final Shooter m_shooter = new Shooter(0, 0);
-  private final CommandXboxController m_controller = new CommandXboxController(0);
+  private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
+  private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final Swerve m_db = new Swerve();
 
   public RobotContainer() {
@@ -35,18 +33,22 @@ public class RobotContainer {
  
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
-    m_controller.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .45));
-    m_controller.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
+    m_commandController.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .45));
+    m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
-    m_controller.a().whileTrue(new Intake(m_shooter, .4));
-    m_controller.x().whileTrue(new Intake(m_shooter, .6));
+    m_commandController.a().whileTrue(new Intake(m_shooter, .4));
+    m_commandController.x().whileTrue(new Intake(m_shooter, .6));
+
+    
 
     // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
     // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
     // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
-    m_db.setDefaultCommand(getDriveCommand(m_XboxController::getLeftY, m_XboxController::getLeftX, m_XboxController::getRightX, m_XboxController.getHID()::getRightBumperButton));
-
+    m_driveController.b().onTrue(m_db.resetEncodersCommand());
+    m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_db.setDefaultCommand(getDriveCommand(m_driveController::getLeftY, m_driveController::getLeftX, m_driveController::getRightX, m_driveController.getHID()::getRightBumperButton));
+    
   }
 
   public Command getAutonomousCommand() {
@@ -56,7 +58,7 @@ public class RobotContainer {
   }
 
     
-    public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
+  public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(
         -MathUtil.applyDeadband(vx.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
