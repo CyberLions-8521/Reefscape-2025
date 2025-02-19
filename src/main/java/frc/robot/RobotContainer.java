@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.ElevatorGo;
-import frc.robot.Commands.Intake;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Commands.ElevatorGo;
+import frc.robot.Commands.Intake;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -47,8 +47,11 @@ public class RobotContainer {
     // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_db.setDefaultCommand(getDriveCommand(m_driveController::getLeftY, m_driveController::getLeftX, m_driveController::getRightX, m_driveController.getHID()::getRightBumperButton));
-    
+    m_db.setDefaultCommand(getDriveCommand(m_driveController::getLeftY, m_driveController::getLeftX, 
+      m_driveController::getRightX, m_driveController.getHID()::getRightBumperButton, 1.0));
+
+    m_driveController.rightTrigger().whileTrue(getDriveCommand(m_driveController::getLeftY, m_driveController::getLeftX, 
+      m_driveController::getRightX, m_driveController.getHID()::getRightBumperButton, 0.5));
   }
 
   public Command getAutonomousCommand() {
@@ -56,14 +59,13 @@ public class RobotContainer {
       
     "No autonomous command configured");
   }
-
     
-  public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
+  public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative, double multiplier) {
     return new RunCommand(
       () -> m_db.drive(
-        -MathUtil.applyDeadband(vx.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
-        -MathUtil.applyDeadband(vy.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
-        -MathUtil.applyDeadband(omega.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
+        -MathUtil.applyDeadband((vx.get() * multiplier), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+        -MathUtil.applyDeadband((vy.get() * multiplier), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+        -MathUtil.applyDeadband((omega.get()) * multiplier , ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
         !fieldRelative.get()),
       m_db);
   }
