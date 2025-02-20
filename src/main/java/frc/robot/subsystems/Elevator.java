@@ -14,6 +14,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -45,7 +46,7 @@ public class Elevator extends SubsystemBase {
 
         m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        m_encoder = m_motorMaster.getEncoder();
+        m_encoder = m_motorMaster.getAlternateEncoder();
 
         closedLoopController = m_motorMaster.getClosedLoopController();
         //m_motor.getConfigurator().apply(KrakenConfigs.KRAKEN_CONFIGURATION);
@@ -68,7 +69,7 @@ public void setSpeed(double speed) {
 }
 
 //for testing purposes
-public Command resetEncoderCommand() {
+public Command getResetEncoderCommand() {
     return this.run(() -> resetEncoder());
 }
 

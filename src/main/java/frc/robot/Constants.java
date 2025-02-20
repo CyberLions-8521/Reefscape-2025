@@ -95,10 +95,20 @@ public class Constants {
         public static final double ELEVATOR_KP = .1;
         public static final double ELEVATOR_KD = 0;
         public static final double ELEVATOR_KI = 0;
+        public static final double kS = 0;
+        public static final double kG = 0;
+        public static final double kV = 0;
+        public static final double kA = 0;
         public static final double ELEVATOR_KFF = 0;
         public static final double ELEVATOR_GEAR_RATIO = 25;
         
         public static final double CIRCUMFERENCE = 0;
+
+        public static final double kRestingPosition = 0;
+        public static final double kL1Position = 0;
+        public static final double kL2Position = 0;
+        public static final double kL3Position = 0;
+        public static final double kL4Position = 0;
     }
 
     public static class OperaterConstants {

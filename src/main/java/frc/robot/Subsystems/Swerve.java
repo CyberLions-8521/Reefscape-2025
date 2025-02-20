@@ -14,7 +14,7 @@ import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.studica.frc.AHRS;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -22,12 +22,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.proto.Kinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 
 import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 
 public class Swerve extends SubsystemBase {
@@ -132,13 +134,22 @@ public class Swerve extends SubsystemBase {
   }
 
 
-  public Command resetEncodersCommand() {
+  public Command getResetEncodersCommand() {
     return this.runOnce(this::resetEncoders);
     // this.runOnce(lambda or function pointer)        == new InstantCommand(lambda, this)
   }
 
-  public Command resetGyroCommand() {
+  public Command getResetGyroCommand() {
     return this.runOnce(this::resetGyro);
+  }
+
+  public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
+    return this.run(
+      () -> this.drive(
+        -MathUtil.applyDeadband(vx.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+        -MathUtil.applyDeadband(vy.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+        -MathUtil.applyDeadband(omega.get(), ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
+        !fieldRelative.get()));
   }
 
   public void resetEncoders(){

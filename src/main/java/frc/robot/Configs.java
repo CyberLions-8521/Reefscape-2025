@@ -50,9 +50,11 @@ public class Configs {
             ELEV_SLAVE_CONFIG.follow(10, true);
             ELEV_MASTER_CONFIG.inverted(true);
 
-            ELEV_MASTER_CONFIG.encoder
+            ELEV_MASTER_CONFIG.alternateEncoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
-                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
+                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0)
+                .countsPerRevolution(8192)
+                .setSparkMaxDataPortConfig();
 
             ELEV_SLAVE_CONFIG.encoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
@@ -65,8 +67,6 @@ public class Configs {
     public static final class SwerveModuleConfigs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
         public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
-
-
 
         static {
 

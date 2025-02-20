@@ -17,17 +17,13 @@ import frc.robot.Subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorGoToSetpoint extends Command {
-  private double  m_setpoint;
-  private double m_doubSetpoint;
-  private double m_currentPos;
+  private double m_setpoint;
   private Elevator m_elevator;
 
 
   public ElevatorGoToSetpoint(double setpoint, Elevator elevator) {
-    m_doubSetpoint = setpoint;
     m_elevator = elevator;
-    
-    m_currentPos = m_elevator.getPositon();
+    m_setpoint = setpoint;
 
     m_setpoint = setpoint;
     addRequirements(elevator);
@@ -41,8 +37,6 @@ public class ElevatorGoToSetpoint extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   // m_elevator.setControl(m_setpoint);
-
    m_elevator.getController().setReference(m_setpoint, ControlType.kPosition);
   }
 
@@ -53,6 +47,6 @@ public class ElevatorGoToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return MathUtil.isNear(m_doubSetpoint, m_elevator.getPositon(), 1e-5);
+    return MathUtil.isNear(m_setpoint, m_elevator.getPositon(), 1e-5);
   }
 }
