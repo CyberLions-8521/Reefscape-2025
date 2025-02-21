@@ -26,9 +26,6 @@ public class Constants {
         public static final double kDrivingMotorFreeSpeedRps = 5676.0 / 60.0; //neo free rpm = 5676 rpm
         public static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps * kDriveConversionFactor;
 
-        public static final double kS = 473; //static constant, probably not needed
-        public static final double kV = 0; //velocity constant, definitely needed
-        public static final double kA = 0; //acceleration constant, probably not needed
         public static final double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
         public static final double driveP = 0.025;
         public static final double driveI = 0;

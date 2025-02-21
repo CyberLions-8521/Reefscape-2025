@@ -23,7 +23,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import frc.robot.Configs.MotorConfigs;
+import frc.robot.Configs.ElevatorConfigs;
 import pabeles.concurrency.ConcurrencyOps.Reset;
 
 public class Elevator extends SubsystemBase {
@@ -42,9 +42,9 @@ public class Elevator extends SubsystemBase {
         m_motorMaster = new SparkMax(masterMotorPort, MotorType.kBrushless);
         m_motorSlave = new SparkMax(slaveMotorPort, MotorType.kBrushless);
 
-        m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorMaster.configure(ElevatorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorSlave.configure(ElevatorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         m_encoder = m_motorMaster.getAlternateEncoder();
 

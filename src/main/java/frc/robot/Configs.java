@@ -21,47 +21,63 @@ import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
 public class Configs {
-    public static final class MotorConfigs {
-        public static final TalonFXConfiguration KRAKEN_CONFIGURATION = new TalonFXConfiguration();
-
-        public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
-        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
+    public static final class ShooterConfigs {
 
         public static final SparkMaxConfig SHOOT_MASTER_CONFIG = new SparkMaxConfig();
         public static final SparkMaxConfig SHOOT_SLAVE_CONFIG = new SparkMaxConfig();
 
         static {
-            KRAKEN_CONFIGURATION.Slot0
-                .withKP(ELEVATOR_KP)
-                .withKD(ELEVATOR_KD)
-                .withKI(ELEVATOR_KI);
+            SHOOT_SLAVE_CONFIG.follow(0, true);
+        }
+    }
 
-            KRAKEN_CONFIGURATION.CurrentLimits
-                .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(80);
-            
-            KRAKEN_CONFIGURATION.MotorOutput
-                .withNeutralMode(NeutralModeValue.Brake);
+    public static final class ElevatorConfigs {
+        public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
+        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
+        /*++++++++++++Kraken configs commented out because we are not using Krakens yet++++++++++++*/   
+        // public static final TalonFXConfiguration KRAKEN_CONFIGURATION = new TalonFXConfiguration();
 
-            KRAKEN_CONFIGURATION.Feedback
-                .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
+        static {
+            ELEV_SLAVE_CONFIG
+                .idleMode(SparkMaxConfig.IdleMode.kBrake)
+                .smartCurrentLimit(0, 0)
+                .inverted(false)
+                .follow(10, true);
 
-
-            ELEV_SLAVE_CONFIG.follow(10, true);
-            ELEV_MASTER_CONFIG.inverted(true);
-
+            ELEV_MASTER_CONFIG
+                .idleMode(SparkMaxConfig.IdleMode.kBrake)
+                .smartCurrentLimit(0,0)
+                .inverted(true);
+                
+    
             ELEV_MASTER_CONFIG.alternateEncoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
                 .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0)
                 .countsPerRevolution(8192)
+                .inverted(false)
+                .positionConversionFactor(1)
                 .setSparkMaxDataPortConfig();
-
+    
             ELEV_SLAVE_CONFIG.encoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
-                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
+                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);  
+            /*++++++++++++Kraken configs commented out because we are not using Krakens yet++++++++++++*/   
+            // KRAKEN_CONFIGURATION.Slot0
+            //     .withKP(ELEVATOR_KP)
+            //     .withKD(ELEVATOR_KD)
+            //     .withKI(ELEVATOR_KI);
 
-            SHOOT_SLAVE_CONFIG.follow(0, true);
+            // KRAKEN_CONFIGURATION.CurrentLimits
+            //     .withSupplyCurrentLimitEnable(true)
+            //     .withSupplyCurrentLimit(80);
+            
+            // KRAKEN_CONFIGURATION.MotorOutput
+            //     .withNeutralMode(NeutralModeValue.Brake);
+
+            // KRAKEN_CONFIGURATION.Feedback
+            //     .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
         }
+       
     }
   
     public static final class SwerveModuleConfigs {
