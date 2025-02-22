@@ -44,8 +44,8 @@ public class Constants {
 
 
     public static class SwerveDrivebaseConstants {
-        public static final int kFrontLeftDriveID = 4;
-        public static final int kFrontLeftTurnID = 6;
+        public static final int kFrontLeftDriveID = 6;
+        public static final int kFrontLeftTurnID = 4;
 
         public static final int kFrontRightDriveID = 3;
         public static final int kFrontRightTurnID = 14;
