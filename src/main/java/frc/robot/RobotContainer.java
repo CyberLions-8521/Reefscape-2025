@@ -16,13 +16,15 @@ import frc.robot.Commands.Intake;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
-  private final Elevator m_elevator = new Elevator(10,5);
-  private final Shooter m_shooter = new Shooter(0, 0);
+  private final Elevator m_elevator = new Elevator(ElevatorConstants.kMasterID, ElevatorConstants.kSlaveID);
+  private final Shooter m_shooter = new Shooter(ShooterConstants.kMasterID, ShooterConstants.kSlaveID);
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final Swerve m_db = new Swerve();
