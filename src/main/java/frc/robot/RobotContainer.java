@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.ElevatorGo;
 import frc.robot.Commands.Intake;
+import frc.robot.Commands.Shoot;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
@@ -39,8 +40,10 @@ public class RobotContainer {
     m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
-    m_commandController.a().whileTrue(new Intake(m_shooter, .4));
-    m_commandController.x().whileTrue(new Intake(m_shooter, .6));
+    m_commandController.b().onTrue(new Intake(m_shooter, .4)); //intakes
+
+    m_commandController.a().whileTrue(new Shoot(m_shooter, .4)); //shoots slow
+    m_commandController.x().whileTrue(new Shoot(m_shooter, .6)); //shoots faster
 
     
 

@@ -9,7 +9,8 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
       
 import frc.robot.Constants;
-import static frc.robot.Constants.ElevatorConstants.*;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ShooterConstants;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -32,9 +33,9 @@ public class Configs {
 
         static {
             KRAKEN_CONFIGURATION.Slot0
-                .withKP(ELEVATOR_KP)
-                .withKD(ELEVATOR_KD)
-                .withKI(ELEVATOR_KI);
+                .withKP(ElevatorConstants.kP)
+                .withKD(ElevatorConstants.kD)
+                .withKI(ElevatorConstants.kI);
 
             KRAKEN_CONFIGURATION.CurrentLimits
                 .withSupplyCurrentLimitEnable(true)
@@ -44,21 +45,21 @@ public class Configs {
                 .withNeutralMode(NeutralModeValue.Brake);
 
             KRAKEN_CONFIGURATION.Feedback
-                .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
+                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kCircumference);
 
 
             ELEV_SLAVE_CONFIG.follow(10, true);
             ELEV_MASTER_CONFIG.inverted(true);
 
             ELEV_MASTER_CONFIG.encoder
-                .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
-                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
+                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
+                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
 
             ELEV_SLAVE_CONFIG.encoder
-                .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
-                .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
+                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
+                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
 
-            SHOOT_SLAVE_CONFIG.follow(0, true);
+            SHOOT_SLAVE_CONFIG.follow(ShooterConstants.kMasterID, true);
         }
     }
   
