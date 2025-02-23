@@ -148,6 +148,10 @@ public class Swerve extends SubsystemBase {
     m_backRight.resetEncoder();
   }
 
+  public double getStraightDistance() {
+    return ((m_frontLeft.getCANCoderPosition() + m_frontRight.getCANCoderPosition() + m_backLeft.getCANCoderPosition() + m_backRight.getCANCoderPosition()) / 4);
+  }
+
   public void configureCANCoders() {
     m_frontLeft.configMagnets(SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint);
     m_frontRight.configMagnets(SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint);

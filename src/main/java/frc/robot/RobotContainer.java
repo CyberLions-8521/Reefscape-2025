@@ -7,12 +7,16 @@ package frc.robot;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.DriveToDistance;
 import frc.robot.Commands.ElevatorGo;
 import frc.robot.Commands.Intake;
+import frc.robot.Commands.Shoot;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
@@ -29,9 +33,14 @@ public class RobotContainer {
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final Swerve m_db = new Swerve();
 
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   public RobotContainer() {
     configureBindings();
-  } 
+    configureAutos();
+
+    SmartDashboard.putData(m_chooser);
+  }
  
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
@@ -39,8 +48,10 @@ public class RobotContainer {
     m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.2));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
-    m_commandController.a().whileTrue(new Intake(m_shooter, .4));
-    m_commandController.x().whileTrue(new Intake(m_shooter, .6));
+    m_commandController.b().onTrue(new Intake(m_shooter, .4)); //intakes
+
+    m_commandController.a().whileTrue(new Shoot(m_shooter, .4)); //shoots slow
+    m_commandController.x().whileTrue(new Shoot(m_shooter, .6)); //shoots faster
 
     
 
@@ -53,11 +64,16 @@ public class RobotContainer {
     
   }
 
-  public Command getAutonomousCommand() {
-    return Commands.print(
-      
-    "No autonomous command configured");
+  public void configureAutos() {
+    m_chooser.setDefaultOption("No Auto", null);
+    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 3));
   }
+
+  public Command getAutonomousCommand() {
+    return m_chooser.getSelected();
+  }
+
+
 
     
   public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {

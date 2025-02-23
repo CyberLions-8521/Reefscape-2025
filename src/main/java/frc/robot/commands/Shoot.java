@@ -4,34 +4,31 @@
 
 package frc.robot.Commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Intake extends Command {
+public class Shoot extends Command {
+  /** Creates a new Shoot. */
   Shooter m_shooter;
-  double m_distance;
+  double m_speed;
 
-
-  public Intake(Shooter shooter, double distance) {
+  public Shoot(Shooter shooter, double speed) {
     m_shooter = shooter;
-    m_distance = distance;
-    
-    addRequirements(shooter);
+    m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_shooter.resetEncoders();
-    m_shooter.setSpeed(.5);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_shooter.setSpeed(m_speed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -42,6 +39,6 @@ public class Intake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (MathUtil.isNear(m_distance, m_shooter.getDistance(), 0.05));
+    return false;
   }
 }

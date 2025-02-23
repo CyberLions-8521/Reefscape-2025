@@ -61,7 +61,7 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
 
-        public static final double kMaxMetersPerSecond = 1.0;
+        public static final double kMaxMetersPerSecond = 4.8;
         public static final double kMaxAngularSpeed = 2 * Math.PI; //radians
 
         public static final int kFrontLeftCANCoderID = 10;
@@ -96,13 +96,13 @@ public class Constants {
 
         public static final int kMaxAcceleration = 0;
         public static final int kMaxVelocity = 0;
-        public static final double ELEVATOR_KP = .1;
-        public static final double ELEVATOR_KD = 0;
-        public static final double ELEVATOR_KI = 0;
+        public static final double kP = .1;
+        public static final double kD = 0;
+        public static final double kI = 0;
         public static final double ELEVATOR_KFF = 0;
-        public static final double ELEVATOR_GEAR_RATIO = 25;
+        public static final double kGearRatio = 25;
         
-        public static final double CIRCUMFERENCE = 0;
+        public static final double kCircumference = 0;
     }
 
     public static class OperaterConstants {
