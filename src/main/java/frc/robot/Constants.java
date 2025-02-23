@@ -94,6 +94,8 @@ public class Constants {
         public static final int kMasterID = 10;
         public static final int kSlaveID = 5;
 
+        public static final int kMaxAcceleration = 0;
+        public static final int kMaxVelocity = 0;
         public static final double ELEVATOR_KP = .1;
         public static final double ELEVATOR_KD = 0;
         public static final double ELEVATOR_KI = 0;
@@ -111,7 +113,7 @@ public class Constants {
     }
 
     public static class ShooterConstants {
-        public static final int kMasterID = 12;
-        public static final int kSlaveID = 13;
+        public static final int kMasterID = 25;
+        public static final int kSlaveID = 17;
     }
 }

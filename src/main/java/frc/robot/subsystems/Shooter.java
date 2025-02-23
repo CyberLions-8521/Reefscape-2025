@@ -20,8 +20,8 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter(int masterID, int slaveID) {
     m_master = new SparkMax(masterID, MotorType.kBrushless);
-    m_slave = new SparkMax(slaveID, MotorType.kBrushless);
-
+    m_slave = new SparkMax(slaveID, MotorType.kBrushless); 
+    
     m_master.configure(MotorConfigs.SHOOT_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     m_slave.configure(MotorConfigs.SHOOT_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

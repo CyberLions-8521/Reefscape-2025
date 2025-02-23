@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
       
@@ -47,8 +48,10 @@ public class Configs {
                 .withSensorToMechanismRatio(ELEVATOR_GEAR_RATIO / CIRCUMFERENCE);
 
 
-            ELEV_SLAVE_CONFIG.follow(10, true);
-            ELEV_MASTER_CONFIG.inverted(true);
+            ELEV_SLAVE_CONFIG.follow(10, true)
+                .idleMode(IdleMode.kBrake);
+            ELEV_MASTER_CONFIG.inverted(true)
+            .idleMode(IdleMode.kBrake);
 
             ELEV_MASTER_CONFIG.encoder
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
@@ -58,7 +61,12 @@ public class Configs {
                 .positionConversionFactor(1.0 / ELEVATOR_GEAR_RATIO)
                 .velocityConversionFactor(1.0 / ELEVATOR_GEAR_RATIO / 60.0);
 
-            SHOOT_SLAVE_CONFIG.follow(0, true);
+            SHOOT_SLAVE_CONFIG
+                .follow(0, true)
+                .idleMode(IdleMode.kCoast);
+            
+            SHOOT_MASTER_CONFIG
+                .idleMode(IdleMode.kCoast);
         }
     }
   

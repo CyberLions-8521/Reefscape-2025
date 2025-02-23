@@ -31,12 +31,12 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
-  }
+  } 
  
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
-    m_commandController.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .45));
-    m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.4));
+    m_commandController.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .3));
+    m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.2));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
     m_commandController.a().whileTrue(new Intake(m_shooter, .4));
@@ -46,7 +46,7 @@ public class RobotContainer {
 
     // m_XboxController.a().onTrue(new InstantCommand(m_db::setSpeed1, m_db));
     // m_XboxController.x().onTrue(new InstantCommand(m_db::setSpeed2, m_db));
-    // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_db));
+    // m_XboxController.y().onTrue(new InstantCommand(m_db::stopMotors, m_dx`b));
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
     m_db.setDefaultCommand(getDriveCommand(m_driveController::getLeftY, m_driveController::getLeftX, m_driveController::getRightX, m_driveController.getHID()::getRightBumperButton));
