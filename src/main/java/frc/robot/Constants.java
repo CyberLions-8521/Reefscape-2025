@@ -61,7 +61,7 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
 
-        public static final double kMaxMetersPerSecond = 4.8;
+        public static final double kMaxMetersPerSecond = 3.2;
         public static final double kMaxAngularSpeed = 2 * Math.PI; //radians
 
         public static final int kFrontLeftCANCoderID = 10;

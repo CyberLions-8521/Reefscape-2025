@@ -1,10 +1,12 @@
-// Copyright (c) FIRST and other WPILib contributors.
+ // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
 import java.util.function.Supplier;
+
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.IntArraySerializer;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -44,14 +46,17 @@ public class RobotContainer {
  
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
-    m_commandController.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .3));
-    m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.2));
+    m_commandController.rightTrigger().whileTrue(new ElevatorGo(m_elevator, .7));
+    m_commandController.leftTrigger().whileTrue(new ElevatorGo(m_elevator, -.7));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
-    m_commandController.b().onTrue(new Intake(m_shooter, .4)); //intakes
+    m_commandController.b().onTrue(new Intake(m_shooter, 14.5)); //intakes
+    m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); //intake assist
 
     m_commandController.a().whileTrue(new Shoot(m_shooter, .4)); //shoots slow
-    m_commandController.x().whileTrue(new Shoot(m_shooter, .6)); //shoots faster
+    m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
+    m_shooter.register();
+
 
     
 

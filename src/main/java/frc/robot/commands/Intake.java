@@ -26,7 +26,7 @@ public class Intake extends Command {
   @Override
   public void initialize() {
     m_shooter.resetEncoders();
-    m_shooter.setSpeed(.5);
+    m_shooter.setSpeed(.2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +42,6 @@ public class Intake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (MathUtil.isNear(m_distance, m_shooter.getDistance(), 0.05));
+    return (MathUtil.isNear(m_distance, m_shooter.getDistance(), 0.5));
   }
 }
