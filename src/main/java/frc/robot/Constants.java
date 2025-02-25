@@ -45,7 +45,7 @@ public class Constants {
 
     public static class SwerveDrivebaseConstants {
 
-        public static final double kSlewRateLimiter = 1; //NOT FOR SURE YET
+        public static final double kSlewRateLimiter = 3.0; //NOT FOR SURE YET
 
         public static final int kFrontLeftDriveID = 6;
         public static final int kFrontLeftTurnID = 4;

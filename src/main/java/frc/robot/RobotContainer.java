@@ -109,13 +109,33 @@ public class RobotContainer {
 
     
   public Command getDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative, double multiplier) {
+    double xSpeed = -MathUtil.applyDeadband(vx.get(), ControllerConstants.kDeadband);
+    xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
+
+    double ySpeed = -MathUtil.applyDeadband(vy.get(), ControllerConstants.kDeadband);
+    ySpeed = Math.copySign(ySpeed * ySpeed, ySpeed);
+
+    double rOmega = -MathUtil.applyDeadband(omega.get(), ControllerConstants.kDeadband);
+    rOmega = Math.copySign(rOmega * rOmega, rOmega);
+    
     return new RunCommand(
       () -> m_db.drive(
-        -MathUtil.applyDeadband(vx_limiter.calculate(vx.get()) * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
-        -MathUtil.applyDeadband(vy_limiter.calculate(vy.get()) * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
-        -MathUtil.applyDeadband(omega.get() * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
+        (xSpeed * SwerveDrivebaseConstants.kMaxMetersPerSecond),
+        (ySpeed * SwerveDrivebaseConstants.kMaxMetersPerSecond),
+        (rOmega * SwerveDrivebaseConstants.kMaxAngularSpeed),
         !fieldRelative.get()),
       m_db); //omega_limiter.calculate(
+    /*
+     * return new RunCommand(
+        () -> m_db.drive(
+          -MathUtil.applyDeadband(vx_limiter.calculate(vx.get()) * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+          -MathUtil.applyDeadband(vy_limiter.calculate(vy.get()) * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxMetersPerSecond,
+          -MathUtil.applyDeadband(omega.get() * multiplier, ControllerConstants.kDeadband) * SwerveDrivebaseConstants.kMaxAngularSpeed,
+          !fieldRelative.get()),
+        m_db); //omega_limiter.calculate(
+     * 
+     */
+      
   }
 
   public Command getTuneDriveCommand(Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative, double multiplier) {
