@@ -9,11 +9,11 @@ public class Constants {
 
     public static class SwerveConstants {
         public static final double encoderPort = 0.0;
-
-        public static final int turnMotorFreeLimit = 40; 
-        public static final int turnMotorStallLimit = 40;
-        public static final int driveMotorFreeLimit = 50;
-        public static final int driveMotorStallLimit = 50;
+      
+        public static final int turnMotorFreeLimit = 20; 
+        public static final int turnMotorStallLimit = 20;
+        public static final int driveMotorFreeLimit = 40;
+        public static final int driveMotorStallLimit = 40;
 
         public static final double kWheelDiameter = Units.inchesToMeters(4);   //inches
         public static final double kDriveGearRatio = 6.75; 
@@ -26,7 +26,7 @@ public class Constants {
         public static final double kDrivingMotorFreeSpeedRps = 5676.0 / 60.0; //neo free rpm = 5676 rpm
         public static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps * kDriveConversionFactor;
 
-        public static final double kS = 473; //static constant, probably not needed
+        public static final double kS = 0; //static constant, probably not needed
         public static final double kV = 0; //velocity constant, definitely needed
         public static final double kA = 0; //acceleration constant, probably not needed
         public static final double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
@@ -44,6 +44,9 @@ public class Constants {
 
 
     public static class SwerveDrivebaseConstants {
+
+        public static final double kSlewRateLimiter = 1; //NOT FOR SURE YET
+
         public static final int kFrontLeftDriveID = 6;
         public static final int kFrontLeftTurnID = 4;
 
@@ -61,7 +64,7 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25); //x
         public static final double kTrackWidth = Units.inchesToMeters(23.25); //y
 
-        public static final double kMaxMetersPerSecond = 3.2;
+        public static final double kMaxMetersPerSecond = 4.8;
         public static final double kMaxAngularSpeed = 2 * Math.PI; //radians
 
         public static final int kFrontLeftCANCoderID = 10;
@@ -103,6 +106,23 @@ public class Constants {
         public static final double kGearRatio = 25;
         
         public static final double kCircumference = 0;
+
+        public static final double kS = 0.05; //NEEDS TO BE SET 
+        /*
+         * the forced needed to overcome static friction & GET THE SYSTEM MOVING
+         * can be measured by moving the system slowly and recording the voltage needed to start movement
+         */
+        public static final double kG = 0;
+        /*
+            kG = mass * acceleration / elevator height 
+         * value dependent on weight of elevator AND positon of the mechanism
+         * can be estimated on the weight of elevator, mass of moving parts, and the hiehgt at which gravity is acting on the system
+         */
+        public static final double kV = 0;
+        /*
+         * determeined by performing a system test at different speeds and recording the necessary voltage to maitnain a STEADY velocity
+         * higher velocity = higher value of kV
+         */
     }
 
     public static class OperaterConstants {

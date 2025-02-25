@@ -4,30 +4,23 @@
 
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Configs;
-import frc.robot.SwerveModule;
-import frc.robot.Configs.SwerveModuleConfigs;
+import java.util.function.Supplier;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.studica.frc.AHRS;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.proto.Kinematics;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs.SwerveModuleConfigs;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
-
-import java.util.function.Supplier;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.SwerveModule;
 
 
 public class Swerve extends SubsystemBase {
@@ -39,6 +32,8 @@ public class Swerve extends SubsystemBase {
   private final SwerveDriveKinematics m_kinematics;
 
   private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+
+  private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   
   public Swerve() {
     m_frontLeft = new SwerveModule(
@@ -120,10 +115,10 @@ public class Swerve extends SubsystemBase {
 
   //for debugging
   private void runMotors(double speed, double steer) {
-    m_frontLeft.turnMotors(speed, steer);
-    m_frontRight.turnMotors(speed, steer);
-    m_backLeft.turnMotors(speed, steer);
-    m_backRight.turnMotors(speed, steer);
+    m_frontLeft.turnMotors(filter.calculate(speed), steer);
+    m_frontRight.turnMotors(filter.calculate(speed), steer);
+    m_backLeft.turnMotors(filter.calculate(speed), steer);
+    m_backRight.turnMotors(filter.calculate(speed), steer);
 
   }
 

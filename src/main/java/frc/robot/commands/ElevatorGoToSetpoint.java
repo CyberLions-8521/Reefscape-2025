@@ -38,7 +38,7 @@ public class ElevatorGoToSetpoint extends Command {
   @Override
   public void initialize() 
   {
-    //m_elevator.refreshSetpoint();
+    //m_elevator.updateSetpoint();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,17 +46,21 @@ public class ElevatorGoToSetpoint extends Command {
   public void execute() {
    // m_elevator.setControl(m_setpoint);
    //m_elevator.setGoal(m_desiredSetpoint, 0); 
+   
+   
+   //m_elevator.goToSetpoint(m_setpoint, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
+    //return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
+    //return m_elevator.atSetpoint();
+    return false;
   }
 }
