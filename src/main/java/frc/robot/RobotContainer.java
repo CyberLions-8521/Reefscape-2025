@@ -18,6 +18,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.DriveToDistance;
 import frc.robot.Commands.ElevatorDown;
+import frc.robot.Commands.ElevatorGoToSetpoint;
+import frc.robot.Commands.ElevatorGoToL2;
+import frc.robot.Commands.ElevatorGoToL3;
+import frc.robot.Commands.ElevatorGoToL4;
 import frc.robot.Commands.ElevatorUp;
 import frc.robot.Commands.Intake;
 import frc.robot.Commands.Shoot;
@@ -54,15 +58,23 @@ public class RobotContainer {
  
   private void configureBindings() {
     //m_controller.a().onTrue(new ElevatorGoToSetpoint(.30, m_elevator));
-    m_commandController.rightTrigger().whileTrue(new ElevatorUp(m_elevator, .65));
-    m_commandController.leftTrigger().whileTrue(new ElevatorDown(m_elevator, -.65));
+    m_commandController.rightTrigger().whileTrue(new ElevatorUp(m_elevator, .6));
+    m_commandController.leftTrigger().whileTrue(new ElevatorDown(m_elevator, -.6));
+
+    m_commandController.rightBumper().whileTrue(new ElevatorUp(m_elevator, .23));
+   m_commandController.leftBumper().whileTrue(new ElevatorDown(m_elevator, -.23));
+    m_commandController.povLeft().onTrue(new ElevatorGoToL2(0, m_elevator, 0.9));
+    m_commandController.povUp().onTrue(new ElevatorGoToL3(0, m_elevator, 0.9));
+    m_commandController.povRight().onTrue(new ElevatorGoToL4(0, m_elevator, 0.9));
+
+    //m_commandController.x().onTrue(new ElevatorGoToSetpoint(0, m_elevator, 0.9));
     //m_controller.a().onTrue(m_elevator.resetEncoderCommand());
 
     m_commandController.b().onTrue(new Intake(m_shooter, 14.5)); //intakes
     m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); //intake assist
 
-    m_commandController.a().whileTrue(new Shoot(m_shooter, .4)); //shoots slow
-    m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
+    m_commandController.a().whileTrue(new Shoot(m_shooter, .5)); //shoots slow
+    //m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
     m_shooter.register();
 
 
@@ -101,7 +113,8 @@ public class RobotContainer {
 
   public void configureAutos() {
     m_chooser.setDefaultOption("No Auto", null);
-    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, -4));
+    m_db.resetGyro();
+    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
   }
 
   public Command getAutonomousCommand() {

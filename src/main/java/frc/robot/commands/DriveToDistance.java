@@ -44,6 +44,6 @@ public class DriveToDistance extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (MathUtil.isNear(m_distance, m_db.getStraightDistance(), 1e-10));
+    return (MathUtil.isNear(m_distance, m_db.getStraightDistance(), 0.1));
   }
 }
