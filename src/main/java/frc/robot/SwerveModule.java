@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.Configs.SwerveModuleConfigs;
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -55,8 +56,8 @@ public class SwerveModule {
         m_configDrive = new SparkMaxConfig();
         m_configTurn = new SparkMaxConfig();
 
-        //m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        //m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         resetEncoder();
 
@@ -116,20 +117,11 @@ public class SwerveModule {
 
 
     public void logData(String motor){
-        
-        // SmartDashboard.putNumber(motor + "drive position", m_driveEncoder.getPosition());
-        // SmartDashboard.putNumber(motor +  "drive velocity", m_driveEncoder.getVelocity());
+
         SmartDashboard.putNumber(motor +  "turn position", m_turnEncoder.getPosition() % 360 - 180);
         SmartDashboard.putNumber(motor + " CANcoder", m_CANcoder.getAbsolutePosition().getValueAsDouble()*SwerveConstants.kAngleConversion);
-        // // SmartDashboard.putNumber(motor + "desired Position ", m_desiredState.angle.getRadians());
-        // SmartDashboard.putNumber(motor + "desired Velocity", m_desiredState.speedMetersPerSecond);  
-        // SmartDashboard.putNumber(motor + "Ramp Rate", m_turnMotor.configAccessor.getClosedLoopRampRate());  
-
-        //SmartDashboard.putNumber(motor + "turn angle", Math.abs(m_turnEncoder.getPosition()));
         SmartDashboard.putNumber(motor + "desired position", m_desiredState.angle.getDegrees());
 
-            
-        
     }
 
     public SparkMaxConfigAccessor getConfigAccessor() {

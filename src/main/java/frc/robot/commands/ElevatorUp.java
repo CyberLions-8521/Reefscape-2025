@@ -4,16 +4,17 @@
 
 package frc.robot.Commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorGo extends Command {
+public class ElevatorUp extends Command {
   private Elevator m_elevator;
   private double m_speed;
  
-  public ElevatorGo(Elevator elevator, double speed) {
+  public ElevatorUp(Elevator elevator, double speed) {
     m_elevator = elevator;
     m_speed = speed;
 
@@ -40,6 +41,6 @@ public class ElevatorGo extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_elevator.getPositon() >= 5.6); //max is 5.6
+    return (MathUtil.isNear(6.03, m_elevator.getPositon(), 0.05));// 5.6
   }
 }

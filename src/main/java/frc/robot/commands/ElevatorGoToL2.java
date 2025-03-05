@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorGoToSetpoint extends Command {
+public class ElevatorGoToL2 extends Command {
   private double  m_setpoint;
   private double m_desiredSetpoint;
   private double m_currentPos;
@@ -17,7 +17,7 @@ public class ElevatorGoToSetpoint extends Command {
   private double m_speed;
 
 
-  public ElevatorGoToSetpoint(double setpoint, Elevator elevator, double speed) {
+  public ElevatorGoToL2(double setpoint, Elevator elevator, double speed) {
     m_desiredSetpoint = setpoint;
     m_elevator = elevator;
     m_speed = speed;
@@ -56,9 +56,9 @@ public class ElevatorGoToSetpoint extends Command {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished() {                                                                                                                                                                                                                                       
     //return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
-    //return m_elevator.atSetpoint();
-    return (MathUtil.isNear(1.33, m_elevator.getPositon(), 0.3));
+    //return m_elevator.atSetpoint()
+    return (MathUtil.isNear(1.6, m_elevator.getPositon(), 0.3));
   }
 }
