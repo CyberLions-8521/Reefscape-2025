@@ -72,14 +72,6 @@ public class Constants {
         public static final int kBackLeftCANCoderID = 9;
         public static final int kBackRightCANCoderID = 12;
 
-        //Angular Offsets of the modules relative to the chassis in degrees
-        /* 
-        public static final double kFrontLeftChassisAngularOffset = -90;//NEED TO BE ASSIGNED
-        public static final double kFrontRightChassisAngularOffset = 0;//NEED TO BE ASSIGNED
-        public static final double kBackLeftChassisAngularOffset = 180;//NEED TO BE ASSIGNED
-        public static final double kBackRightChassisAngularOffset = 90; //NEED TO BE ASSIGNED
-        */
-
         public static final double kFrontLeftCANCoderMagnetOffset = -0.175049; //config later
         public static final double kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint = 0.5; //config later
 

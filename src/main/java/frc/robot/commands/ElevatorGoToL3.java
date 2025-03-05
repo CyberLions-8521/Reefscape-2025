@@ -59,6 +59,9 @@ public class ElevatorGoToL3 extends Command {
   public boolean isFinished() {
     //return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
     //return m_elevator.atSetpoint();
-    return (MathUtil.isNear(3.35, m_elevator.getPositon(), 0.3));
+    
+      return (MathUtil.isNear(3.35, m_elevator.getPositon(), 0.3));
+    
+    
   }
 }
