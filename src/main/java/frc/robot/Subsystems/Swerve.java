@@ -34,6 +34,19 @@ public class Swerve extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
 
   private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
+
+  //odometry class for tracking robot pose
+  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+      m_kinematics, 
+      Rotation2d.fromDegrees(getFieldAngle()),
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+
+      });
+
   
   public Swerve() {
     m_frontLeft = new SwerveModule(
@@ -76,8 +89,12 @@ public class Swerve extends SubsystemBase {
     );
 
 
+
+
     putSmartDashboard();
   }
+
+  
 
   public void putSmartDashboard(){
     // SmartDashboard.putNumber("driveFF", SwerveConstants.driveFF);
@@ -91,9 +108,39 @@ public class Swerve extends SubsystemBase {
 
   }
 
-
-
  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
+
+    //Load the RobotConfig from the GUI settings.
+    RobotConfig config;
+     try{
+        config = RobotConfig.fromGUISettings();
+      } catch (Exception e) {
+        e.printStackTrace();
+     }
+
+     //Configure AutoBuilder
+     AutoBuilder.configure(
+        this::getPose,
+        this::resetOdometry,
+        this::getRobotRelativeSpeeds,
+        this::driveRobotRelative,
+        (speeds. feedforwards) -> driveRobotRelative(speeds),
+        new  PPHolonomicDriveController(
+          new PIDConstants(5.0 0,0),
+          new PIDConstants( 5.0,0,0)
+        ),
+        config,
+        () -> {
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+            return false;
+        },
+        this
+     )
+
+  
 
     SwerveModuleState[] m_swerveModuleStates;
     if(fieldRelative) {
@@ -109,7 +156,6 @@ public class Swerve extends SubsystemBase {
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
-    
     
   }
 
@@ -159,8 +205,17 @@ public class Swerve extends SubsystemBase {
   }
  
   public void periodic() {
-    //SmartDashboardTunePID();
-    //SmartDashboardTunePID();
+    currentPose = m_odometry.update(
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+    });
+
+    SmartDashboard.putNumber("Current Robot Pose", currentPose);
+
+
   }
 
   public void SmartDashboardTunePID()
@@ -209,5 +264,46 @@ public class Swerve extends SubsystemBase {
         
     }
   }
+
+  public double getFieldAngle(){
+    return -m_gyro.getAngle();
+  }
+
+  public SwerveModuleState[] getModuleStates(){
+    SwerveModuleState[] moduleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(), m_backRight.getState()};
+    return moduleStates;
+  }
+
+  //returns current robot pose as a Pose2d
+  public Pose2d getPose(){
+    return m_odometry.getPoseMeters();
+  }
+
+  //resets the robot's odometry to the specified pose
+  public void resetOdometry(Pose2d pose){
+    m_odometry.resetPosition(
+      Rotation2d.fromDegrees(getFieldAngle()),
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+      },
+    );
+  }
+
+  public void driveRobotRelative(ChassisSpeeds getRobotRelativeSpeeds){
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = m_kinematics.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
+  }
+
+  //returns the current robot-relative ChassisSpeeds
+  public ChassisSpeeds getRobotRelativeSpeeds(){
+      return m_kinematics.toChassisSpeeds(getModuleStates());
+  }
+
+ 
 
 }

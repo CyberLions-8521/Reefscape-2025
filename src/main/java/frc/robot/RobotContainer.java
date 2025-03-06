@@ -45,15 +45,23 @@ public class RobotContainer {
   SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   
-  
-
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     configureBindings();
     configureAutos();
 
-    SmartDashboard.putData(m_chooser);
+
+    boolean isCompetition = true;
+
+    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> isCompetition
+        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+        : stream
+    );
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
  
   private void configureBindings() {
@@ -98,7 +106,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    return autoChooser.getSelected();
   }
 
   public Supplier<Double> getJoystickValues(Supplier<Double> controller, SlewRateLimiter limiter) {
