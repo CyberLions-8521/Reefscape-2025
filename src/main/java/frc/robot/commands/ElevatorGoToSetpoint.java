@@ -57,8 +57,7 @@ public class ElevatorGoToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
-    //return m_elevator.atSetpoint();
+
     return (MathUtil.isNear(1.33, m_elevator.getPositon(), 0.3));
   }
 }

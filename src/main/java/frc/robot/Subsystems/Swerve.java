@@ -9,11 +9,15 @@ import java.util.function.Supplier;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +34,7 @@ public class Swerve extends SubsystemBase {
   private final SwerveModule m_backRight;
 
   private final SwerveDriveKinematics m_kinematics;
+  private final SwerveDriveOdometry m_odometry;
 
   private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
 
@@ -74,6 +79,16 @@ public class Swerve extends SubsystemBase {
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, SwerveDrivebaseConstants.kTrackWidth / 2),
       new Translation2d(-SwerveDrivebaseConstants.kWheelBase / 2, -SwerveDrivebaseConstants.kTrackWidth / 2)
     );
+
+    m_odometry = new SwerveDriveOdometry(
+      m_kinematics, 
+      Rotation2d.fromDegrees(m_gyro.getAngle()), 
+      new SwerveModulePosition[] {
+        m_frontLeft.getSwerveModulePosition(),
+        m_frontRight.getSwerveModulePosition(),
+        m_backLeft.getSwerveModulePosition(),
+        m_backRight.getSwerveModulePosition(),
+      } );
 
 
     putSmartDashboard();
@@ -127,14 +142,7 @@ public class Swerve extends SubsystemBase {
   }
 
 
-  public Command resetEncodersCommand() {
-    return this.runOnce(this::resetEncoders);
-    // this.runOnce(lambda or function pointer)        == new InstantCommand(lambda, this)
-  }
 
-  public Command resetGyroCommand() {
-    return this.runOnce(this::resetGyro);
-  }
 
   public void resetEncoders(){
     m_frontLeft.resetEncoder();
@@ -147,11 +155,36 @@ public class Swerve extends SubsystemBase {
     return ((m_frontLeft.getCANCoderPosition() + m_frontRight.getCANCoderPosition() + m_backLeft.getCANCoderPosition() + m_backRight.getCANCoderPosition()) / 4);
   }
 
+  public void updateSwerveOdometry(Rotation2d angle, Distance distance) {
+
+  }
+
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  public void resetPose(Pose2d newPose) {
+    m_odometry.resetPose(newPose);
+  }
+
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return m_kinematics.toChassisSpeeds(m_frontLeft.getCurrentState(), m_frontRight.getCurrentState(), m_backLeft.getCurrentState(), m_backRight.getCurrentState());
+  }
+
   public void configureCANCoders() {
     m_frontLeft.configMagnets(SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint);
     m_frontRight.configMagnets(SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint);
     m_backLeft.configMagnets(SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint);
     m_backRight.configMagnets(SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint);
+  }
+
+  public Command resetEncodersCommand() {
+    return this.runOnce(this::resetEncoders);
+    // this.runOnce(lambda or function pointer)        == new InstantCommand(lambda, this)
+  }
+
+  public Command resetGyroCommand() {
+    return this.runOnce(this::resetGyro);
   }
 
   public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {

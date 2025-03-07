@@ -19,6 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
@@ -62,7 +63,7 @@ public class SwerveModule {
         resetEncoder();
 
         configMagnets(magnetOffset, absoluteSensorDiscont);
-        }  
+    }  
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -77,6 +78,14 @@ public class SwerveModule {
         m_turnPID.setReference(targetState.angle.getDegrees(), ControlType.kPosition);
 
         m_desiredState = targetState; 
+    }
+
+    public SwerveModuleState getCurrentState() {
+        return m_desiredState; //come back to this later
+    }
+
+    public SwerveModulePosition getSwerveModulePosition() {
+        return new SwerveModulePosition(0, Rotation2d.fromDegrees(m_turnEncoder.getPosition())); //0 is a placeholder
     }
 
     public void resetEncoder() {
@@ -114,7 +123,6 @@ public class SwerveModule {
         m_CANcoder.getConfigurator().apply(m_magnetConfigs);
         
     }
-
 
     public void logData(String motor){
 
