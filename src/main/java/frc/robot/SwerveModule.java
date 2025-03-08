@@ -41,6 +41,7 @@ public class SwerveModule {
 
     private CANcoder m_CANcoder;
 
+
     // for debugging
     private SwerveModuleState m_desiredState = new SwerveModuleState();
 
@@ -81,16 +82,16 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getCurrentState() {
-        return m_desiredState; //come back to this later
+        return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_turnEncoder.getPosition()));
     }
 
     public SwerveModulePosition getSwerveModulePosition() {
-        return new SwerveModulePosition(0, Rotation2d.fromDegrees(m_turnEncoder.getPosition())); //0 is a placeholder
+        return new SwerveModulePosition(m_driveEncoder.getPosition(), Rotation2d.fromDegrees(m_turnEncoder.getPosition())); 
     }
 
     public void resetEncoder() {
         m_driveEncoder.setPosition(0);
-        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  //degrees
+        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  
     }
 
     public double getDistance() {

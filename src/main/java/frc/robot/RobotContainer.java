@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.function.Supplier;
 
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.IntArraySerializer;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -37,20 +39,22 @@ public class RobotContainer {
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final Swerve m_db = new Swerve();
+  private final SendableChooser<Command> autoChooser;
 
   SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   
-  
-
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public RobotContainer() {
     configureBindings();
-    configureAutos();
+    
+    NamedCommands.registerCommand("Go to setpoint L1", new ElevatorGoToSetpoint(0, m_elevator, 0)); //placeholder
 
-    SmartDashboard.putData(m_chooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("Auto chooser", autoChooser);
+
   }
  
   private void configureBindings() {
@@ -88,14 +92,8 @@ public class RobotContainer {
             m_driveController.getHID()::getRightBumperButton));
    }
 
-  public void configureAutos() {
-    m_chooser.setDefaultOption("No Auto", null);
-    m_db.resetGyro();
-    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
-  }
-
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    return autoChooser.getSelected();
   }
 
   public Supplier<Double> getJoystickValues(Supplier<Double> controller, SlewRateLimiter limiter) {
