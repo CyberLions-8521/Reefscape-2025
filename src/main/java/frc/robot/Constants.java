@@ -97,8 +97,8 @@ public class Constants {
         
         public static final double kGearRatio = 25;
 
-        public static final double kResetCurrent = 0; //need to find
-        public static final int kMaxCurrent = 0;//need to somehow find
+        public static final double kResetCurrent = 45; //need to find
+        public static final int kMaxCurrent = 60;//need to somehow find
 
         public static final double kMaxElevatorHeightMeters = 0; // Meters
         public static final double kMinElevatorHeightMeters = 0; // Meters

@@ -23,45 +23,12 @@ import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
 public class Configs {
-    public static final class MotorConfigs {
-        public static final TalonFXConfiguration KRAKEN_CONFIGURATION = new TalonFXConfiguration();
-
-        public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
-        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
+    public static final class ShooterConfigs {
 
         public static final SparkMaxConfig SHOOT_MASTER_CONFIG = new SparkMaxConfig();
         public static final SparkMaxConfig SHOOT_SLAVE_CONFIG = new SparkMaxConfig();
 
         static {
-            KRAKEN_CONFIGURATION.Slot0
-                .withKP(ElevatorConstants.kP)
-                .withKD(ElevatorConstants.kD)
-                .withKI(ElevatorConstants.kI);
-
-            KRAKEN_CONFIGURATION.CurrentLimits
-                .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(80);
-            
-            KRAKEN_CONFIGURATION.MotorOutput
-                .withNeutralMode(NeutralModeValue.Brake);
-
-            KRAKEN_CONFIGURATION.Feedback
-                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kCircumference);
-
-
-            ELEV_SLAVE_CONFIG.follow(10, true)
-                .idleMode(IdleMode.kBrake);
-            ELEV_MASTER_CONFIG.inverted(true)
-            .idleMode(IdleMode.kBrake);
-
-            ELEV_MASTER_CONFIG.encoder
-                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
-                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
-
-            ELEV_SLAVE_CONFIG.encoder
-                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
-                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
-
             SHOOT_SLAVE_CONFIG
                 .follow(ShooterConstants.kMasterID, true)
                 .idleMode(IdleMode.kCoast);
@@ -70,10 +37,34 @@ public class Configs {
                 .idleMode(IdleMode.kCoast);
         }
     }
+
+    public static final class ElevatorConfigs {
+        public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
+        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
+
+        static {
+            m_masterConfig.encoder
+                    .positionConversionFactor(Constants.ElevatorConstants.kRotationToMeters) // Converts Rotations to Meters
+                    .velocityConversionFactor(Constants.ElevatorConstants..kRotationToMeters / 60); // Converts RPM to MPS
+            m_masterConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    .pid(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD, ClosedLoopSlot.kSlot0)//Change PID with these constants.                    .outputRange(-1, 1, ClosedLoopSlot.kSlot0)
+            
+            
+            m_masterConfig.idleMode(IdleMode.kBrake);
+            m_slaveConfig.idleMode(IdleMode.kBrake);
+
+            m_masterConfig.smartCurrentLimit(Constants.ElevatorConstants.kMaxCurrent);
+            m_slaveConfig.smartCurrentLimit(Constants.ElevatorConstants.kMaxCurrent);
+
+            m_masterConfig.closedLoopRampRate(Constants.ElevatorConstants.kRampRate);
+            m_slaveConfig.closedLoopRampRate(Constants.ElevatorConstants.kRampRate);
+        }
+    }
   
     public static final class SwerveModuleConfigs {
-        public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
-        public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
+        public static final SparkMaxConfig m_masterConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig m_slaveConfig = new SparkMaxConfig();
 
 
 

@@ -50,6 +50,7 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public RobotContainer() {
+
     configureBindings();
     configureAutos();
 
@@ -57,17 +58,17 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.rightTrigger().whileTrue(new ElevatorUp(m_elevator, .63));
-    m_commandController.leftTrigger().whileTrue(new ElevatorDown(m_elevator, -.63));
+    m_commandController.rightTrigger().whileTrue(new ElevatorUp());
+    m_commandController.leftTrigger().whileTrue(new ElevatorDown());
 
-    m_commandController.rightBumper().whileTrue(new ElevatorUp(m_elevator, .23));
-    m_commandController.leftBumper().whileTrue(new ElevatorDown(m_elevator, -.23));
+    m_commandController.rightBumper.onTrue(new ElevatorGoToSetpoint(1.0, m_elevator));
+
 
 
     m_commandController.b().onTrue(new Intake(m_shooter, 14.5)); //intakes
     m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); //intake assist
 
-    m_commandController.a().whileTrue(new Shoot(m_shooter, .45)); //shoots slow
+    m_commandController.a().whileTrue(new Shoot(m_shooter, -.45)); //shoots slow
     m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
     m_shooter.register();
 
