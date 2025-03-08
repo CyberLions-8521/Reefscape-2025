@@ -86,24 +86,32 @@ public class Constants {
     }
 
     public static class ElevatorConstants {
-        public static final int kMasterID = 10;
-        public static final int kSlaveID = 5;
-
-        public static final int kMaxAcceleration = 0;
-        public static final int kMaxVelocity = 0;
-        public static final double kP = .1;
-        public static final double kD = 0;
-        public static final double kI = 0;
-        public static final double ELEVATOR_KFF = 0;
-        public static final double kGearRatio = 25;
         
-        public static final double kCircumference = 0;
+        public static final int kMotor1 = 10;
+        public static final int kMotor2 = 5;
 
-        public static final double kS = 0.05; //NEEDS TO BE SET 
-        /*
-         * the forced needed to overcome static friction & GET THE SYSTEM MOVING
-         * can be measured by moving the system slowly and recording the voltage needed to start movement
-         */
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kRampRate = 0.2;
+        
+        public static final double kGearRatio = 25;
+
+        public static final double kResetCurrent = 0; //need to find
+        public static final int kMaxCurrent = 0;//need to somehow find
+
+        public static final double kMaxElevatorHeightMeters = 0; // Meters
+        public static final double kMinElevatorHeightMeters = 0; // Meters
+
+        public static final double kGearCircumference = Units.inchesToMeters(0);;// inches MUST BE CONFIGURED    
+
+        public static final double kRotationToMeters = kGearCircumference / kGearRatio;
+        public static final double kMaxVelocity = 5676.0;
+        public static final double kMaxAcceleration = 5676.0;
+
+        public static final double kS = 0.0;
+
+
         public static final double kG = 0;
         /*
             kG = mass * acceleration / elevator height 
@@ -111,6 +119,8 @@ public class Constants {
          * can be estimated on the weight of elevator, mass of moving parts, and the hiehgt at which gravity is acting on the system
          */
         public static final double kV = 0;
+
+        public static final double kA = 0;
         /*
          * determeined by performing a system test at different speeds and recording the necessary voltage to maitnain a STEADY velocity
          * higher velocity = higher value of kV
