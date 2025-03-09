@@ -38,6 +38,14 @@ public class Elevator extends SubsystemBase {
         m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         resetEncoder();
+        putPIDSmartDashboard();
+    }
+
+    // for tuning purposes; see tunePIDSmartDashboard below
+    private void putPIDSmartDashboard() {
+        SmartDashboard.putNumber("ElevP", m_motorMaster.configAccessor.closedLoop.getP());
+        SmartDashboard.putNumber("ElevI", m_motorMaster.configAccessor.closedLoop.getI());
+        SmartDashboard.putNumber("ElevD", m_motorMaster.configAccessor.closedLoop.getD());
     }
 
     public double getPosition() {
@@ -80,17 +88,33 @@ public class Elevator extends SubsystemBase {
 
     public void logData() {
         SmartDashboard.putNumber("Elevator Position", m_encoder.getPosition());
-
-        SmartDashboard.putNumber("t x",  LimelightHelpers.getTX(""));
-        SmartDashboard.putNumber("t y", LimelightHelpers.getTY(""));
-        SmartDashboard.putNumber("t area", LimelightHelpers.getTA(""));
-        SmartDashboard.putBoolean("t valid", LimelightHelpers.getTV(""));
-        SmartDashboard.putNumber("tag id", LimelightHelpers.getFiducialID(""));
+        // SmartDashboard.putNumber("t x",  LimelightHelpers.getTX(""));
+        // SmartDashboard.putNumber("t y", LimelightHelpers.getTY(""));
+        // SmartDashboard.putNumber("t area", LimelightHelpers.getTA(""));
+        // SmartDashboard.putBoolean("t valid", LimelightHelpers.getTV(""));
+        // SmartDashboard.putNumber("tag id", LimelightHelpers.getFiducialID(""));
     }
 
     @Override
     public void periodic() {
         logData();
+        tunePIDSmartDashboard();
+    }
+
+    private void tunePIDSmartDashboard() {
+        double kP = SmartDashboard.getNumber("ElevP", 0.0);
+        double kI = SmartDashboard.getNumber("ElevI", 0.0);
+        double kD = SmartDashboard.getNumber("ElevD", 0.0);
+
+        if (kP != m_motorMaster.configAccessor.closedLoop.getP() ||
+            kI != m_motorMaster.configAccessor.closedLoop.getI() ||
+            kD != m_motorMaster.configAccessor.closedLoop.getD()) {
+            MotorConfigs.ELEV_MASTER_CONFIG.closedLoop.pid(kP, kI, kD);
+            MotorConfigs.ELEV_SLAVE_CONFIG.closedLoop.pid(kP, kI, kD);
+
+            m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        }
     }
 
 }
