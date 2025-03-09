@@ -12,8 +12,8 @@ import frc.robot.subsystems.Swerve;
 public class DriveToDistance extends Command {
   /** Creates a new DriveToDistance. */
 
-  Swerve m_db;
-  double m_distance;
+  private final Swerve m_db;
+  private final double m_distance;
 
   public DriveToDistance(Swerve db, double distance) {
     m_db = db;
