@@ -37,7 +37,7 @@ public class Swerve extends SubsystemBase {
   
   public Swerve() {
     m_gyro.reset();
-    
+
     m_frontLeft = new SwerveModule(
       SwerveDrivebaseConstants.kFrontLeftDriveID,
       SwerveDrivebaseConstants.kFrontLeftTurnID,
@@ -145,8 +145,8 @@ public class Swerve extends SubsystemBase {
     m_backRight.resetEncoder();
   }
 
-  public double getStraightDistance() {
-    return ((m_frontLeft.getCANCoderPosition() + m_frontRight.getCANCoderPosition() + m_backLeft.getCANCoderPosition() + m_backRight.getCANCoderPosition()) / 4);
+  public double getStraightDistance() { // meters
+    return ((m_frontLeft.getDriveDistance() + m_frontRight.getDriveDistance() + m_backLeft.getDriveDistance() + m_backRight.getDriveDistance()) / 4.0);
   }
 
   public void configureCANCoders() {
