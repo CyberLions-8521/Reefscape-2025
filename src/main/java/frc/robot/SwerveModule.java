@@ -19,6 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
@@ -39,6 +40,7 @@ public class SwerveModule {
     private RelativeEncoder m_turnEncoder;
 
     private CANcoder m_CANcoder;
+
 
     // for debugging
     private SwerveModuleState m_desiredState = new SwerveModuleState();
@@ -62,7 +64,7 @@ public class SwerveModule {
         resetEncoder();
 
         configMagnets(magnetOffset, absoluteSensorDiscont);
-        }  
+    }  
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -79,9 +81,17 @@ public class SwerveModule {
         m_desiredState = targetState; 
     }
 
+    public SwerveModuleState getCurrentState() {
+        return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_turnEncoder.getPosition()));
+    }
+
+    public SwerveModulePosition getSwerveModulePosition() {
+        return new SwerveModulePosition(m_driveEncoder.getPosition(), Rotation2d.fromDegrees(m_turnEncoder.getPosition())); 
+    }
+
     public void resetEncoder() {
         m_driveEncoder.setPosition(0);
-        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  //degrees
+        m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  
     }
 
     public double getDistance() {
@@ -114,7 +124,6 @@ public class SwerveModule {
         m_CANcoder.getConfigurator().apply(m_magnetConfigs);
         
     }
-
 
     public void logData(String motor){
 
