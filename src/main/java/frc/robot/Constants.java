@@ -63,6 +63,10 @@ public class Constants {
         public static final double kFrontRightCANCoderMagnetOffset = -0.603516;
         public static final double kBackLeftCANCoderMagnetOffset   = -0.645508;
         public static final double kBackRightCANCoderMagnetOffset  = -0.271484;
+
+        public static final double kStrafeP = 0.0;
+        public static final double kStrafeI = 0.0;
+        public static final double kStrafeD = 0.0;
     }
 
     public static class ElevatorConstants {

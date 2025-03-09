@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.SwerveModuleConfigs;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.LimelightHelpers;
 import frc.robot.SwerveModule;
 
 
@@ -34,6 +36,11 @@ public class Swerve extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
 
   private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
+
+  private final PIDController m_strafeController =
+    new PIDController(SwerveDrivebaseConstants.kStrafeP,
+                      SwerveDrivebaseConstants.kStrafeI,
+                      SwerveDrivebaseConstants.kStrafeD);
   
   public Swerve() {
     m_gyro.reset();
@@ -81,22 +88,20 @@ public class Swerve extends SubsystemBase {
     putSmartDashboard();
   }
 
-  public void putSmartDashboard(){
-    // SmartDashboard.putNumber("driveFF", SwerveConstants.driveFF);
-    // SmartDashboard.putNumber("driveP", 0);
-    // SmartDashboard.putNumber("driveI", 0);
-    // SmartDashboard.putNumber("driveD", 0);
-
+  public void putSmartDashboard() {
     SmartDashboard.putNumber("turnP", 0);
     SmartDashboard.putNumber("turnI", 0);
     SmartDashboard.putNumber("turnD", 0);
 
   }
 
+  // Need to configure setpoint in Constants.java for REEF poles relative to AprilTag
+  public void limelightStrafe() {
+    drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
+  }
 
 
- public void drive(double vx, double vy, double omega, boolean fieldRelative) {
-
+  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     SwerveModuleState[] m_swerveModuleStates;
     if(fieldRelative) {
       m_swerveModuleStates = m_kinematics.toSwerveModuleStates(
@@ -111,8 +116,6 @@ public class Swerve extends SubsystemBase {
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
-    
-    
   }
 
   //for debugging
@@ -155,54 +158,55 @@ public class Swerve extends SubsystemBase {
  
   public void periodic() {
     //SmartDashboardTunePID();
-    //SmartDashboardTunePID();
   }
 
-  public void SmartDashboardTunePID()
-  {
-    m_frontLeft.logData("FL");
-    // m_frontRight.logData("FR");
-    // m_backLeft.logData("BL");
-    // m_backRight.logData("BR");
+
+
+  // public void SmartDashboardTunePID()
+  // {
+  //   m_frontLeft.logData("FL");
+  //   // m_frontRight.logData("FR");
+  //   // m_backLeft.logData("BL");
+  //   // m_backRight.logData("BR");
     
-    // double driveFF = SmartDashboard.getNumber("driveFF", SwerveConstants.driveFF);
-    // double driveP = SmartDashboard.getNumber("driveP", 0);
-    // double driveI = SmartDashboard.getNumber("driveI", 0);
-    // double driveD = SmartDashboard.getNumber("driveD", 0);
-    double turnP = SmartDashboard.getNumber("turnP", 0);
-    double turnI = SmartDashboard.getNumber("turnI", 0);
-    double turnD = SmartDashboard.getNumber("turnD", 0);
+  //   // double driveFF = SmartDashboard.getNumber("driveFF", SwerveConstants.driveFF);
+  //   // double driveP = SmartDashboard.getNumber("driveP", 0);
+  //   // double driveI = SmartDashboard.getNumber("driveI", 0);
+  //   // double driveD = SmartDashboard.getNumber("driveD", 0);
+  //   double turnP = SmartDashboard.getNumber("turnP", 0);
+  //   double turnI = SmartDashboard.getNumber("turnI", 0);
+  //   double turnD = SmartDashboard.getNumber("turnD", 0);
 
-    // SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
+  //   // SmartDashboard.putNumber("front left P",m_frontLeft.getConfigAccessor().closedLoop.getP());
     
-    if (/*(SwerveConstants.driveFF != driveFF) ||
-    (SwerveConstants.driveP != driveP) || 
-    (SwerveConstants.driveI != driveI) || 
-    (SwerveConstants.driveD != driveD) || */ 
-    (SwerveConstants.turnP != turnP) || 
-    (SwerveConstants.turnI != turnI) || 
-    (SwerveConstants.turnD != turnD) ) {
-      // SwerveConstants.driveFF = driveFF;
-      // SwerveConstants.driveP = driveP;
-      // SwerveConstants.driveI = driveI;
-      // SwerveConstants.driveD = driveD;
-      // SwerveConstants.turnP = turnP;
-      // SwerveConstants.turnI = turnI;
-      // SwerveConstants.turnD = turnD;
+  //   if (/*(SwerveConstants.driveFF != driveFF) ||
+  //   (SwerveConstants.driveP != driveP) || 
+  //   (SwerveConstants.driveI != driveI) || 
+  //   (SwerveConstants.driveD != driveD) || */ 
+  //   (SwerveConstants.turnP != turnP) || 
+  //   (SwerveConstants.turnI != turnI) || 
+  //   (SwerveConstants.turnD != turnD) ) {
+  //     // SwerveConstants.driveFF = driveFF;
+  //     // SwerveConstants.driveP = driveP;
+  //     // SwerveConstants.driveI = driveI;
+  //     // SwerveConstants.driveD = driveD;
+  //     // SwerveConstants.turnP = turnP;
+  //     // SwerveConstants.turnI = turnI;
+  //     // SwerveConstants.turnD = turnD;
       
-      // SwerveModuleConfigs.m_configDrive.closedLoop
-      //   .pidf(driveP, driveI, driveD, driveFF);
+  //     // SwerveModuleConfigs.m_configDrive.closedLoop
+  //     //   .pidf(driveP, driveI, driveD, driveFF);
 
-      SwerveModuleConfigs.m_configTurn.closedLoop
-        .pid(turnP, turnI, turnD);
+  //     SwerveModuleConfigs.m_configTurn.closedLoop
+  //       .pid(turnP, turnI, turnD);
 
       
-      m_frontLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
-      m_frontRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
-      m_backLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
-      m_backRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+  //     m_frontLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+  //     m_frontRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+  //     m_backLeft.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
+  //     m_backRight.configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
         
-    }
-  }
+  //   }
+  // }
 
 }
