@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
-import frc.robot.Configs.MotorConfigs;
+import frc.robot.Configs.ElevatorConfigs;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
@@ -34,8 +34,8 @@ public class Elevator extends SubsystemBase {
         m_pidController = m_motorMaster.getClosedLoopController();
         m_elevFF = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV);
 
-        m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         resetEncoder();
         putPIDSmartDashboard();
@@ -57,10 +57,6 @@ public class Elevator extends SubsystemBase {
         return m_pidController.setReference(value, ctrl, ClosedLoopSlot.kSlot0, m_elevFF.calculate(0));
     }
 
-    public REVLibError applyAntiGravityFF() {
-        return m_pidController.setReference(m_elevFF.calculate(0), ControlType.kVoltage);
-    }
-
     /** Command that applies voltage (calculated via kG) to counteract gravity.
      * Used to set the default command of the elevator when binding buttons that
      * allow for manual movement of the elevator.  Note that if the elevator is
@@ -70,6 +66,11 @@ public class Elevator extends SubsystemBase {
      */
     public Command applyAntiGravFFCommand() {
         return this.run(this::applyAntiGravityFF);
+    }
+
+    // Note: this is equivalent to m_motorMaster.setVoltage(m_elevFF.calculate(0))
+    private REVLibError applyAntiGravityFF() {
+        return m_pidController.setReference(m_elevFF.calculate(0), ControlType.kVoltage);
     }
 
     public void setSpeed(double speed) {
@@ -82,11 +83,11 @@ public class Elevator extends SubsystemBase {
     }
 
     //for testing purposes
-    public void resetEncoder() {
+    private  void resetEncoder() {
         m_encoder.setPosition(0.0);
     }
 
-    public void logData() {
+    private void logData() {
         SmartDashboard.putNumber("Elevator Position", m_encoder.getPosition());
         // SmartDashboard.putNumber("t x",  LimelightHelpers.getTX(""));
         // SmartDashboard.putNumber("t y", LimelightHelpers.getTY(""));
@@ -109,11 +110,11 @@ public class Elevator extends SubsystemBase {
         if (kP != m_motorMaster.configAccessor.closedLoop.getP() ||
             kI != m_motorMaster.configAccessor.closedLoop.getI() ||
             kD != m_motorMaster.configAccessor.closedLoop.getD()) {
-            MotorConfigs.ELEV_MASTER_CONFIG.closedLoop.pid(kP, kI, kD);
-            MotorConfigs.ELEV_SLAVE_CONFIG.closedLoop.pid(kP, kI, kD);
+            ElevatorConfigs.kMasterConfig.closedLoop.pid(kP, kI, kD);
+            ElevatorConfigs.kSlaveConfig.closedLoop.pid(kP, kI, kD);
 
-            m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         }
     }
 
