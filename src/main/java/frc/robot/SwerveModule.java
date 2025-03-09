@@ -28,15 +28,10 @@ import frc.robot.Configs.SwerveModuleConfigs;
 public class SwerveModule {
     private SparkMax m_driveMotor;
     private SparkMax m_turnMotor; 
-
-    private SparkClosedLoopController m_drivePID;
-    private SparkClosedLoopController m_turnPID;
-
-    private SparkMaxConfig m_configDrive;
-    private SparkMaxConfig m_configTurn;
-
     private RelativeEncoder m_driveEncoder;
     private RelativeEncoder m_turnEncoder;
+    private SparkClosedLoopController m_drivePID;
+    private SparkClosedLoopController m_turnPID;
 
     private CANcoder m_CANcoder;
 
@@ -46,23 +41,17 @@ public class SwerveModule {
 
     public SwerveModule(int driveMotorPort, int turnMotorPort, int CANCoderPort, double magnetOffset, double absoluteSensorDiscont) {
         m_driveMotor = new SparkMax(driveMotorPort, SparkLowLevel.MotorType.kBrushless);
-        m_turnMotor = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
-
-        m_CANcoder = new CANcoder(CANCoderPort, SwerveConstants.kCANCoderBus);
+        m_turnMotor  = new SparkMax(turnMotorPort, SparkLowLevel.MotorType.kBrushless);
         m_driveEncoder = m_driveMotor.getEncoder();
-        m_turnEncoder = m_turnMotor.getEncoder();
+        m_turnEncoder  = m_turnMotor.getEncoder();
         m_drivePID = m_driveMotor.getClosedLoopController();
-        m_turnPID = m_turnMotor.getClosedLoopController();
-        m_configDrive = new SparkMaxConfig();
-        m_configTurn = new SparkMaxConfig();
+        m_turnPID  = m_turnMotor.getClosedLoopController();
+        m_CANcoder = new CANcoder(CANCoderPort, SwerveConstants.kCANCoderBus);
 
-        m_driveMotor.configure(SwerveModuleConfigs.m_configDrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        m_turnMotor.configure(SwerveModuleConfigs.m_configTurn, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
+        configure(SwerveModuleConfigs.m_configDrive, SwerveModuleConfigs.m_configTurn);
         resetEncoder();
-
         configMagnets(magnetOffset, absoluteSensorDiscont);
-        }  
+    }  
 
     public void configure(SparkMaxConfig driveConfig, SparkMaxConfig turnConfig) {
         m_driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -84,10 +73,6 @@ public class SwerveModule {
         m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  //degrees
     }
 
-    public double getDistance() {
-        return m_turnEncoder.getPosition();
-    }
-
     public void turnMotors(double speed, double steer) {
         m_driveMotor.set(speed);
         m_turnMotor.set(steer);
@@ -95,12 +80,12 @@ public class SwerveModule {
 
     //for smartdashboard debugging
     public double getDriveDistance() {
-        return m_driveEncoder.getPosition(); //rotations
+        return m_driveEncoder.getPosition(); // meters
     }
 
     //for smartdashboard logging purposes
     public double getCANCoderPosition() {
-        return m_CANcoder.getAbsolutePosition().getValueAsDouble(); //rotations 
+        return m_CANcoder.getAbsolutePosition().getValueAsDouble(); // rotations 
     }
 
     public void configMagnets(double kCANCoderMagnetOffset, double kCANCoderAbsoluteSensorDiscontinuityPoint) {
