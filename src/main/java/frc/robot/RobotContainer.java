@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.IntArraySerializer;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -15,20 +14,18 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.DriveToDistance;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.OperaterConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Commands.ElevatorDown;
 import frc.robot.Commands.ElevatorGoToSetpoint;
 import frc.robot.Commands.ElevatorUp;
 import frc.robot.Commands.Intake;
 import frc.robot.Commands.Shoot;
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.OperaterConstants;
-import frc.robot.Constants.SwerveDrivebaseConstants;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -47,14 +44,28 @@ public class RobotContainer {
   
 
   public RobotContainer() {
-    configureBindings();
     
-    NamedCommands.registerCommand("Go to setpoint L1", new ElevatorGoToSetpoint(0, m_elevator, 0)); //placeholder
-
+    registerNamedCommands();
+  
     autoChooser = AutoBuilder.buildAutoChooser();
-
+    configureBindings();
     SmartDashboard.putData("Auto chooser", autoChooser);
 
+  }
+
+  private void registerNamedCommands(){
+    NamedCommands.registerCommand("Go to setpoint L2", new ElevatorGoToSetpoint
+    (0, m_elevator, 0.0));
+    NamedCommands.registerCommand("Go to setpoint L3", new ElevatorGoToSetpoint
+    (0, m_elevator, 0.0));
+    NamedCommands.registerCommand("Go to setpoint L4", new ElevatorGoToSetpoint
+    (0, m_elevator, 0.0));
+
+    NamedCommands.registerCommand("shoot (fast)", new Shoot(m_shooter, 1.0));
+    NamedCommands.registerCommand("shoot (slow)", new Shoot(m_shooter, .3));
+
+    NamedCommands.registerCommand("full intake", new Intake(m_shooter, 14.5));
+    NamedCommands.registerCommand("intake assist", new Intake(m_shooter, 3.0));
   }
  
   private void configureBindings() {
