@@ -7,64 +7,61 @@ package frc.robot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-      
+
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SwerveConstants;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import frc.robot.Constants.SwerveConstants;
-
 /** Add your docs here. */
 public class Configs {
-    public static final class MotorConfigs {
-        public static final TalonFXConfiguration KRAKEN_CONFIGURATION = new TalonFXConfiguration();
+    public static final class ElevatorConfigs {
+        public static final TalonFXConfiguration kKrakenConfig = new TalonFXConfiguration();
 
-        public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
-        public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
-
-        public static final SparkMaxConfig SHOOT_MASTER_CONFIG = new SparkMaxConfig();
-        public static final SparkMaxConfig SHOOT_SLAVE_CONFIG = new SparkMaxConfig();
+        public static final SparkMaxConfig kMasterConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig kSlaveConfig = new SparkMaxConfig();
 
         static {
-            KRAKEN_CONFIGURATION.Slot0
+            kKrakenConfig.Slot0
                 .withKP(ElevatorConstants.kP)
                 .withKD(ElevatorConstants.kD)
                 .withKI(ElevatorConstants.kI);
-
-            KRAKEN_CONFIGURATION.CurrentLimits
+            kKrakenConfig.CurrentLimits
                 .withSupplyCurrentLimitEnable(true)
                 .withSupplyCurrentLimit(80);
-            
-            KRAKEN_CONFIGURATION.MotorOutput
+            kKrakenConfig.MotorOutput
                 .withNeutralMode(NeutralModeValue.Brake);
-
-            KRAKEN_CONFIGURATION.Feedback
+            kKrakenConfig.Feedback
                 .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kGearCircumference);
-
-
             
-            ELEV_MASTER_CONFIG.inverted(true)
+            kMasterConfig.inverted(true)
                 .idleMode(IdleMode.kBrake);
-            ELEV_MASTER_CONFIG.encoder
+            kMasterConfig.encoder
                 .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)   // rotations (output shaft)
                 .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);   // RPS (output shaft)
-            ELEV_MASTER_CONFIG.closedLoop
+            kMasterConfig.closedLoop
                 .p(ElevatorConstants.kP)
                 .i(ElevatorConstants.kI)
                 .d(ElevatorConstants.kD);
 
-            ELEV_SLAVE_CONFIG.follow(ElevatorConstants.kMaster, true)
+            kSlaveConfig.follow(ElevatorConstants.kMaster, true)
                 .idleMode(IdleMode.kBrake);
-            ELEV_SLAVE_CONFIG.encoder.apply(ELEV_MASTER_CONFIG.encoder);
-            ELEV_SLAVE_CONFIG.closedLoop.apply(ELEV_MASTER_CONFIG.closedLoop);
+            kSlaveConfig.encoder.apply(kMasterConfig.encoder);
+            kSlaveConfig.closedLoop.apply(kMasterConfig.closedLoop);
+        }
+    }
 
-            SHOOT_SLAVE_CONFIG
-                .follow(ShooterConstants.kMasterID, true)
+    public static final class ShooterConfigs {
+        public static final SparkMaxConfig kMasterConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig kSlaveConfig  = new SparkMaxConfig();
+
+        static {
+            kMasterConfig
                 .idleMode(IdleMode.kCoast);
-            
-            SHOOT_MASTER_CONFIG
+            kSlaveConfig
+                .follow(ShooterConstants.kMasterID, true)
                 .idleMode(IdleMode.kCoast);
         }
     }
@@ -85,11 +82,11 @@ public class Configs {
                 .smartCurrentLimit(SwerveConstants.turnMotorStallLimit, SwerveConstants.turnMotorFreeLimit);
 
             m_configDrive.encoder
-                .positionConversionFactor(SwerveConstants.kDriveConversionFactor)   // meters
+                .positionConversionFactor(SwerveConstants.kDriveConversionFactor)           // meters
                 .velocityConversionFactor(SwerveConstants.kDriveConversionFactor / 60.0);   // meters per second
 
             m_configTurn.encoder
-                .positionConversionFactor(SwerveConstants.kTurnConversionFactor)    // degrees
+                .positionConversionFactor(SwerveConstants.kTurnConversionFactor)            // degrees
                 .velocityConversionFactor(SwerveConstants.kTurnConversionFactor / 60.0);    // degrees per second
 
             m_configDrive.closedLoop
