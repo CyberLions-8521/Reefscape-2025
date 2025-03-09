@@ -36,7 +36,7 @@ public class RobotContainer {
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
   public RobotContainer() {
     configureAutos();
@@ -44,7 +44,7 @@ public class RobotContainer {
     SmartDashboard.putData(m_chooser);
   }
 
-  public void configureAutos() {
+  private void configureAutos() {
     m_chooser.setDefaultOption("No Auto", null);
     m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
   }
@@ -83,7 +83,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravFFCommand());
    }
 
-   public Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
+   private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(
         -vx.get() * multiplier * SwerveDrivebaseConstants.kMaxMetersPerSecond,
@@ -93,7 +93,7 @@ public class RobotContainer {
       m_db);    
   }
   
-  public Supplier<Double> getJoystickValues(Supplier<Double> controller, SlewRateLimiter limiter) {
+  private Supplier<Double> getJoystickValues(Supplier<Double> controller, SlewRateLimiter limiter) {
     return () -> {
       double deadBandValue = MathUtil.applyDeadband(controller.get(), ControllerConstants.kDeadband);
       double squaredValue = Math.copySign(deadBandValue * deadBandValue, deadBandValue);
