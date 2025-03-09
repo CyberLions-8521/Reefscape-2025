@@ -44,18 +44,21 @@ public class Configs {
                 .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kGearCircumference);
 
 
-            ELEV_SLAVE_CONFIG.follow(ElevatorConstants.kMaster, true)
-                .idleMode(IdleMode.kBrake);
+            
             ELEV_MASTER_CONFIG.inverted(true)
                 .idleMode(IdleMode.kBrake);
-
             ELEV_MASTER_CONFIG.encoder
                 .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)   // rotations (output shaft)
                 .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);   // RPS (output shaft)
+            ELEV_MASTER_CONFIG.closedLoop
+                .p(ElevatorConstants.kP)
+                .i(ElevatorConstants.kI)
+                .d(ElevatorConstants.kD);
 
-            ELEV_SLAVE_CONFIG.encoder
-                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)   // rotations (output shaft)
-                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);   // RPS (output shaft)
+            ELEV_SLAVE_CONFIG.follow(ElevatorConstants.kMaster, true)
+                .idleMode(IdleMode.kBrake);
+            ELEV_SLAVE_CONFIG.encoder.apply(ELEV_MASTER_CONFIG.encoder);
+            ELEV_SLAVE_CONFIG.closedLoop.apply(ELEV_MASTER_CONFIG.closedLoop);
 
             SHOOT_SLAVE_CONFIG
                 .follow(ShooterConstants.kMasterID, true)
