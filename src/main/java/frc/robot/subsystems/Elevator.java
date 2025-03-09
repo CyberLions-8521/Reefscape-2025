@@ -1,6 +1,5 @@
-package frc.robot.Subsystems;
+package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -19,26 +18,19 @@ import frc.robot.Configs.MotorConfigs;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
-    PositionDutyCycle positionDutyCycle = new PositionDutyCycle(0);
-    SparkClosedLoopController closedLoopController;
-
-    //private TalonFX m_motor;
     private SparkMax m_motorMaster;
     private SparkMax m_motorSlave;
-
     private RelativeEncoder m_encoder;
+    private SparkClosedLoopController m_pidController;
 
     public Elevator(int masterMotorPort, int slaveMotorPort) {
         m_motorMaster = new SparkMax(masterMotorPort, MotorType.kBrushless);
-        m_motorSlave = new SparkMax(slaveMotorPort, MotorType.kBrushless);
+        m_motorSlave  = new SparkMax(slaveMotorPort , MotorType.kBrushless);
+        m_encoder = m_motorMaster.getEncoder();
+        m_pidController = m_motorMaster.getClosedLoopController();
 
         m_motorMaster.configure(MotorConfigs.ELEV_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         m_motorSlave.configure(MotorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        m_encoder = m_motorMaster.getEncoder();
-
-        closedLoopController = m_motorMaster.getClosedLoopController();
     }
 
     public double getPositon() { //INCHES
@@ -46,7 +38,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public SparkClosedLoopController getController() {
-        return closedLoopController;
+        return m_pidController;
     }
 
     public void setSpeed(double speed) {
