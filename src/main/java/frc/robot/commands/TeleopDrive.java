@@ -55,7 +55,9 @@ public class TeleopDrive extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_swerve.drive(0.0, 0.0, 0.0, true);
+  }
 
   // Returns true when the command should end.
   @Override
@@ -75,7 +77,7 @@ public class TeleopDrive extends Command {
    * @return  The output, calculated joystick value
    * 
    * {@link}  https://docs.wpilib.org/en/stable/docs/software/hardware-apis/motors/wpi-drive-classes.html#squaring-inputs
-   * {@link}  https://www.desmos.com/calculator/sa4awcpmtq
+   * {@link}  https://www.desmos.com/calculator/eztstjacns
    */
   private double calcDeliveredStickSpeed(final double joystick, final SlewRateLimiter limiter) {
     final double deadbandValue = MathUtil.applyDeadband(joystick, ControllerConstants.kDeadband);
