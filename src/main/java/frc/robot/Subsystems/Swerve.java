@@ -43,7 +43,7 @@ public class Swerve extends SubsystemBase {
       SwerveDrivebaseConstants.kFrontLeftTurnID,
       SwerveDrivebaseConstants.kFrontLeftCANCoderID,
       SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset,
-      SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint
+      SwerveDrivebaseConstants.kCANcoderAbsDiscontPoint
     );
 
     m_frontRight = new SwerveModule(
@@ -51,7 +51,7 @@ public class Swerve extends SubsystemBase {
       SwerveDrivebaseConstants.kFrontRightTurnID,
       SwerveDrivebaseConstants.kFrontRightCANCoderID,
       SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset,
-      SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint
+      SwerveDrivebaseConstants.kCANcoderAbsDiscontPoint
     );
 
     m_backLeft = new SwerveModule(
@@ -59,7 +59,7 @@ public class Swerve extends SubsystemBase {
       SwerveDrivebaseConstants.kBackLeftTurnID,
       SwerveDrivebaseConstants.kBackLeftCANCoderID,
       SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset,
-      SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint
+      SwerveDrivebaseConstants.kCANcoderAbsDiscontPoint
     );
 
     m_backRight = new SwerveModule(
@@ -67,7 +67,7 @@ public class Swerve extends SubsystemBase {
       SwerveDrivebaseConstants.kBackRightTurnID,
       SwerveDrivebaseConstants.kBackRightCANCoderID,
       SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset,
-      SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint
+      SwerveDrivebaseConstants.kCANcoderAbsDiscontPoint
     );
 
     m_kinematics = new SwerveDriveKinematics(
@@ -147,13 +147,6 @@ public class Swerve extends SubsystemBase {
 
   public double getStraightDistance() { // meters
     return ((m_frontLeft.getDriveDistance() + m_frontRight.getDriveDistance() + m_backLeft.getDriveDistance() + m_backRight.getDriveDistance()) / 4.0);
-  }
-
-  public void configureCANCoders() {
-    m_frontLeft.configMagnets(SwerveDrivebaseConstants.kFrontLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontLeftCANCoderAbsoluteSensorDiscontinuityPoint);
-    m_frontRight.configMagnets(SwerveDrivebaseConstants.kFrontRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kFrontRightCANCoderAbsoluteSensorDiscontinuityPoint);
-    m_backLeft.configMagnets(SwerveDrivebaseConstants.kBackLeftCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackLeftCANCoderAbsoluteSensorDiscontinuityPoint);
-    m_backRight.configMagnets(SwerveDrivebaseConstants.kBackRightCANCoderMagnetOffset, SwerveDrivebaseConstants.kBackRightCANCoderAbsoluteSensorDiscontinuityPoint);
   }
 
   public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {

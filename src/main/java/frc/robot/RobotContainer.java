@@ -19,9 +19,8 @@ import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriveToDistance;
-import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorGoToSetpoint;
-import frc.robot.commands.ElevatorUp;
+import frc.robot.commands.ElevatorMove;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Elevator;
@@ -51,10 +50,10 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.leftBumper().whileTrue(new ElevatorDown(m_elevator, -.23));
-    m_commandController.leftTrigger().whileTrue(new ElevatorDown(m_elevator, -.63));
-    m_commandController.rightBumper().whileTrue(new ElevatorUp(m_elevator, .23));
-    m_commandController.rightTrigger().whileTrue(new ElevatorUp(m_elevator, .63));
+    m_commandController.leftBumper().whileTrue(new ElevatorMove(m_elevator, -.23));
+    m_commandController.leftTrigger().whileTrue(new ElevatorMove(m_elevator, -.63));
+    m_commandController.rightBumper().whileTrue(new ElevatorMove(m_elevator, .23));
+    m_commandController.rightTrigger().whileTrue(new ElevatorMove(m_elevator, .63));
     m_commandController.a().whileTrue(new Shoot(m_shooter, .45));      // shoots slow
     m_commandController.b().onTrue(new Intake(m_shooter, 14.5));    // intakes
     m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0));      // shoots faster
@@ -80,6 +79,8 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+    
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravFFCommand());
    }
 
    public Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
