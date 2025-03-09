@@ -87,8 +87,8 @@ public class Constants {
 
     public static class ElevatorConstants {
         
-        public static final int kMaster = 10;
-        public static final int kSlave = 5;
+        public static final int kMasterID = 10;
+        public static final int kSlaveID = 5;
 
         public static final double kP = 0;
         public static final double kI = 0;

@@ -5,20 +5,12 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-      
-import frc.robot.Constants;
+
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-
 import frc.robot.Constants.SwerveConstants;
 
 /** Add your docs here. */
@@ -42,10 +34,30 @@ public class Configs {
         public static final SparkMaxConfig ELEV_SLAVE_CONFIG = new SparkMaxConfig();
         public static final SparkMaxConfig ELEV_MASTER_CONFIG = new SparkMaxConfig();
 
+        static{
+            ELEV_SLAVE_CONFIG.follow(10, true)
+                .idleMode(IdleMode.kBrake);
+            ELEV_MASTER_CONFIG.inverted(true)
+            .idleMode(IdleMode.kBrake);
+
+            ELEV_MASTER_CONFIG.encoder
+                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
+                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
+
+            ELEV_SLAVE_CONFIG.encoder
+                .positionConversionFactor(1.0 / ElevatorConstants.kGearRatio)
+                .velocityConversionFactor(1.0 / ElevatorConstants.kGearRatio / 60.0);
+
+        }
+           
+        /* 
+        public static final SparkMaxConfig m_slaveConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig m_masterConfig = new SparkMaxConfig();
+
         static {
             m_masterConfig.encoder
                     .positionConversionFactor(Constants.ElevatorConstants.kRotationToMeters) // Converts Rotations to Meters
-                    .velocityConversionFactor(Constants.ElevatorConstants..kRotationToMeters / 60); // Converts RPM to MPS
+                    .velocityConversionFactor(Constants.ElevatorConstants.kRotationToMeters / 60); // Converts RPM to MPS
             m_masterConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     .pid(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD, ClosedLoopSlot.kSlot0)//Change PID with these constants.                    .outputRange(-1, 1, ClosedLoopSlot.kSlot0)
@@ -60,11 +72,12 @@ public class Configs {
             m_masterConfig.closedLoopRampRate(Constants.ElevatorConstants.kRampRate);
             m_slaveConfig.closedLoopRampRate(Constants.ElevatorConstants.kRampRate);
         }
+            */
     }
   
     public static final class SwerveModuleConfigs {
-        public static final SparkMaxConfig m_masterConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig m_slaveConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
+        public static final SparkMaxConfig m_configTurn = new SparkMaxConfig();
 
 
 
