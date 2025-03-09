@@ -18,7 +18,7 @@ public class ElevatorGoToSetpoint extends Command {
   public ElevatorGoToSetpoint(double goal, Elevator elevator) {
     m_setpoint = goal; 
     m_elevator = elevator;
-    m_setpoint = setpoint;
+    // m_setpoint = setpoint;
     addRequirements(elevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -47,10 +47,10 @@ public class ElevatorGoToSetpoint extends Command {
   @Override
   public boolean isFinished() {
     if (m_elevator.getPosition - m_setpoint > 0.05){
-        true;
+        return true;
     }
     else{ 
-        false;
+        return false;
     }
   }
 }

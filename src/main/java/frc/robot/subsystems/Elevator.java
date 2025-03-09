@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.sim.SparkMaxSim;
@@ -27,34 +27,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Configs.ElevatorConfigs;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 
-public class ElevatorSubsystem extends SubsystemBase
+public class Elevator extends SubsystemBase
 {
   // Set up elevator properties
-  private final SparkMax m_master = new SparkMax(Constants.ElevatorConstants.kMaster, MotorType.kBrushless);
-  private final SparkMax m_slave = new SparkMax(Constants.ElevatorConstants.kSlave, MotorType.kBrushless);
+  private final SparkMax m_master = new SparkMax(Constants.ElevatorConstants.kMasterID, MotorType.kBrushless);
+  private final SparkMax m_slave = new SparkMax(Constants.ElevatorConstants.kSlaveID, MotorType.kBrushless);
   private final SparkClosedLoopController m_controller = m_master.getClosedLoopController();
   private final RelativeEncoder m_encoderMaster = m_master.getEncoder();
   private final RelativeEncoder m_encoderSlave = m_slave.getEncoder();
 
   ElevatorFeedforward m_feedforward =
       new ElevatorFeedforward(
-          ElevatorConstants.kElevatorkS,
-          ElevatorConstants.kElevatorkG,
-          ElevatorConstants.kElevatorkV,
-          ElevatorConstants.kElevatorkA);
+          ElevatorConstants.kS,
+          ElevatorConstants.kG,
+          ElevatorConstants.kV,
+          ElevatorConstants.kA);
   
   // Constructor
   public Elevator()
   {
 
     //Configure motors
-    m_masterConfig.disableFollowerMode();
-    m_master.configure(ElevatorConstants.m_masterConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-    m_slaveConfig.follow(m_master,true);
-    m_slave.configure(ElevatorConstants.m_slaveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    m_master.configure(ElevatorConfigs.ELEV_MASTER_CONFIG, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    ElevatorConfigs.ELEV_SLAVE_CONFIG.follow(m_master,true);
+    m_slave.configure(ElevatorConfigs.ELEV_SLAVE_CONFIG, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
@@ -63,7 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase
   }
 
   public void resetEncoder(){
-    m_encoder.setPosition(0);
+    m_encoderMaster.setPosition(0);
   }
 
   /**
@@ -73,25 +73,23 @@ public class ElevatorSubsystem extends SubsystemBase
    */
   public void goToSetpoint(double height)
   {
-      m_controller.setReference(height,
-        ControlType.kPosition, 
-        0,
-        m_feedforward.calculate(0)));
-        //m_encoder.getVelocity()));
+      m_controller.setReference(
+        height, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedforward.calculate(0));
+
   }
 
   public double getPosition()
   {
-    return m_encoder.getPosition();
+    return m_encoderMaster.getPosition();
   }
 
  
-  public Trigger atPosition(double height, double tolerance)
-  {
-    return new Trigger(() -> MathUtil.isNear(height,
-                                             getHeight(),
-                                             tolerance));
-  }
+//   public Trigger atPosition(double height, double tolerance)
+//   {
+//     return new Trigger(() -> MathUtil.isNear(height,
+//                                              getHeight(),
+//                                              tolerance));
+//   }
 
   /**
    * Set the goal of the elevator
@@ -115,7 +113,7 @@ public class ElevatorSubsystem extends SubsystemBase
   }
 
   public void HoverElevator(){
-    m_master.setVoltage(ElevatorConstants.kElevatorkG);
+    m_master.setVoltage(ElevatorConstants.kG);
   }
   
   public void ElevatorDown(){
@@ -126,7 +124,7 @@ public class ElevatorSubsystem extends SubsystemBase
   public void periodic() {
 
     SmartDashboard.putNumber("master position", m_encoderMaster.getPosition());
-    SmartDashboard.putNumber("slave position", m_encoderSlave.getPosition())
+    SmartDashboard.putNumber("slave position", m_encoderSlave.getPosition());
 
   }
 

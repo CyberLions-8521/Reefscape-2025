@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.DriveToDistance;
-import frc.robot.Commands.ElevatorDown;
+// import frc.robot.Commands.ElevatorDown;
 import frc.robot.Commands.ElevatorGoToSetpoint;
-import frc.robot.Commands.ElevatorGoToL2;
-import frc.robot.Commands.ElevatorGoToL3;
-import frc.robot.Commands.ElevatorGoToL4;
-import frc.robot.Commands.ElevatorUp;
+// import frc.robot.Commands.ElevatorGoToL2;
+// import frc.robot.Commands.ElevatorGoToL3;
+// import frc.robot.Commands.ElevatorGoToL4;
+// import frc.robot.Commands.ElevatorUp;
 import frc.robot.Commands.Intake;
 import frc.robot.Commands.Shoot;
 import frc.robot.Constants.ControllerConstants;
@@ -35,7 +35,7 @@ import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
-  private final Elevator m_elevator = new Elevator(ElevatorConstants.kMasterID, ElevatorConstants.kSlaveID);
+  private final Elevator m_elevator = new Elevator();
   private final Shooter m_shooter = new Shooter(ShooterConstants.kMasterID, ShooterConstants.kSlaveID);
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
@@ -58,10 +58,10 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.rightTrigger().whileTrue(new ElevatorUp());
-    m_commandController.leftTrigger().whileTrue(new ElevatorDown());
+    // m_commandController.rightTrigger().whileTrue(new ElevatorUp());
+    // m_commandController.leftTrigger().whileTrue(new ElevatorDown());
 
-    m_commandController.rightBumper.onTrue(new ElevatorGoToSetpoint(1.0, m_elevator));
+    // m_commandController.rightBumper.onTrue(new ElevatorGoToSetpoint(1.0, m_elevator));
 
 
 
