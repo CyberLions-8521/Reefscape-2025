@@ -149,7 +149,10 @@ public class Swerve extends SubsystemBase {
   }
 
   public double getStraightDistance() { // meters
-    return ((m_frontLeft.getDriveDistance() + m_frontRight.getDriveDistance() + m_backLeft.getDriveDistance() + m_backRight.getDriveDistance()) / 4.0);
+    return (Math.abs(m_frontLeft.getDriveDistance())  +
+            Math.abs(m_frontRight.getDriveDistance()) +
+            Math.abs(m_backLeft.getDriveDistance())   +
+            Math.abs(m_backRight.getDriveDistance())) / 4.0;
   }
 
   public Command testMotorsCommand(Supplier<Double> speed, Supplier<Double> steer) {
