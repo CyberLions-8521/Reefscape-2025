@@ -8,21 +8,20 @@ public class Constants {
     }
 
     public static class SwerveConstants {
-        public static final double encoderPort = 0.0;
-      
         public static final int turnMotorFreeLimit = 20; 
         public static final int turnMotorStallLimit = 20;
         public static final int driveMotorFreeLimit = 40;
         public static final int driveMotorStallLimit = 40;
 
-        private static final double kWheelDiameter = Units.inchesToMeters(4);   //inches
-        public static final double kDriveGearRatio = 6.75; 
-        public static final double kTurnGearRatio = (150.0 / 7.0); 
+        private static final double kWheelDiameter = Units.inchesToMeters(4);
         private static final double kWheelCircumference = Math.PI * kWheelDiameter;
-
+        private static final double kDriveGearRatio = 6.75;  // found on SDS page for MK4i
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio;
+
+        private static final double kTurnGearRatio = (150.0 / 7.0);        
         public static final double kAngleConversion = 360;
         public static final double kTurnConversionFactor = kAngleConversion / kTurnGearRatio;
+
         private static final double kDrivingMotorFreeSpeedRps = 5676.0 / 60.0; //neo free rpm = 5676 rpm
         private static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps * kDriveConversionFactor;
         public static final double driveFF = 1.0 / kDriveWheelFreeSpeedRps;
@@ -37,7 +36,7 @@ public class Constants {
 
 
     public static class SwerveDrivebaseConstants {
-        public static final double kSlewRateLimiter = 3.0; //NOT FOR SURE YET
+        public static final double kSlewRateLimiter = 3.0;
         public static final int kFrontLeftDriveID  = 6;
         public static final int kFrontLeftTurnID   = 4;
         public static final int kFrontRightDriveID = 3;
@@ -102,10 +101,8 @@ public class Constants {
     }
 
     public static class OperaterConstants {
-
         public static final int kDriveControllerPort = 0;
         public static final int kCommandControllerPort = 1;
-    
     }
 
     public static class ShooterConstants {
