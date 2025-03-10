@@ -69,16 +69,16 @@ public class Elevator extends SubsystemBase {
         });
         }*/
 
-    public Command manualElevCommand(double speed) {
+    public Command getManualElevCommand(double speed) {
         return new FunctionalCommand(
             () -> {},
             () -> m_motorMaster.set(speed),
             interrupted -> m_motorMaster.set(0),
-            () -> ElevatorConstants.kMaxHeight <= getPosition(),
+            () -> ElevatorConstants.kMaxHeight <= getPosition() || ElevatorConstants.kMinHeight >= getPosition(),
             this);
     }
 
-    public Command stopElevCommand() {
+    public Command getStopElevCommand() {
         return this.run(() -> m_motorMaster.set(0));
     }
 
@@ -90,7 +90,7 @@ public class Elevator extends SubsystemBase {
         return m_encoder.getVelocity();
     }
 
-    public Command resetEncoderCommand() {
+    public Command getResetEncoderCommand() {
         return this.run(() -> resetEncoder());
     }
 
@@ -116,7 +116,7 @@ public class Elevator extends SubsystemBase {
         m_setpoint = new TrapezoidProfile.State(getPosition(), getVelocity());
     }
 
-    public Command moveToPositionCommand(double position) {
+    public Command getMoveToPositionCommand(double position) {
         return this.run(() -> setGoal(position, 0))
                    .andThen(this.run(() -> updateSetpoint()));
     }

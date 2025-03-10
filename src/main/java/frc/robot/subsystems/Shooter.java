@@ -10,9 +10,13 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.ShooterConfigs;
+import frc.robot.Constants.ElevatorConstants;
 
 public class Shooter extends SubsystemBase {
   SparkMax m_master;
@@ -38,8 +42,33 @@ public class Shooter extends SubsystemBase {
       SmartDashboard.putNumber("Shooter Velocity", getSpeed());
   }
 
-  //SHOOTER COMMANDS
-  
+  //SHOOTER
+  public Command getIntakeComamand(double distance) {
+        return new FunctionalCommand(
+            () -> {
+              this.resetEncoders();
+              this.setSpeed(0.2);
+            },
+            () -> {},
+            interrupted -> this.setSpeed(0.0),
+            () -> (MathUtil.isNear(distance, this.getDistance(), 0.5)),
+            this);
+        }
+
+
+
+  public Command getShootCommand(double speed) {
+        return new FunctionalCommand(
+            () -> {},
+            () -> {
+              this.setSpeed(speed);
+            },
+            interrupted -> this.setSpeed(0.0),
+            () -> false,
+            this);
+    }
+
+
   public void setSpeed(double speed) {
     m_master.set(speed);
   }

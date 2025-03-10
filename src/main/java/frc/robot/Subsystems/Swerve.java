@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveDrivebaseConstants;
@@ -119,6 +121,15 @@ public class Swerve extends SubsystemBase {
     m_frontRight.setDesiredState(m_swerveModuleStates[1]);
     m_backLeft.setDesiredState(m_swerveModuleStates[2]);
     m_backRight.setDesiredState(m_swerveModuleStates[3]);
+  }
+
+  public FunctionalCommand getDriveCommand(double distance) {
+    return new FunctionalCommand (
+      () -> this.resetEncoders(),
+      () -> this.drive(1.0, 0, 0,true),
+      interrupted -> this.drive(0, 0, 0, true), 
+      () -> MathUtil.isNear(distance, this.getStraightDistance(), 0.1), 
+      this);
   }
 
   public void resetGyro() {
