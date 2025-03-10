@@ -43,7 +43,7 @@ public class Shooter extends SubsystemBase {
   }
 
   //SHOOTER
-  public Command getIntakeComamand(double distance) {
+  public Command getIntakeCommand(double distance) {
         return new FunctionalCommand(
             () -> {
               this.resetEncoders();

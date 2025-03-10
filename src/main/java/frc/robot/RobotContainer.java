@@ -52,10 +52,10 @@ public class RobotContainer {
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.5));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.5));
 
-    m_commandController.a().whileTrue(new Shoot(m_shooter, .45));      // shoots slow
-    m_commandController.b().onTrue(new Intake(m_shooter, 14.5));    // intakes
-    m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0));      // shoots faster
-    m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); // intake assist
+    m_commandController.a().whileTrue(m_shooter.getShootCommand(0.45));      // shoots slow 
+    m_commandController.b().onTrue(m_shooter.getIntakeCommand(14.5));    
+    m_commandController.x().whileTrue(m_shooter.getShootCommand(1.0));      // shoots faster
+    m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
     
     m_shooter.register();
 
@@ -78,7 +78,7 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
     
-    m_elevator.setDefaultCommand(m_elevator.applyAntiGravFFCommand());
+    m_elevator.setDefaultCommand(m_elevator.getApplyAntiGravFFCommand());
    }
 
    private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
