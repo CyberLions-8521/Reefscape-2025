@@ -52,40 +52,36 @@ public class RobotContainer {
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.5));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.5));
 
-    m_commandController.a().whileTrue(m_shooter.getShootCommand(0.45));      // shoots slow
-    m_commandController.b().onTrue(m_shooter.getIntakeComamand(14.5));    // intakes
-    m_commandController.x().whileTrue(m_shooter.getShootCommand(1.0));      // shoots faster
-    m_commandController.y().onTrue(getIntakeComamand(2.21232)); // intake assist
-        
-        m_shooter.register();
+    m_commandController.a().whileTrue(new Shoot(m_shooter, .45));      // shoots slow
+    m_commandController.b().onTrue(new Intake(m_shooter, 14.5));    // intakes
+    m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0));      // shoots faster
+    m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); // intake assist
     
-        m_driveController.b().onTrue(m_db.resetEncodersCommand());
-        m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_shooter.register();
+
+    m_driveController.b().onTrue(m_db.resetEncodersCommand());
+    m_driveController.a().onTrue(m_db.resetGyroCommand());
+
+    // regular drive with slew rate applied
+    m_db.setDefaultCommand(getDriveCommand(
+      1,
+      getJoystickValues(m_driveController::getLeftY, vx_limiter),
+      getJoystickValues(m_driveController::getLeftX, vy_limiter),
+      getJoystickValues(m_driveController::getRightX, omega_limiter),
+      m_driveController.getHID()::getRightBumperButton));
     
-        // regular drive with slew rate applied
-        m_db.setDefaultCommand(getDriveCommand(
-          1,
-          getJoystickValues(m_driveController::getLeftY, vx_limiter),
-          getJoystickValues(m_driveController::getLeftX, vy_limiter),
-          getJoystickValues(m_driveController::getRightX, omega_limiter),
-          m_driveController.getHID()::getRightBumperButton));
-        
-        // brake driving - left trigger
-        m_driveController.leftTrigger().whileTrue(getDriveCommand(
-          0.5,
-          getJoystickValues(m_driveController::getLeftY, vx_limiter),
-          getJoystickValues(m_driveController::getLeftX, vy_limiter),
-          getJoystickValues(m_driveController::getRightX, omega_limiter),
-          m_driveController.getHID()::getRightBumperButton));
-        
-       }
+    // brake driving - left trigger
+    m_driveController.leftTrigger().whileTrue(getDriveCommand(
+      0.5,
+      getJoystickValues(m_driveController::getLeftY, vx_limiter),
+      getJoystickValues(m_driveController::getLeftX, vy_limiter),
+      getJoystickValues(m_driveController::getRightX, omega_limiter),
+      m_driveController.getHID()::getRightBumperButton));
     
-       private Command getIntakeComamand(double d) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIntakeComamand'");
-      }
-    
-      private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravFFCommand());
+   }
+
+   private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
     return new RunCommand(
       () -> m_db.drive(
         -vx.get() * multiplier * SwerveDrivebaseConstants.kMaxMetersPerSecond,
