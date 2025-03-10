@@ -22,7 +22,7 @@ public class ElevatorGoToSetpoint extends Command {
     m_elevator = elevator;
     m_speed = speed;
     
-    m_currentPos = m_elevator.getPositon();
+    m_currentPos = m_elevator.getPosition();
 
     m_setpoint = setpoint;
     addRequirements(elevator);
@@ -58,6 +58,6 @@ public class ElevatorGoToSetpoint extends Command {
   @Override
   public boolean isFinished() {
 
-    return (MathUtil.isNear(1.33, m_elevator.getPositon(), 0.3));
+    return (MathUtil.isNear(1.33, m_elevator.getPosition(), 0.3));
   }
 }

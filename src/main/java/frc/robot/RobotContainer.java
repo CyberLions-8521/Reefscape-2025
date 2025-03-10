@@ -49,7 +49,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     
-    NamedCommands.registerCommand("Go to setpoint L1", new ElevatorGoToSetpoint(0, m_elevator, 0)); //placeholder
+    NamedCommands.registerCommand("Go to setpoint L1", new ElevatorGoToSetpoint(0, m_elevator, 0)); 
 
     autoChooser = AutoBuilder.buildAutoChooser();
 

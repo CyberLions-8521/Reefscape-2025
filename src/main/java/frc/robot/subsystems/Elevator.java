@@ -40,7 +40,7 @@ public class Elevator extends SubsystemBase {
         closedLoopController = m_motorMaster.getClosedLoopController();
     }
 
-    public double getPositon() { //INCHES
+    public double getPosition() { //INCHES
         return m_encoder.getPosition();
     }
 
