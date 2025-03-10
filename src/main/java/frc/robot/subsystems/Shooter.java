@@ -4,15 +4,15 @@
 
 package frc.robot.Subsystems;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
-import frc.robot.Configs.MotorConfigs;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs.ShooterConfigs;
 
 public class Shooter extends SubsystemBase {
   SparkMax m_master;
@@ -28,18 +28,24 @@ public class Shooter extends SubsystemBase {
 
     m_masterEncoder = m_master.getEncoder();
     m_slaveEncoder = m_slave.getEncoder();
-    m_master.configure(MotorConfigs.SHOOT_MASTER_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    m_slave.configure(MotorConfigs.SHOOT_SLAVE_CONFIG, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_master.configure(ShooterConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_slave.configure(ShooterConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter distance", getDistance());
+  //DATA LOGGING
+  private void logData(){
+      SmartDashboard.putNumber("Shooter Position", getDistance());
+      SmartDashboard.putNumber("Shooter Velocity", getSpeed());
   }
 
+  //SHOOTER COMMANDS
+  
   public void setSpeed(double speed) {
     m_master.set(speed);
+  }
+
+  public double getSpeed() {
+    return m_master.get();
   }
 
   public double getDistance() {
@@ -49,5 +55,10 @@ public class Shooter extends SubsystemBase {
   public void resetEncoders() {
     m_masterEncoder.setPosition(0.0);
     m_slaveEncoder.setPosition(0.0);
+  }
+
+  @Override
+  public void periodic() {
+    logData();
   }
 }
