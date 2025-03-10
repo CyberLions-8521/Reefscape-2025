@@ -80,7 +80,6 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
     
-    m_elevator.setDefaultCommand(m_elevator.applyAntiGravFFCommand());
    }
 
    private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
