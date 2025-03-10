@@ -46,7 +46,7 @@ public class Configs {
                 .withNeutralMode(NeutralModeValue.Brake);
 
             KRAKEN_CONFIGURATION.Feedback
-                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kCircumference);
+                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kGearCircumference);
 
 
             ELEV_SLAVE_CONFIG.follow(10, true)

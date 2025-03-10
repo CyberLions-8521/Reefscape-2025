@@ -67,7 +67,7 @@ public class RobotContainer {
     m_commandController.b().onTrue(new Intake(m_shooter, 14.5)); //intakes
     m_commandController.y().onTrue(new Intake(m_shooter, 2.21232)); //intake assist
 
-    m_commandController.a().whileTrue(new Shoot(m_shooter, .45)); //shoots slow
+    m_commandController.a().whileTrue(new Shoot(m_shooter, -.45)); //shoots slow
     m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
     m_shooter.register();
 
@@ -81,6 +81,7 @@ public class RobotContainer {
             getJoystickValues(m_driveController::getLeftX, vy_limiter),
             getJoystickValues(m_driveController::getRightX, omega_limiter),
             m_driveController.getHID()::getRightBumperButton));
+    m_elevator.setDefaultCommand(m_elevator.getSetpointCommand());
     
     //brake driving - left trigger
     m_driveController.leftTrigger().whileTrue(getDriveCommand (

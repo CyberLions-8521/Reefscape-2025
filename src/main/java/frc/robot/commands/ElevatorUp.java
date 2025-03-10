@@ -41,6 +41,6 @@ public class ElevatorUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (MathUtil.isNear(6.03, m_elevator.getPositon(), 0.05));// 5.6
+    return (MathUtil.isNear(6.03, m_elevator.getPosition(), 0.05));// 5.6
   }
 }

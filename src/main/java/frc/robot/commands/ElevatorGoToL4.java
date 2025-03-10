@@ -22,7 +22,7 @@ public class ElevatorGoToL4 extends Command {
     m_elevator = elevator;
     m_speed = speed;
     
-    m_currentPos = m_elevator.getPositon();
+    m_currentPos = m_elevator.getPosition();
 
     m_setpoint = setpoint;
     addRequirements(elevator);
@@ -60,7 +60,7 @@ public class ElevatorGoToL4 extends Command {
     //return MathUtil.isNear(m_desiredSetpoint, m_elevator.getPositon(), 1e-5);
     //return m_elevator.atSetpoint();
     
-      return (MathUtil.isNear(6.03, m_elevator.getPositon(), 0.05));
+      return (MathUtil.isNear(6.03, m_elevator.getPosition(), 0.05));
     
     
   }
