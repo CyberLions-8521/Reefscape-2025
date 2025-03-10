@@ -13,33 +13,26 @@ public class Intake extends Command {
   Shooter m_shooter;
   double m_distance;
 
-
   public Intake(Shooter shooter, double distance) {
     m_shooter = shooter;
     m_distance = distance;
-    
     addRequirements(shooter);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_shooter.resetEncoders();
-    m_shooter.setSpeed(.2);
+    m_shooter.setSpeed(0.2);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {}
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.setSpeed(0.0);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return (MathUtil.isNear(m_distance, m_shooter.getDistance(), 0.5));

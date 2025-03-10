@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.ElevatorConfigs;
 import frc.robot.Constants.ElevatorConstants;
@@ -26,7 +27,7 @@ public class Elevator extends SubsystemBase {
     private final TrapezoidProfile m_profile;
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
-
+    
     public Elevator(int masterMotorPort, int slaveMotorPort) {
         m_motorMaster = new SparkMax(masterMotorPort, MotorType.kBrushless);
         m_motorSlave  = new SparkMax(slaveMotorPort , MotorType.kBrushless);
@@ -38,6 +39,7 @@ public class Elevator extends SubsystemBase {
         m_setpoint = new TrapezoidProfile.State(getPosition(),0);
         m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
 
         resetEncoder();
         putPIDSmartDashboard();
@@ -56,18 +58,29 @@ public class Elevator extends SubsystemBase {
     }
 
     //ELEVATOR COMMANDS
-    public void manualElev(double speed) {  //input values between -0.5 and 0.5
-        if (MathUtil.isNear(ElevatorConstants.kMaxHeight, getPosition(), 0.05) && speed > 0) {
-            m_motorMaster.set(0);
-        } else if (getPosition() <= ElevatorConstants.kMinHeight && speed < 0) {
-            m_motorMaster.set(0);
-        } else {
-            m_motorMaster.set(speed);
-        }
+    /*public Command manualElevCommand(double speed) {  //input values between -0.5 and 0.5
+        return this.run(() -> {
+            if (ElevatorConstants.kMaxHeight <= getPosition() && speed > 0) {
+                m_motorMaster.set(0);
+            } else if (getPosition() <= ElevatorConstants.kMinHeight && speed < 0) {
+                m_motorMaster.set(0);
+            } else {
+                m_motorMaster.set(speed);
+            }
+        });
+        }*/
+
+    public Command manualElevCommand(double speed) {
+        return new FunctionalCommand(
+            () -> {},
+            () -> m_motorMaster.set(speed),
+            interrupted -> m_motorMaster.set(0),
+            () -> ElevatorConstants.kMaxHeight <= getPosition(),
+            this);
     }
 
-    public void stopElev() {
-        m_motorMaster.set(0);
+    public Command stopElevCommand() {
+        return this.run(() -> m_motorMaster.set(0));
     }
 
     public double getPosition() {
@@ -101,15 +114,14 @@ public class Elevator extends SubsystemBase {
 
     //not sure if this works
     public void updateSetpoint() {
-        m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
-        m_pidController.setReference(m_setpoint.position, 
-            ControlType.kPosition);
+        m_setpoint = new TrapezoidProfile.State(getPosition(), getVelocity());
     }
 
     public Command moveToPositionCommand(double position) {
         return this.run(() -> setGoal(position, 0))
                    .andThen(this.run(() -> updateSetpoint()));
     }
+    
     
     private void tunePIDSmartDashboard() {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);

@@ -19,7 +19,6 @@ import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriveToDistance;
-import frc.robot.commands.ElevatorGoToSetpoint;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.Subsystems.Elevator;
@@ -49,10 +48,12 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.leftBumper().whileTrue(new ElevatorMove(m_elevator, -.23));
-    m_commandController.leftTrigger().whileTrue(new ElevatorMove(m_elevator, -.63));
-    m_commandController.rightBumper().whileTrue(new ElevatorMove(m_elevator, .23));
-    m_commandController.rightTrigger().whileTrue(new ElevatorMove(m_elevator, .63));
+    m_commandController.leftBumper().whileTrue(m_elevator.manualElevCommand(-0.2));
+    m_commandController.rightBumper().whileTrue(m_elevator.manualElevCommand(0.2));
+
+    m_commandController.leftBumper().whileTrue(m_elevator.manualElevCommand(-0.5));
+    m_commandController.rightBumper().whileTrue(m_elevator.manualElevCommand(0.5));
+
     m_commandController.a().whileTrue(new Shoot(m_shooter, .45));      // shoots slow
     m_commandController.b().onTrue(new Intake(m_shooter, 14.5));    // intakes
     m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0));      // shoots faster
