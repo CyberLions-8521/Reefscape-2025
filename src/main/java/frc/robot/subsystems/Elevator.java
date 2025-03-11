@@ -14,7 +14,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
 import frc.robot.Configs.MotorConfigs;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -65,12 +64,6 @@ public class Elevator extends SubsystemBase {
 
     public void logData() {
         SmartDashboard.putNumber("Elevator Position", m_encoder.getPosition());
-
-        SmartDashboard.putNumber("t x",  LimelightHelpers.getTX(""));
-        SmartDashboard.putNumber("t y", LimelightHelpers.getTY(""));
-        SmartDashboard.putNumber("t area", LimelightHelpers.getTA(""));
-        SmartDashboard.putBoolean("t valid", LimelightHelpers.getTV(""));
-        SmartDashboard.putNumber("tag id", LimelightHelpers.getFiducialID(""));
     }
 
     @Override
