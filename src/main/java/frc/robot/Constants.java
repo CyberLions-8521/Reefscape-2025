@@ -91,6 +91,10 @@ public class Constants {
         public static final double kG = 0.28;
         public static final double kV = 0;
         public static final double kA = 0;
+        public static final double kL1Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL2Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL3Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL4Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
     }
 
     public static class OperaterConstants {

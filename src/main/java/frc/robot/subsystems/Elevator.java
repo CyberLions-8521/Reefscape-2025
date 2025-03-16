@@ -4,6 +4,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -110,19 +111,17 @@ public class Elevator extends SubsystemBase {
     }   
 
     //ELEVATOR MOTION PROFILE | for setpoints
-    public void updateSetpoint(){
+    public void initializeSetpoint(){ //tells code what the actual position is    
         m_setpoint = new TrapezoidProfile.State(getPosition(), m_encoder.getVelocity());
     }
     
     public void setGoal(double desiredPosition, double desiredVelocity){
         m_goal = new TrapezoidProfile.State(desiredPosition, desiredVelocity);
-        goToSetpoint();
     }
 
     private void goToSetpoint() {
         m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
-        double m_output = m_setpoint.position + m_feedForward.calculate(m_setpoint.velocity);
-        m_pidController.setReference(m_output, ControlType.kPosition);
+        m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(0));
     }
 
     public boolean atSetpoint() {
@@ -132,15 +131,23 @@ public class Elevator extends SubsystemBase {
     public Command getSetpointCommand(double setpoint) {
         return new FunctionalCommand(
             () -> {
-                updateSetpoint();
+                initializeSetpoint();
                 setGoal(setpoint, 0);
             },
             () -> {
                 goToSetpoint();
             },
-            interrupted -> m_motorMaster.set(0),
+            interrupted -> applyAntiGravityFF(),
             () -> atSetpoint(),
             this);
+    }
+
+    public void applyAntiGravityFF(){
+        m_motorMaster.setVoltage(m_feedForward.calculate(0));
+    }
+
+    public Command applyAntiGravityFFCommand(){
+        return this.run(this::applyAntiGravityFF);
     }
 
     private void tunePIDSmartDashboard() {

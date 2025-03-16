@@ -46,16 +46,18 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.2));
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.5));
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.5));
+    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.35)); //elevator up
+    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.35)); //elevator down
 
-    m_commandController.a().whileTrue(m_shooter.getShootCommand(0.45));      // shoots slow 
-    m_commandController.b().onTrue(m_shooter.getIntakeCommand(14.5));    
-    m_commandController.x().whileTrue(m_shooter.getShootCommand(1.0));      // shoots faster
-    m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
+    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(0.3)); //shoots slow
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.8)); //shoots fast
+
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+
     
     m_shooter.register();
 
