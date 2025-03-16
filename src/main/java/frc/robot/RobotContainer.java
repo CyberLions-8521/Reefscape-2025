@@ -79,6 +79,8 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
     
    }
 
