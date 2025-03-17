@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Limelight extends SubsystemBase {
 
-    private final String limelightName = "limelight";
+    private final String limelightName = "limelight-twoplus";
     public static final int defaultPipeline = 0;
 
     public Limelight(int pipeline) {

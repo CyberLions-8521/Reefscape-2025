@@ -33,6 +33,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.Limelight;
 
 public class RobotContainer {
   private final Elevator m_elevator = new Elevator(ElevatorConstants.kMaster, ElevatorConstants.kSlave);
@@ -40,6 +41,7 @@ public class RobotContainer {
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final Swerve m_db = new Swerve();
+  private final Limelight limelight = new Limelight();
 
   SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
@@ -70,6 +72,7 @@ public class RobotContainer {
     m_commandController.a().whileTrue(new Shoot(m_shooter, .45)); //shoots slow
     m_commandController.x().whileTrue(new Shoot(m_shooter, 1.0)); //shoots faster
     m_shooter.register();
+    // limelight.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
