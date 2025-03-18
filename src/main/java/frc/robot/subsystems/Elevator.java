@@ -121,7 +121,7 @@ public class Elevator extends SubsystemBase {
 
     private void goToSetpoint() {
         m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
-        m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(0));
+        m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(m_setpoint.velocity));
     }
 
     public boolean atSetpoint() {

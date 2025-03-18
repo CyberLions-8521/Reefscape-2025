@@ -85,8 +85,8 @@ public class Constants {
         public static final double kMinHeight = 0;      // Output revolutions
         public static final double kGearCircumference = Units.inchesToMeters(0);    // meters TODO: MUST BE CONFIGURED    
         public static final double kRotationToMeters = kGearCircumference / kGearRatio;
-        public static final double kMaxVelocity = 2;
-        public static final double kMaxAcceleration = 2;
+        public static final double kMaxVelocity = 0.1;
+        public static final double kMaxAcceleration = 0.1;
         public static final double kS = 0.0;
         public static final double kG = 0.28;
         public static final double kV = 0;
