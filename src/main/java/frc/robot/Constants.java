@@ -102,4 +102,10 @@ public class Constants {
         public static final int kMasterID = 25;
         public static final int kSlaveID = 17;
     }
+
+    public static class LimelightConstants {
+        public static final String limelightName = "limelight-twoplus";
+        public static final int[] blueTags = {17, 18, 19, 20, 21, 22};
+        public static final int[] redTags = {6, 7, 8, 9, 10, 11};
+    }
 }
