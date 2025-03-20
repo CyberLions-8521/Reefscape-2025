@@ -18,6 +18,7 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.AlignToReef;
 import frc.robot.commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
@@ -61,6 +62,8 @@ public class RobotContainer {
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_driveController.x().onTrue(new AlignToReef("red", m_db, true));
+    m_driveController.y().onTrue(new AlignToReef("blue", m_db, false));
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(

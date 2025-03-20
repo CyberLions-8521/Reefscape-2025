@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.SwerveModule;
 
@@ -38,10 +39,10 @@ public class Swerve extends SubsystemBase {
 
   private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
 
-  private final PIDController m_strafeController =
-    new PIDController(SwerveDrivebaseConstants.kStrafeP,
-                      SwerveDrivebaseConstants.kStrafeI,
-                      SwerveDrivebaseConstants.kStrafeD);
+  public final PIDController m_alignPID =
+    new PIDController(LimelightConstants.kP,
+                      LimelightConstants.kI,
+                      LimelightConstants.kD);
   
   public Swerve() {
     m_gyro.reset();

@@ -9,13 +9,16 @@ import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Subsystems.Swerve;
 
+
 public class AlignToReef extends Command {
     
     private final Swerve m_db;
+    private boolean isRight;
+    String limelightName = LimelightConstants.limelightName;
 
     private int[] teamReefTags;
 
-    public AlignToReef(String teamColor, Swerve m_db) {
+    public AlignToReef(String teamColor, Swerve m_db, boolean isRight) {
         this.m_db = m_db;
         this.addRequirements(m_db);
 
@@ -24,6 +27,8 @@ public class AlignToReef extends Command {
         } else if (teamColor.equals("red")) {
             teamReefTags = LimelightConstants.redTags;
         }
+        
+        this.isRight = isRight;
     }
 
     public boolean tagListIncludes(int[] tagList, int target) {
@@ -41,20 +46,11 @@ public class AlignToReef extends Command {
 
     @Override
     public void execute() {
-        String limelightName = LimelightConstants.limelightName;
         boolean targetValid = LimelightHelpers.getTV(limelightName);
         int tagId = (int) LimelightHelpers.getFiducialID(limelightName);
 
         if (targetValid && tagListIncludes(teamReefTags, tagId)) {
-            double tagXOffset = LimelightHelpers.getTX(limelightName);
-            double tagXOffsetTolerance = 5.0;
-
-            //has no pid yet
-            if (Math.abs(tagXOffset) > tagXOffsetTolerance) {
-                m_db.drive(0, 0, 0, false);
-            } else {
-                m_db.drive(0, 0, 0, false);
-            }
+            m_db.drive(0, m_db.m_alignPID.calculate(LimelightHelpers.getTX(LimelightConstants.limelightName), 0.0), 0, false);
         }
     }
 
@@ -65,7 +61,6 @@ public class AlignToReef extends Command {
 
     @Override
     public boolean isFinished() {
-        String limelightName = LimelightConstants.limelightName;
         boolean targetValid = LimelightHelpers.getTV(limelightName);
         int tagId = (int) LimelightHelpers.getFiducialID(limelightName);
 
