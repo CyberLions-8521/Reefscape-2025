@@ -21,6 +21,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AlignToReef;
 import frc.robot.commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.LimelightTester;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
     configureAutos();
@@ -59,6 +61,7 @@ public class RobotContainer {
     m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
     
     m_shooter.register();
+    limelight.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
