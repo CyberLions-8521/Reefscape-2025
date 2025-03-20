@@ -17,6 +17,8 @@ public class AlignToReef extends Command {
 
     public AlignToReef(String teamColor, Swerve m_db) {
         this.m_db = m_db;
+        this.addRequirements(m_db);
+
         if (teamColor.equals("blue")) {
             teamReefTags = LimelightConstants.blueTags;
         } else if (teamColor.equals("red")) {
@@ -47,8 +49,9 @@ public class AlignToReef extends Command {
             double tagXOffset = LimelightHelpers.getTX(limelightName);
             double tagXOffsetTolerance = 5.0;
 
+            //has no pid yet
             if (Math.abs(tagXOffset) > tagXOffsetTolerance) {
-                m_db.drive(0, tagXOffset * 0.03, 0, false);
+                m_db.drive(0, 0, 0, false);
             } else {
                 m_db.drive(0, 0, 0, false);
             }

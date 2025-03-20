@@ -102,9 +102,10 @@ public class Swerve extends SubsystemBase {
   }
 
   // Need to configure setpoint in Constants.java for REEF poles relative to AprilTag
-  public void limelightStrafe() {
-    drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
-  }
+  
+  // public void limelightStrafe() {
+  //   // drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
+  // }
 
   public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     SwerveModuleState[] m_swerveModuleStates;

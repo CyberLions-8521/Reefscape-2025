@@ -22,7 +22,6 @@ import frc.robot.commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
-import frc.robot.Subsystems.LimelightTester;
 
 public class RobotContainer {
   private final Swerve m_db = new Swerve();
@@ -59,7 +58,6 @@ public class RobotContainer {
     m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
     
     m_shooter.register();
-    // limelight.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
