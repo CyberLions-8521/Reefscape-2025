@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -8,6 +9,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +24,7 @@ public class Elevator extends SubsystemBase {
     private SparkMax m_motorSlave;
     private RelativeEncoder m_encoder;
     private SparkClosedLoopController m_pidController;
-    private final ElevatorFeedforward m_feedForward;
+    private ElevatorFeedforward m_feedForward;
     private final TrapezoidProfile m_profile;
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
@@ -49,11 +51,17 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("ElevP", m_motorMaster.configAccessor.closedLoop.getP());
         SmartDashboard.putNumber("ElevI", m_motorMaster.configAccessor.closedLoop.getI());
         SmartDashboard.putNumber("ElevD", m_motorMaster.configAccessor.closedLoop.getD());
+        SmartDashboard.putNumber("ElevV", 0);
+   
     }
 
     private void logData(){
         SmartDashboard.putNumber("Elev Position", getPosition());
         SmartDashboard.putNumber("Elev Velocity", getVelocity());
+        SmartDashboard.putNumber("Setpoint Pos", m_setpoint.position);
+        SmartDashboard.putNumber("goal velocity", m_setpoint.velocity);
+        SmartDashboard.putNumber("FF Voltage", m_feedForward.calculate(m_setpoint.velocity));
+        
     }
 
     //ELEVATOR COMMANDS
@@ -74,7 +82,7 @@ public class Elevator extends SubsystemBase {
             () -> {},
             () -> m_motorMaster.set(speed),
             interrupted -> m_motorMaster.set(0),
-            () -> ElevatorConstants.kMaxHeight <= getPosition() || ElevatorConstants.kMinHeight >= getPosition(),
+            () ->  ElevatorConstants.kMaxHeight <= getPosition(),
             this);
     }
 
@@ -90,6 +98,52 @@ public class Elevator extends SubsystemBase {
         return m_encoder.getVelocity();
     }
 
+    public void setVelocity(double velocity) {
+        m_pidController.setReference(velocity, ControlType.kVelocity);
+    }   
+
+    //ELEVATOR MOTION PROFILE | for setpoints
+    public void initializeSetpoint(){ //tells code what the actual position is    
+        m_setpoint = new TrapezoidProfile.State(getPosition(), m_encoder.getVelocity());
+    }
+    
+    public void setGoal(double desiredPosition, double desiredVelocity){
+        m_goal = new TrapezoidProfile.State(desiredPosition, desiredVelocity);
+    }
+
+    private void goToSetpoint() {
+        m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
+        m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(m_setpoint.velocity));
+    }
+
+    public boolean atSetpoint() {
+        return MathUtil.isNear(m_goal.position, getPosition(), 0.1);
+    }
+
+    public Command getSetpointCommand(double setpoint) {
+        return new FunctionalCommand(
+            () -> {
+                initializeSetpoint();
+                setGoal(setpoint, 0);
+            
+            },
+            () -> {
+                
+                goToSetpoint();
+            },
+            interrupted -> applyAntiGravityFF(),
+            () -> atSetpoint(),
+            this);
+    }
+
+    public void applyAntiGravityFF(){
+        m_motorMaster.setVoltage(m_feedForward.calculate(0));
+    }
+
+    public Command applyAntiGravityFFCommand(){
+        return this.run(this::applyAntiGravityFF);
+    }
+
     public Command getResetEncoderCommand() {
         return this.run(() -> resetEncoder());
     }
@@ -98,49 +152,41 @@ public class Elevator extends SubsystemBase {
         m_encoder.setPosition(0.0);
     }
 
-    //ELEVATOR MOTION PROFILE | for setpoints
-    public void setGoal(double position, double velocity) {
-        m_goal = new TrapezoidProfile.State(position, velocity);
-    }
-    public void setPosition(double position) {
-        setGoal(position, 0);
-        updateSetpoint();
-    }
 
-    public void setVelocity(double velocity) {
-        m_pidController.setReference(velocity, ControlType.kVelocity);
-    }
 
-    //not sure if this works
-    public void updateSetpoint() {
-        m_setpoint = new TrapezoidProfile.State(getPosition(), getVelocity());
-    }
-
-    public Command getMoveToPositionCommand(double position) {
-        return this.run(() -> setGoal(position, 0))
-                   .andThen(this.run(() -> updateSetpoint()));
-    }
-    
     
     private void tunePIDSmartDashboard() {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);
         double kI = SmartDashboard.getNumber("ElevI", 0.0);
         double kD = SmartDashboard.getNumber("ElevD", 0.0);
-
+        double kV = SmartDashboard.getNumber("ElevV", 0);
+        
         if (kP != m_motorMaster.configAccessor.closedLoop.getP() ||
             kI != m_motorMaster.configAccessor.closedLoop.getI() ||
-            kD != m_motorMaster.configAccessor.closedLoop.getD()) {
+            kD != m_motorMaster.configAccessor.closedLoop.getD() ||
+            kV != ElevatorConstants.kV ) {
             ElevatorConfigs.kMasterConfig.closedLoop.pid(kP, kI, kD);
             ElevatorConfigs.kSlaveConfig.closedLoop.pid(kP, kI, kD);
+            m_feedForward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, kV);
+           
+            ElevatorConstants.kV = kV;
+            ElevatorConstants.kP = kP;
+            ElevatorConstants.kI = kI;
+            ElevatorConstants.kD = kD;
+            
 
             m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         }
     }
 
+
+
     @Override
     public void periodic() {
         logData();
+        tunePIDSmartDashboard();
+    
     }
 
 }

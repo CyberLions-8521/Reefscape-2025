@@ -18,7 +18,6 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -35,32 +34,32 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
   public RobotContainer() {
-    configureAutos();
     configureBindings();
     SmartDashboard.putData(m_chooser);
   }
 
-  private void configureAutos() {
-    m_chooser.setDefaultOption("No Auto", null);
-    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
-  }
  
   private void configureBindings() {
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.2));
+ 
+    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
+
+    m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(13.0));
+
+    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.5));
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.5));
-
-    m_commandController.a().whileTrue(m_shooter.getShootCommand(0.45));      // shoots slow 
-    m_commandController.b().onTrue(m_shooter.getIntakeCommand(14.5));    
-    m_commandController.x().whileTrue(m_shooter.getShootCommand(1.0));      // shoots faster
-    m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
     
     m_shooter.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(
