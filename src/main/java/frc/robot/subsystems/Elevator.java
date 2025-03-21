@@ -51,7 +51,7 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("ElevP", m_motorMaster.configAccessor.closedLoop.getP());
         SmartDashboard.putNumber("ElevI", m_motorMaster.configAccessor.closedLoop.getI());
         SmartDashboard.putNumber("ElevD", m_motorMaster.configAccessor.closedLoop.getD());
-        SmartDashboard.putNumber("ElevV", 0);
+        SmartDashboard.putNumber("ElevV", m_feedForward.getKv());
    
     }
 
@@ -110,7 +110,7 @@ public class Elevator extends SubsystemBase {
     public void setGoal(double desiredPosition, double desiredVelocity){
         m_goal = new TrapezoidProfile.State(desiredPosition, desiredVelocity);
     }
-
+//print position of goal and elevator to tune kA
     private void goToSetpoint() {
         m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
         m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(m_setpoint.velocity));
@@ -159,12 +159,12 @@ public class Elevator extends SubsystemBase {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);
         double kI = SmartDashboard.getNumber("ElevI", 0.0);
         double kD = SmartDashboard.getNumber("ElevD", 0.0);
-        double kV = SmartDashboard.getNumber("ElevV", 0);
+        double kV = SmartDashboard.getNumber("ElevV", 0.0);
         
         if (kP != m_motorMaster.configAccessor.closedLoop.getP() ||
             kI != m_motorMaster.configAccessor.closedLoop.getI() ||
             kD != m_motorMaster.configAccessor.closedLoop.getD() ||
-            kV != ElevatorConstants.kV ) {
+            kV != m_feedForward.getKv()) {
             ElevatorConfigs.kMasterConfig.closedLoop.pid(kP, kI, kD);
             ElevatorConfigs.kSlaveConfig.closedLoop.pid(kP, kI, kD);
             m_feedForward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, kV);
@@ -185,7 +185,7 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         logData();
-        tunePIDSmartDashboard();
+        //tunePIDSmartDashboard();
     
     }
 

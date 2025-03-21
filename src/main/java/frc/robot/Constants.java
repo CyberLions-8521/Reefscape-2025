@@ -74,7 +74,7 @@ public class Constants {
         public static final int kMaster = 10;
         public static final int kSlave = 5;
 
-        public static double kP = 0;
+        public static double kP = 0.8;
         public static double kI = 0;
         public static double kD = 0;
         public static final double kRampRate = 0.2;
@@ -85,15 +85,15 @@ public class Constants {
         public static final double kMinHeight = 0;      // Output revolutions
         public static final double kGearCircumference = Units.inchesToMeters(0);    // meters TODO: MUST BE CONFIGURED    
         public static final double kRotationToMeters = kGearCircumference / kGearRatio;
-        public static final double kMaxVelocity = 2;
-        public static final double kMaxAcceleration = 2;
+        public static final double kMaxVelocity = 26;
+        public static final double kMaxAcceleration = 7.8;
         public static final double kS = 0;
         public static  double kG = 0.8;
-        public static double kV = 0.1;
-        public static final double kA = 0;
+        public static double kV = 0.75;
+        public static final double kA = 0.2;
         public static final double kL1Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
-        public static final double kL2Setpoint = 2; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
-        public static final double kL3Setpoint = 3; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL2Setpoint = 1; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL3Setpoint = 2; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
         public static final double kL4Setpoint = 4; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
     }
 
