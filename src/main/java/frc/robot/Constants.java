@@ -108,6 +108,8 @@ public class Constants {
         public static final int[] blueTags = {17, 18, 19, 20, 21, 22};
         public static final int[] redTags = {6, 7, 8, 9, 10, 11};
 
+        public static final double tagXOffsetTolerance = 5.0;
+
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
