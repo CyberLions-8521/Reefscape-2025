@@ -63,7 +63,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
     // regular drive with slew rate applied
-    m_db.setDefaultCommand(getDriveCommand(
+    m_db.setDefaultCommand(this.getDriveCommand(
       1,
       getJoystickValues(m_driveController::getLeftY, vx_limiter),
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
@@ -71,9 +71,8 @@ public class RobotContainer {
       m_driveController.getHID()::getRightBumperButton));
     
     // brake driving - left trigger
-    m_driveController.leftTrigger().whileTrue(getDriveCommand(
+    m_driveController.leftTrigger().whileTrue(this.getDriveCommand(
       0.5,
-
       getJoystickValues(m_driveController::getLeftY, vx_limiter),
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
