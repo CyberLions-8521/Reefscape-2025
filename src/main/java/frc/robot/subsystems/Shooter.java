@@ -47,7 +47,7 @@ public class Shooter extends SubsystemBase {
         return new FunctionalCommand(
             () -> {
               this.resetEncoders();
-              this.setSpeed(0.2);
+              this.setSpeed(0.15);
             },
             () -> {},
             interrupted -> this.setSpeed(0.0),
