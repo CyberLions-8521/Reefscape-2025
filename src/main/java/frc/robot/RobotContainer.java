@@ -49,24 +49,27 @@ public class RobotContainer {
   }
  
   private void configureBindings() {
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.2));
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.5));
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.5));
+    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.35)); //elevator up
+    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.35)); //elevator down
 
-    m_commandController.a().whileTrue(m_shooter.getShootCommand(0.45));      // shoots slow 
-    m_commandController.b().onTrue(m_shooter.getIntakeCommand(14.5));    
-    m_commandController.x().whileTrue(m_shooter.getShootCommand(1.0));      // shoots faster
-    m_commandController.y().onTrue(m_shooter.getIntakeCommand(2.21232)); // intake assist
+    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(0.3)); //shoots slow
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.8)); //shoots fast
+
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants
+    .kL3Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+
     
     m_shooter.register();
     limelight.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_driveController.x().onTrue(new AlignToReef("red", m_db, true));
-    m_driveController.y().onTrue(new AlignToReef("blue", m_db, false));
+    m_driveController.x().onTrue(new AlignToReef(m_db, 0.0));
+    m_driveController.y().onTrue(new AlignToReef(m_db, 0.0));
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(
@@ -83,6 +86,9 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
+    
    }
 
    private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {

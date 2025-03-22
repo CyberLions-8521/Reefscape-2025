@@ -4,10 +4,12 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,6 +57,8 @@ public class Elevator extends SubsystemBase {
     private void logData(){
         SmartDashboard.putNumber("Elev Position", getPosition());
         SmartDashboard.putNumber("Elev Velocity", getVelocity());
+        SmartDashboard.putNumber("Elev Setpoint Position", m_setpoint.position);
+        SmartDashboard.putNumber("Elev Setpoint Velocity", m_setpoint.velocity);
     }
 
     //ELEVATOR COMMANDS
@@ -69,6 +73,10 @@ public class Elevator extends SubsystemBase {
             }
         });
         }*/
+    
+    public void setSpeed(double speed) {
+        m_motorMaster.set(speed);
+    }
 
     public Command getManualElevCommand(double speed) {
         return new FunctionalCommand(
@@ -99,6 +107,7 @@ public class Elevator extends SubsystemBase {
         m_encoder.setPosition(0.0);
     }
 
+<<<<<<< HEAD
 
     //ELEVATOR MOTION PROFILE | for setpoints
     public void setGoal(double position, double velocity) {
@@ -109,21 +118,52 @@ public class Elevator extends SubsystemBase {
         updateSetpoint();
     }
 
+=======
+>>>>>>> origin/raymond-setpoints
     public void setVelocity(double velocity) {
         m_pidController.setReference(velocity, ControlType.kVelocity);
-    }
+    }   
 
-    //not sure if this works
-    public void updateSetpoint() {
-        m_setpoint = new TrapezoidProfile.State(getPosition(), getVelocity());
-    }
-
-    public Command getMoveToPositionCommand(double position) {
-        return this.run(() -> setGoal(position, 0))
-                   .andThen(this.run(() -> updateSetpoint()));
+    //ELEVATOR MOTION PROFILE | for setpoints
+    public void initializeSetpoint(){ //tells code what the actual position is    
+        m_setpoint = new TrapezoidProfile.State(getPosition(), m_encoder.getVelocity());
     }
     
-    
+    public void setGoal(double desiredPosition, double desiredVelocity){
+        m_goal = new TrapezoidProfile.State(desiredPosition, desiredVelocity);
+    }
+
+    private void goToSetpoint() {
+        m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
+        m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(m_setpoint.velocity));
+    }
+
+    public boolean atSetpoint() {
+        return MathUtil.isNear(m_goal.position, getPosition(), 0.1);
+    }
+
+    public Command getSetpointCommand(double setpoint) {
+        return new FunctionalCommand(
+            () -> {
+                initializeSetpoint();
+                setGoal(setpoint, 0);
+            },
+            () -> {
+                goToSetpoint();
+            },
+            interrupted -> applyAntiGravityFF(),
+            () -> atSetpoint(),
+            this);
+    }
+
+    public void applyAntiGravityFF(){
+        m_motorMaster.setVoltage(m_feedForward.calculate(0));
+    }
+
+    public Command applyAntiGravityFFCommand(){
+        return this.run(this::applyAntiGravityFF);
+    }
+
     private void tunePIDSmartDashboard() {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);
         double kI = SmartDashboard.getNumber("ElevI", 0.0);

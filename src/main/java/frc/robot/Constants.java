@@ -85,12 +85,16 @@ public class Constants {
         public static final double kMinHeight = 0;      // Output revolutions
         public static final double kGearCircumference = Units.inchesToMeters(0);    // meters TODO: MUST BE CONFIGURED    
         public static final double kRotationToMeters = kGearCircumference / kGearRatio;
-        public static final double kMaxVelocity = 2;
-        public static final double kMaxAcceleration = 2;
+        public static final double kMaxVelocity = 0.1;
+        public static final double kMaxAcceleration = 0.1;
         public static final double kS = 0.0;
         public static final double kG = 0.28;
         public static final double kV = 0;
         public static final double kA = 0;
+        public static final double kL1Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL2Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL3Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kL4Setpoint = 0; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
     }
 
     public static class OperaterConstants {
@@ -104,11 +108,12 @@ public class Constants {
     }
 
     public static class LimelightConstants {
-        public static final String limelightName = "limelight-twoplus";
+        public static final String kName = "limelight-twoplus";
         public static final int[] blueTags = {17, 18, 19, 20, 21, 22};
         public static final int[] redTags = {6, 7, 8, 9, 10, 11};
 
         public static final double tagXOffsetTolerance = 5.0;
+        public static final double kReefSetpoint = 0.0;
 
         public static final double kP = 0.0;
         public static final double kI = 0.0;

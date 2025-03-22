@@ -39,7 +39,7 @@ public class Swerve extends SubsystemBase {
 
   private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
 
-  public final PIDController m_alignPID =
+  private final PIDController m_alignPID =
     new PIDController(LimelightConstants.kP,
                       LimelightConstants.kI,
                       LimelightConstants.kD);
@@ -108,6 +108,14 @@ public class Swerve extends SubsystemBase {
   //   // drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
   // }
 
+  public void setReefAlignSetpoint(double setpoint) {
+    m_alignPID.setSetpoint(setpoint);
+  }
+
+  public double alignToReefCalculate(double measurement) {
+    return(m_alignPID.calculate(measurement));
+  }
+
   public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     SwerveModuleState[] m_swerveModuleStates;
     if(fieldRelative) {
@@ -137,21 +145,6 @@ public class Swerve extends SubsystemBase {
   public void resetGyro() {
     m_gyro.reset();
   }
-
-  public Command runOnce(Runnable runnable) {
-    return new Command() {
-      @Override
-      public void initialize() {
-        runnable.run();
-      }
-
-      @Override
-      public boolean isFinished() {
-        return true;
-      }
-    };
-  }
-
 
   public void stopModules() {
     m_frontLeft.stop();
