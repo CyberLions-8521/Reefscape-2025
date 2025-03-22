@@ -96,6 +96,7 @@ public class Constants {
         public static final double kL2Setpoint = 1.433;//values from tuning
         public static final double kL3Setpoint = 3.2;//values from tuning
         public static final double kL4Setpoint = 4;//values from tuning
+        public static final double kCHAIR = 2.24;
     }
 
     public static class OperaterConstants {
