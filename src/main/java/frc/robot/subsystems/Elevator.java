@@ -107,19 +107,12 @@ public class Elevator extends SubsystemBase {
         m_encoder.setPosition(0.0);
     }
 
-<<<<<<< HEAD
 
-    //ELEVATOR MOTION PROFILE | for setpoints
-    public void setGoal(double position, double velocity) {
-        m_goal = new TrapezoidProfile.State(position, velocity);
-    }
     public void setPosition(double position) {
         setGoal(position, 0);
-        updateSetpoint();
+        // updateSetpoint();
     }
 
-=======
->>>>>>> origin/raymond-setpoints
     public void setVelocity(double velocity) {
         m_pidController.setReference(velocity, ControlType.kVelocity);
     }   

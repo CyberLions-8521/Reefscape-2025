@@ -196,7 +196,15 @@ public class Swerve extends SubsystemBase {
   }
  
   public void periodic() {
-    logData();
+    //logData();
+    tunePIDSmartDashboard();
+  }
+
+  public void tunePIDSmartDashboard() {
+    double kP = SmartDashboard.getNumber("turnP", 0);
+    if (kP != m_alignPID.getP()) {
+      m_alignPID.setP(kP);
+    }
   }
 
 }
