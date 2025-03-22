@@ -44,29 +44,29 @@ public class Shooter extends SubsystemBase {
 
   //SHOOTER
   public Command getIntakeCommand(double distance) {
-        return new FunctionalCommand(
-            () -> {
-              this.resetEncoders();
-              this.setSpeed(0.15);
-            },
-            () -> {},
-            interrupted -> this.setSpeed(0.0),
-            () -> (MathUtil.isNear(distance, this.getDistance(), 0.5)),
-            this);
-        }
+    return new FunctionalCommand(
+      () -> {
+        this.resetEncoders();
+        this.setSpeed(0.15);
+      },
+      () -> {},
+      interrupted -> this.setSpeed(0.0),
+      () -> (MathUtil.isNear(distance, this.getDistance(), 0.5)),
+      this);
+  }
 
 
 
   public Command getShootCommand(double speed) {
-        return new FunctionalCommand(
-            () -> {},
-            () -> {
-              this.setSpeed(speed);
-            },
-            interrupted -> this.setSpeed(0.0),
-            () -> false,
-            this);
-    }
+    return new FunctionalCommand(
+      () -> {},
+      () -> {
+        this.setSpeed(speed);
+      },
+      interrupted -> this.setSpeed(0.0),
+      () -> false,
+      this);
+  }
 
 
   public void setSpeed(double speed) {

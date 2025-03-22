@@ -136,21 +136,6 @@ public class Swerve extends SubsystemBase {
     m_gyro.reset();
   }
 
-  public Command runOnce(Runnable runnable) {
-    return new Command() {
-      @Override
-      public void initialize() {
-        runnable.run();
-      }
-
-      @Override
-      public boolean isFinished() {
-        return true;
-      }
-    };
-  }
-
-
   public void stopModules() {
     m_frontLeft.stop();
     m_frontRight.stop();
@@ -185,6 +170,7 @@ public class Swerve extends SubsystemBase {
   public Command resetGyroCommand() {
     return this.runOnce(this::resetGyro);
   }
+  
 
   public void resetEncoders(){
     m_frontLeft.resetEncoder();
