@@ -155,7 +155,7 @@ public class Elevator extends SubsystemBase {
 
 
     
-    private void tunePIDSmartDashboard() {
+   /*  private void tunePIDSmartDashboard() {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);
         double kI = SmartDashboard.getNumber("ElevI", 0.0);
         double kD = SmartDashboard.getNumber("ElevD", 0.0);
@@ -178,7 +178,7 @@ public class Elevator extends SubsystemBase {
             m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         }
-    }
+    }*/
 
 
 

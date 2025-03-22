@@ -85,17 +85,17 @@ public class Constants {
         public static final double kMinHeight = 0;      // Output revolutions
         public static final double kGearCircumference = Units.inchesToMeters(0);    // meters TODO: MUST BE CONFIGURED    
         public static final double kRotationToMeters = kGearCircumference / kGearRatio;
-        public static final double kMaxVelocity = 26;
-        public static final double kMaxAcceleration = 7.8;
-        public static final double kS = 0;
-        public static  double kG = 0.8;
-        public static double kV = 0.75;
-        public static final double kA = 0.2;
-        public static final double kBaseSetpoint = 0;
-        public static final double kL1Setpoint = 0.5; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
-        public static final double kL2Setpoint = 1.433; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
-        public static final double kL3Setpoint = 3.2; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
-        public static final double kL4Setpoint = 4; //NEEDS TO BE SET!!!!!!!!!!!!!!!!!!!
+        public static final double kMaxVelocity = 26;//values from tuning
+        public static final double kMaxAcceleration = 7.8;//values from tuning
+        public static final double kS = 0;//values from tuning
+        public static final double kG = 0.8;  //values from tuning
+        public static final double kV = 0.75;  //values from tuning
+        public static final double kA = 0.2; //values from tuning
+        public static final double kBaseSetpoint = 0;  //values from tuning
+        public static final double kL1Setpoint = 0.5; //values from tuning
+        public static final double kL2Setpoint = 1.433;//values from tuning
+        public static final double kL3Setpoint = 3.2;//values from tuning
+        public static final double kL4Setpoint = 4;//values from tuning
     }
 
     public static class OperaterConstants {
