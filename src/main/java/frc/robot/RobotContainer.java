@@ -68,8 +68,8 @@ public class RobotContainer {
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_driveController.x().onTrue(new AlignToReef(m_db, 0.0));
-    m_driveController.y().onTrue(new AlignToReef(m_db, 0.0));
+    //m_driveController.x().onTrue(new AlignToReef(m_db, 0.0));
+    //m_driveController.y().onTrue(new AlignToReef(m_db, 0.0));
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(

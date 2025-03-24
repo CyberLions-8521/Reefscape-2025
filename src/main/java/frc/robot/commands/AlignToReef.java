@@ -13,22 +13,20 @@ import frc.robot.Subsystems.Swerve;
 
 public class AlignToReef extends Command {
     private final Swerve m_db;
-    private final double m_setpoint;
 
-    public AlignToReef(Swerve m_db, double setpoint) {
+    public AlignToReef(Swerve m_db) {
         this.m_db = m_db;
-        m_setpoint = setpoint;
         this.addRequirements(m_db);
     }
 
     @Override
     public void initialize() {
-        m_db.setReefAlignSetpoint(m_setpoint);
+
     }
 
     @Override
     public void execute() {
-        m_db.drive(0, m_db.alignToReefCalculate(LimelightHelpers.getTX(LimelightConstants.kName)), 0, false);
+        //m_db.drive(0, m_db.alignToReefCalculate(LimelightHelpers.getTX(LimelightConstants.kName)), 0, false);
     }
 
     @Override
@@ -38,6 +36,7 @@ public class AlignToReef extends Command {
 
     @Override
     public boolean isFinished() {
-        return MathUtil.isNear(m_setpoint, LimelightHelpers.getTX(LimelightConstants.kName), LimelightConstants.tagXOffsetTolerance) || !LimelightHelpers.getTV(LimelightConstants.kName);
+        //return MathUtil.isNear(distance, LimelightHelpers.getTX(LimelightConstants.kName), LimelightConstants.tagXOffsetTolerance) || !LimelightHelpers.getTV(LimelightConstants.kName);
+        return true;
     }
 }

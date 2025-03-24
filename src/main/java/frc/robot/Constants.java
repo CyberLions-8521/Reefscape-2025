@@ -118,5 +118,10 @@ public class Constants {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
+
+        public static final double kCamAngle = 0.0; //-50
+        public static final double kOffsetAngle = 0.0; //-8.8
+        public static final double kCamHeight = 0.0;
+        public static final double kAprilTagHeight = 0.0;
     }
 }

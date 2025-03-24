@@ -112,6 +112,13 @@ public class Swerve extends SubsystemBase {
     m_alignPID.setSetpoint(setpoint);
   }
 
+  public double calculateDistance(){
+    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight;
+    double angleSum = LimelightConstants.kCamAngle + LimelightConstants.kOffsetAngle;
+    // sin angleSum = h/D
+    return 0.0;
+  }
+
   public double alignToReefCalculate(double measurement) {
     return(m_alignPID.calculate(measurement));
   }
