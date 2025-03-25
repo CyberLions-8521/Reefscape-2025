@@ -120,6 +120,10 @@ public class SwerveModule {
         m_turnEncoder.setPosition(m_CANcoder.getAbsolutePosition().getValueAsDouble() * (SwerveConstants.kAngleConversion));  //degrees
     }
 
+    public void setEncoderDistance(double distance) {
+        m_driveEncoder.setPosition(distance);
+    }
+
     public void stop() {
         m_driveMotor.set(0);
         m_turnMotor.set(0);

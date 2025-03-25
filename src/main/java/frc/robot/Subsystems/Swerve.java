@@ -175,6 +175,13 @@ public class Swerve extends SubsystemBase {
     m_backRight.resetEncoder();
   }
 
+  public void setEncoderDistance(double distance){
+    m_frontLeft.setEncoderDistance(distance);
+    m_frontRight.setEncoderDistance(distance);
+    m_backLeft.setEncoderDistance(distance);
+    m_backRight.setEncoderDistance(distance);
+  }
+
   public double getStraightDistance() { // meters
     return (Math.abs(m_frontLeft.getDriveDistance())  +
             Math.abs(m_frontRight.getDriveDistance()) +
@@ -183,15 +190,19 @@ public class Swerve extends SubsystemBase {
   }
 
   // AUTO ALIGN
-  public double calculateDistanceToReef(){
-    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight;
-    double angleSum = LimelightConstants.kCamAngle + LimelightConstants.kOffsetAngle;
-    double D = Math.abs(-h / Math.sin(angleSum));
-    return D * Math.tan(LimelightHelpers.getTX(LimelightConstants.kName));
+  public double calculateDistanceFromAprilTag(){
+    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight; //meters
+    double angleSum = LimelightConstants.kCamAngle + LimelightHelpers.getTY(LimelightConstants.kName); //degrees
+    double D = Math.abs(h / Math.sin(Math.toRadians(angleSum))); //meters
+    return D * Math.tan(Math.toRadians(LimelightHelpers.getTX(LimelightConstants.kName)));
   }
 
   public PIDController getAlignPID() {
     return m_alignPID;
+  }
+
+  public void setReefAlignSetpoint(double setpoint){
+    m_alignPID.setSetpoint(setpoint);
   }
 
   public void periodic() {
