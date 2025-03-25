@@ -26,8 +26,10 @@ public class AutoAlignToReef extends Command {
 
     @Override
     public void execute() {
-        double pidOutput = m_db.getAlignPID().calculate(m_db.calculateDistanceToReef());
-        m_db.drive(pidOutput, 0, 0, false);
+        if (LimelightHelpers.getTV(LimelightConstants.kName)){ //checks if limelight detects AprilTag
+            double pidOutput = m_db.getAlignPID().calculate(m_db.calculateDistanceToReef());
+            m_db.drive(pidOutput, 0, 0, false);
+        }
     }
 
     @Override
