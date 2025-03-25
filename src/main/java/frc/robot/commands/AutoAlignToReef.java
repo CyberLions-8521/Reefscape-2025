@@ -11,10 +11,10 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Subsystems.Swerve;
 
 
-public class AlignToReef extends Command {
+public class AutoAlignToReef extends Command {
     private final Swerve m_db;
 
-    public AlignToReef(Swerve m_db) {
+    public AutoAlignToReef(Swerve m_db) {
         this.m_db = m_db;
         this.addRequirements(m_db);
     }
@@ -26,17 +26,19 @@ public class AlignToReef extends Command {
 
     @Override
     public void execute() {
-        //m_db.drive(0, m_db.alignToReefCalculate(LimelightHelpers.getTX(LimelightConstants.kName)), 0, false);
+        double pidOutput = m_db.getAlignPID().calculate(m_db.calculateDistanceToReef());
+        m_db.drive(pidOutput, 0, 0, false);
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_db.drive(0, 0, 0, false);
+        //stop drive
+        m_db.drive(0,0,0, false);
     }
 
     @Override
     public boolean isFinished() {
-        //return MathUtil.isNear(distance, LimelightHelpers.getTX(LimelightConstants.kName), LimelightConstants.tagXOffsetTolerance) || !LimelightHelpers.getTV(LimelightConstants.kName);
-        return true;
+        //stop robot
+        return Math.abs(m_db.calculateDistanceToReef()) < LimelightConstants.kDistanceToReefThreshold;
     }
 }

@@ -102,27 +102,7 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("gyro roll", m_gyro.getRoll());
   }
 
-  // Need to configure setpoint in Constants.java for REEF poles relative to AprilTag
-  
-  // public void limelightStrafe() {
-  //   // drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
-  // }
-
-  public void setReefAlignSetpoint(double setpoint) {
-    m_alignPID.setSetpoint(setpoint);
-  }
-
-  public double calculateDistance(){
-    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight;
-    double angleSum = LimelightConstants.kCamAngle + LimelightConstants.kOffsetAngle;
-    // sin angleSum = h/D
-    return 0.0;
-  }
-
-  public double alignToReefCalculate(double measurement) {
-    return(m_alignPID.calculate(measurement));
-  }
-
+  //DRIVE COMMANDS
   public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     SwerveModuleState[] m_swerveModuleStates;
     if(fieldRelative) {
@@ -201,7 +181,19 @@ public class Swerve extends SubsystemBase {
             Math.abs(m_backLeft.getDriveDistance())   +
             Math.abs(m_backRight.getDriveDistance())) / 4.0;
   }
- 
+
+  // AUTO ALIGN
+  public double calculateDistanceToReef(){
+    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight;
+    double angleSum = LimelightConstants.kCamAngle + LimelightConstants.kOffsetAngle;
+    double D = Math.abs(-h / Math.sin(angleSum));
+    return D * Math.tan(LimelightHelpers.getTX(LimelightConstants.kName));
+  }
+
+  public PIDController getAlignPID() {
+    return m_alignPID;
+  }
+
   public void periodic() {
     //logData();
     tunePIDSmartDashboard();
