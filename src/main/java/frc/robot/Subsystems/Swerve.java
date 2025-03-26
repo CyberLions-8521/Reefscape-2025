@@ -92,6 +92,7 @@ public class Swerve extends SubsystemBase {
 
   public void logData() {
     SmartDashboard.putNumber("turnP", 0);
+    /* 
     SmartDashboard.putNumber("turnI", 0);
     SmartDashboard.putNumber("turnD", 0);
 
@@ -100,6 +101,7 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("gyro rate", m_gyro.getRate());
     SmartDashboard.putNumber("gyro pitch", m_gyro.getPitch());
     SmartDashboard.putNumber("gyro roll", m_gyro.getRoll());
+    */
   }
 
   //DRIVE COMMANDS

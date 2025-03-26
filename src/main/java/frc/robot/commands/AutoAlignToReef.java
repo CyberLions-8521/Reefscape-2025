@@ -14,6 +14,7 @@ import frc.robot.Subsystems.Swerve;
 public class AutoAlignToReef extends Command {
     private final Swerve m_db;
     private final double m_setpoint;
+    private double m_offset=0;
 
     public AutoAlignToReef(Swerve m_db, double m_setpoint) {
         this.m_db = m_db;
@@ -23,14 +24,20 @@ public class AutoAlignToReef extends Command {
 
     @Override
     public void initialize() {
-        m_db.setEncoderDistance(m_db.calculateDistanceFromAprilTag());
+        // m_db.setEncoderDistance(m_db.calculateDistanceFromAprilTag());
+        m_offset = m_db.calculateDistanceFromAprilTag();
+        m_db.resetEncoders();
         m_db.setReefAlignSetpoint(m_setpoint);
     }
 
     @Override
     public void execute() {
         //m_setpoint - m_db.calculateDistanceFromAprilTag() is the distance to the setpoint/reef
-        m_db.drive(m_db.getAlignPID().calculate(m_setpoint-m_db.calculateDistanceFromAprilTag()), 0, 0, false);
+        double currentDistance = m_db.getStraightDistance();
+        if (m_setpoint < 0){
+            currentDistance*=-1;
+        }
+        m_db.drive(0,m_db.getAlignPID().calculate(currentDistance+m_offset), 0, false);
     }
 
     @Override

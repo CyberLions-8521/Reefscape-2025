@@ -58,8 +58,7 @@ public class RobotContainer {
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.8)); //shoots fast
 
     m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants
-    .kL3Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
     m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
     m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
 
@@ -69,8 +68,7 @@ public class RobotContainer {
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_driveController.y().onTrue(new AutoAlignToReef(m_db, LimelightConstants.kDistanceToReef)); //align to right
-    m_driveController.x().onTrue(new AutoAlignToReef(m_db, -LimelightConstants.kDistanceToReef)); //align to left
+    m_driveController.y().onTrue(new AutoAlignToReef(m_db, LimelightConstants.kDistanceToReef));
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(
