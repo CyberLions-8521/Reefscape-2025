@@ -102,4 +102,9 @@ public class Constants {
         public static final int kMasterID = 25;
         public static final int kSlaveID = 17;
     }
+
+    public static class LEDConstants {
+        public static final int kLEDPort = 0;
+        public static final int kNumLEDs = 150;
+    }
 }

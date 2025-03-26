@@ -18,7 +18,7 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.DriveToDistance;
+import frc.robot.Commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -42,7 +42,7 @@ public class RobotContainer {
 
   private void configureAutos() {
     m_chooser.setDefaultOption("No Auto", null);
-    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
+    m_chooser.addOption("Drive Straight", m_db.getDriveCommand(4));
   }
  
   private void configureBindings() {
@@ -78,7 +78,7 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
     
-    m_elevator.setDefaultCommand(m_elevator.getApplyAntiGravFFCommand());
+    m_elevator.setDefaultCommand(m_elevator.getMoveToPositionCommand(m_elevator.getPosition()));
    }
 
    private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
