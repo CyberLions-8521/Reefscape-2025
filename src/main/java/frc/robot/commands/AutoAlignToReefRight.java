@@ -11,12 +11,13 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Subsystems.Swerve;
 
 
-public class AutoAlignToReef extends Command {
+public class AutoAlignToReefRight extends Command {
     private final Swerve m_db;
     private final double m_setpoint;
     private double m_offset=0;
+    private double currentDistance = 0;
 
-    public AutoAlignToReef(Swerve m_db, double m_setpoint) {
+    public AutoAlignToReefRight(Swerve m_db, double m_setpoint) {
         this.m_db = m_db;
         this.m_setpoint = m_setpoint; 
         this.addRequirements(m_db);
@@ -24,7 +25,7 @@ public class AutoAlignToReef extends Command {
 
     @Override
     public void initialize() {
-        // m_db.setEncoderDistance(m_db.calculateDistanceFromAprilTag());
+        //m_db.setEncoderDistance(m_db.calculateDistanceFromAprilTag());
         m_offset = m_db.calculateDistanceFromAprilTag();
         m_db.resetEncoders();
         m_db.setReefAlignSetpoint(m_setpoint);
@@ -33,11 +34,9 @@ public class AutoAlignToReef extends Command {
     @Override
     public void execute() {
         //m_setpoint - m_db.calculateDistanceFromAprilTag() is the distance to the setpoint/reef
-        double currentDistance = m_db.getStraightDistance();
-        if (m_setpoint < 0){
-            currentDistance*=-1;
-        }
-        m_db.drive(0,m_db.getAlignPID().calculate(currentDistance+m_offset), 0, false);
+        // currentDistance = -m_db.getStraightDistance();
+        //m_db.drive(0, m_db.getAlignPID().calculate(currentDistance+m_offset), 0, false);
+        m_db.drive(0,-0.5,0,false);
     }
 
     @Override
@@ -49,6 +48,8 @@ public class AutoAlignToReef extends Command {
     @Override
     public boolean isFinished() {
         //stop robot
-        return MathUtil.isNear(m_setpoint, m_setpoint-m_db.calculateDistanceFromAprilTag(), LimelightConstants.kDistanceToReefThreshold) || !LimelightHelpers.getTV(LimelightConstants.kName);
+        //return false;
+        return -m_db.getStraightDistance()+m_offset <= m_setpoint;
+        // return MathUtil.isNear(m_setpoint, currentDistance+m_db.calculateDistanceFromAprilTag(), LimelightConstants.kDistanceToReefThreshold) || !LimelightHelpers.getTV(LimelightConstants.kName);
     }
 }

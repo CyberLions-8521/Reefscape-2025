@@ -209,6 +209,10 @@ public class Swerve extends SubsystemBase {
 
   public void periodic() {
     //logData();
+    SmartDashboard.putNumber("TX", LimelightHelpers.getTX(LimelightConstants.kName));
+    SmartDashboard.putNumber("TY", LimelightHelpers.getTY(LimelightConstants.kName));
+    SmartDashboard.putNumber("Straight Distance", this.getStraightDistance());
+    SmartDashboard.putNumber("Offset", this.calculateDistanceFromAprilTag());
     tunePIDSmartDashboard();
   }
 

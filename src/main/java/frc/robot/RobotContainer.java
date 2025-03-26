@@ -20,7 +20,8 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.commands.DriveToDistance;
-import frc.robot.commands.AutoAlignToReef;
+import frc.robot.commands.AutoAlignToReefLeft;
+import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.LimelightTester;
 import frc.robot.Subsystems.Shooter;
@@ -57,10 +58,10 @@ public class RobotContainer {
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(0.3)); //shoots slow
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.8)); //shoots fast
 
-    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
-    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     
     m_shooter.register();
@@ -68,7 +69,8 @@ public class RobotContainer {
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_driveController.y().onTrue(new AutoAlignToReef(m_db, LimelightConstants.kDistanceToReef));
+    m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
+    m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
     // regular drive with slew rate applied
     m_db.setDefaultCommand(getDriveCommand(
