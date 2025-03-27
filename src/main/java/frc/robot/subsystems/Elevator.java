@@ -1,10 +1,10 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.Configs.ElevatorConfigs;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -25,7 +24,7 @@ public class Elevator extends SubsystemBase {
     private SparkMax m_motorSlave;
     private RelativeEncoder m_encoder;
     private SparkClosedLoopController m_pidController;
-    private final ElevatorFeedforward m_feedForward;
+    private ElevatorFeedforward m_feedForward;
     private final TrapezoidProfile m_profile;
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
@@ -52,13 +51,17 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("ElevP", m_motorMaster.configAccessor.closedLoop.getP());
         SmartDashboard.putNumber("ElevI", m_motorMaster.configAccessor.closedLoop.getI());
         SmartDashboard.putNumber("ElevD", m_motorMaster.configAccessor.closedLoop.getD());
+        SmartDashboard.putNumber("ElevV", m_feedForward.getKv());
+   
     }
 
     private void logData(){
         SmartDashboard.putNumber("Elev Position", getPosition());
         SmartDashboard.putNumber("Elev Velocity", getVelocity());
-        SmartDashboard.putNumber("Elev Setpoint Position", m_setpoint.position);
-        SmartDashboard.putNumber("Elev Setpoint Velocity", m_setpoint.velocity);
+        SmartDashboard.putNumber("Setpoint Pos", m_setpoint.position);
+        SmartDashboard.putNumber("goal velocity", m_setpoint.velocity);
+        SmartDashboard.putNumber("FF Voltage", m_feedForward.calculate(m_setpoint.velocity));
+        
     }
 
     //ELEVATOR COMMANDS
@@ -73,17 +76,13 @@ public class Elevator extends SubsystemBase {
             }
         });
         }*/
-    
-    public void setSpeed(double speed) {
-        m_motorMaster.set(speed);
-    }
 
     public Command getManualElevCommand(double speed) {
         return new FunctionalCommand(
             () -> {},
             () -> m_motorMaster.set(speed),
             interrupted -> m_motorMaster.set(0),
-            () -> ElevatorConstants.kMaxHeight <= getPosition() || ElevatorConstants.kMinHeight >= getPosition(),
+            () ->  ElevatorConstants.kMaxHeight <= getPosition(),
             this);
     }
 
@@ -99,20 +98,6 @@ public class Elevator extends SubsystemBase {
         return m_encoder.getVelocity();
     }
 
-    public Command getResetEncoderCommand() {
-        return this.run(() -> resetEncoder());
-    }
-
-    private  void resetEncoder() {
-        m_encoder.setPosition(0.0);
-    }
-
-
-    public void setPosition(double position) {
-        setGoal(position, 0);
-        // updateSetpoint();
-    }
-
     public void setVelocity(double velocity) {
         m_pidController.setReference(velocity, ControlType.kVelocity);
     }   
@@ -125,7 +110,7 @@ public class Elevator extends SubsystemBase {
     public void setGoal(double desiredPosition, double desiredVelocity){
         m_goal = new TrapezoidProfile.State(desiredPosition, desiredVelocity);
     }
-
+//print position of goal and elevator to tune kA
     private void goToSetpoint() {
         m_setpoint = m_profile.calculate(0.02, m_setpoint, m_goal);
         m_pidController.setReference(m_setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_feedForward.calculate(m_setpoint.velocity));
@@ -140,8 +125,10 @@ public class Elevator extends SubsystemBase {
             () -> {
                 initializeSetpoint();
                 setGoal(setpoint, 0);
+            
             },
             () -> {
+                
                 goToSetpoint();
             },
             interrupted -> applyAntiGravityFF(),
@@ -157,25 +144,49 @@ public class Elevator extends SubsystemBase {
         return this.run(this::applyAntiGravityFF);
     }
 
-    private void tunePIDSmartDashboard() {
+    public Command getResetEncoderCommand() {
+        return this.run(() -> resetEncoder());
+    }
+
+    private  void resetEncoder() {
+        m_encoder.setPosition(0.0);
+    }
+
+
+
+    
+   /*  private void tunePIDSmartDashboard() {
         double kP = SmartDashboard.getNumber("ElevP", 0.0);
         double kI = SmartDashboard.getNumber("ElevI", 0.0);
         double kD = SmartDashboard.getNumber("ElevD", 0.0);
-
+        double kV = SmartDashboard.getNumber("ElevV", 0.0);
+        
         if (kP != m_motorMaster.configAccessor.closedLoop.getP() ||
             kI != m_motorMaster.configAccessor.closedLoop.getI() ||
-            kD != m_motorMaster.configAccessor.closedLoop.getD()) {
+            kD != m_motorMaster.configAccessor.closedLoop.getD() ||
+            kV != m_feedForward.getKv()) {
             ElevatorConfigs.kMasterConfig.closedLoop.pid(kP, kI, kD);
             ElevatorConfigs.kSlaveConfig.closedLoop.pid(kP, kI, kD);
+            m_feedForward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, kV);
+           
+            ElevatorConstants.kV = kV;
+            ElevatorConstants.kP = kP;
+            ElevatorConstants.kI = kI;
+            ElevatorConstants.kD = kD;
+            
 
             m_motorMaster.configure(ElevatorConfigs.kMasterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             m_motorSlave.configure(ElevatorConfigs.kSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         }
-    }
+    }*/
+
+
 
     @Override
     public void periodic() {
         logData();
+        //tunePIDSmartDashboard();
+    
     }
 
 }

@@ -40,27 +40,23 @@ public class RobotContainer {
   // private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
-    configureAutos();
     configureBindings();
     SmartDashboard.putData(m_chooser);
   }
 
-  private void configureAutos() {
-    m_chooser.setDefaultOption("No Auto", null);
-    m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
-  }
  
   private void configureBindings() {
+    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
 
-    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.35)); //elevator up
-    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.35)); //elevator down
+    m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
 
-    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(0.3)); //shoots slow
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.8)); //shoots fast
+    m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
+    m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.15)));
     m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     
@@ -72,8 +68,10 @@ public class RobotContainer {
     m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
     m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
+
     // regular drive with slew rate applied
-    m_db.setDefaultCommand(getDriveCommand(
+    m_db.setDefaultCommand(this.getDriveCommand(
       1,
       getJoystickValues(m_driveController::getLeftY, vx_limiter),
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
@@ -81,7 +79,7 @@ public class RobotContainer {
       m_driveController.getHID()::getRightBumperButton));
     
     // brake driving - left trigger
-    m_driveController.leftTrigger().whileTrue(getDriveCommand(
+    m_driveController.leftTrigger().whileTrue(this.getDriveCommand(
       0.5,
       getJoystickValues(m_driveController::getLeftY, vx_limiter),
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
