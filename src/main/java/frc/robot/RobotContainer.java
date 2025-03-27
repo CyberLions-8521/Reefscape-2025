@@ -48,8 +48,8 @@ public class RobotContainer {
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.3));
 
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
-    m_commandController.povRight().whileTrue(m_algae.move(.12));
-    m_commandController.povLeft().whileTrue(m_algae.move(-.12));
+    m_commandController.povRight().whileTrue(m_algae.move(.5));
+    m_commandController.povLeft().whileTrue(m_algae.move(-.3));
     m_commandController.povDown().onTrue(m_algae.upForever(0.05));
     
 
