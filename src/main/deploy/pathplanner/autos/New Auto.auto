@@ -7,13 +7,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Example Path"
+            "pathName": "Source to Reef Front"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Elevator L4"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Elevator L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
           }
         }
       ]

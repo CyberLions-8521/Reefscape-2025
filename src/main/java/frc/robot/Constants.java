@@ -13,7 +13,7 @@ public class Constants {
         public static final int driveMotorFreeLimit = 40;   // current limits in amps
         public static final int driveMotorStallLimit = 40;  // current limits in amps
 
-        private static final double kWheelDiameter = Units.inchesToMeters(4);
+        public static final double kWheelDiameter = Units.inchesToMeters(4);
         private static final double kWheelCircumference = Math.PI * kWheelDiameter;
         private static final double kDriveGearRatio = 6.75;     // found on SDS page for MK4i
         public static final double kDriveConversionFactor = kWheelCircumference / kDriveGearRatio;  // meters (of robot travel)
@@ -68,6 +68,9 @@ public class Constants {
         public static final double kStrafeP = 0.0;
         public static final double kStrafeI = 0.0;
         public static final double kStrafeD = 0.0;
+
+        public static final double kMass = 50;  // kg
+        public static final double kMOI = 10;
     }
 
     public static class ElevatorConstants {

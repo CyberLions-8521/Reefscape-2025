@@ -6,11 +6,15 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
@@ -18,7 +22,7 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.DriveToDistance;
+import frc.robot.Commands.DriveToDistance;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -32,15 +36,18 @@ public class RobotContainer {
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
-  private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
-
+  private SendableChooser<Command> m_chooser;
+  
   public RobotContainer() {
-    configureAutos();
-    configureBindings();
-    SmartDashboard.putData(m_chooser);
-  }
+      configureAutos();
+      configureBindings();
+      SmartDashboard.putData(m_chooser);
 
+    }
+  
   private void configureAutos() {
+    m_chooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto chooser", m_chooser);
     m_chooser.setDefaultOption("No Auto", null);
     m_chooser.addOption("Drive Straight", new DriveToDistance(m_db, 4));
   }
@@ -58,6 +65,13 @@ public class RobotContainer {
     .kL3Setpoint));
     m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
     m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+
+    NamedCommands.registerCommand("Shoot", m_shooter.getShootCommand(0.5)); //implement later
+    NamedCommands.registerCommand("Intake", m_shooter.getIntakeCommand(0.5)); //implement later
+    NamedCommands.registerCommand("Elevator L4", m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    NamedCommands.registerCommand("Elevator L3", m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    NamedCommands.registerCommand("Elevator L2", m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    NamedCommands.registerCommand("Elevator L1", m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
 
     
     m_shooter.register();
