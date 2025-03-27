@@ -19,7 +19,6 @@ import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.commands.DriveToDistance;
 import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.Subsystems.Elevator;
@@ -46,6 +45,7 @@ public class RobotContainer {
 
  
   private void configureBindings() {
+    //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
 
@@ -63,6 +63,7 @@ public class RobotContainer {
     m_shooter.register();
     // limelight.register();
 
+    //SWERVE CONTROLLER
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
     m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
