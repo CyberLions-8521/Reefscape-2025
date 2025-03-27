@@ -18,7 +18,12 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.commands.DriveToDistance;
+import frc.robot.commands.AutoAlignToReefLeft;
+import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.LimelightTester;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
@@ -32,6 +37,7 @@ public class RobotContainer {
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  // private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
     configureBindings();
@@ -40,7 +46,6 @@ public class RobotContainer {
 
  
   private void configureBindings() {
- 
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
 
@@ -56,9 +61,12 @@ public class RobotContainer {
 
     
     m_shooter.register();
+    // limelight.register();
 
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
+    m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
@@ -77,6 +85,8 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
     
    }
 

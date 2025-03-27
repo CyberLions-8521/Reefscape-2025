@@ -96,7 +96,6 @@ public class Constants {
         public static final double kL2Setpoint = 1.433;//values from tuning
         public static final double kL3Setpoint = 3.2;//values from tuning
         public static final double kL4Setpoint = 4;//values from tuning
-        public static final double kCHAIR = 2.24;
     }
 
     public static class OperaterConstants {
@@ -107,5 +106,25 @@ public class Constants {
     public static class ShooterConstants {
         public static final int kMasterID = 25;
         public static final int kSlaveID = 17;
+    }
+
+    public static class LimelightConstants {
+        public static final String kName = "limelight-twoplus";
+        public static final int[] blueTags = {17, 18, 19, 20, 21, 22};
+        public static final int[] redTags = {6, 7, 8, 9, 10, 11};
+
+        public static final double tagXOffsetTolerance = 5.0;
+        public static final double kReefSetpoint = 0.0;
+
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double kCamAngle = -40; //degrees (angle camera needs to see AprilTag). negative as offset angle is also negative
+        public static final double kCamHeight = 0.711; // (Needs Tuning) height of camera from bottom of AprilTag (meters)
+        public static final double kAprilTagHeight = 0.17; //~0.17m according to game manual
+        public static final double kDistanceToReefThreshold = 0.1;
+        public static final double kDistanceToReefLeft = 0.138; // (Needs Tuning) distance between center of AT to reef (meters).
+        public static final double kDistanceToReefRight = 0.3;
     }
 }
