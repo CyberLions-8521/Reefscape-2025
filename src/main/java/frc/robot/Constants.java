@@ -99,6 +99,10 @@ public class Constants {
         public static final double kCHAIR = 2.24;
     }
 
+    public static class AlgaeConstants {
+        public static final int kMotorID = 13;
+    }
+
     public static class OperaterConstants {
         public static final int kDriveControllerPort = 0;
         public static final int kCommandControllerPort = 1;

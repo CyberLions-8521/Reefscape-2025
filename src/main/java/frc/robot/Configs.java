@@ -17,6 +17,15 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 /** Add your docs here. */
 public class Configs {
+
+    public static final class AlgaeConfig {
+        public static final SparkMaxConfig kAlgaeConfig = new SparkMaxConfig();
+
+        static {
+            kAlgaeConfig
+                .idleMode(IdleMode.kBrake);
+        }
+    }
     public static final class ElevatorConfigs {
         public static final TalonFXConfiguration kKrakenConfig = new TalonFXConfiguration();
 
