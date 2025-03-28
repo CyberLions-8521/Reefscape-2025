@@ -8,7 +8,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.subsystems.Swerve;
+import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Subsystems.Swerve;
 
 
 public class AutoAlignToReefLeft extends Command {
@@ -36,7 +37,7 @@ public class AutoAlignToReefLeft extends Command {
         //m_setpoint - m_db.calculateDistanceFromAprilTag() is the distance to the setpoint/reef
         // currentDistance = m_db.getStraightDistance();
         //m_db.drive(0, m_db.getAlignPID().calculate(currentDistance+m_offset), 0, false);
-        m_db.drive(0,0.5,0,false);
+        m_db.drive(0,SwerveDrivebaseConstants.kAutoAlignSpeed,0,false);
     }
 
     @Override
