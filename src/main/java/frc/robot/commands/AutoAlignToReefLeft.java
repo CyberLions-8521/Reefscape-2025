@@ -15,8 +15,8 @@ import frc.robot.Subsystems.Swerve;
 public class AutoAlignToReefLeft extends Command {
     private final Swerve m_db;
     private final double m_setpoint;
-    private double m_offset=0;
-    private double currentDistance = 0;
+    private Double m_offset;
+    //private double currentDistance = 0;
 
     public AutoAlignToReefLeft(Swerve m_db, double m_setpoint) {
         this.m_db = m_db;
@@ -50,7 +50,7 @@ public class AutoAlignToReefLeft extends Command {
     public boolean isFinished() {
         //stop robot
         //return false;
-        return m_db.getStraightDistance()+m_offset >= m_setpoint;
+        return m_offset == null || m_db.getStraightDistance()+m_offset.doubleValue() >= m_setpoint;
         // return MathUtil.isNear(m_setpoint, currentDistance+m_db.calculateDistanceFromAprilTag(), LimelightConstants.kDistanceToReefThreshold) || !LimelightHelpers.getTV(LimelightConstants.kName);
     }
 }
