@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.SwerveModule;
 
@@ -38,10 +39,10 @@ public class Swerve extends SubsystemBase {
 
   private final SlewRateLimiter filter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
 
-  private final PIDController m_strafeController =
-    new PIDController(SwerveDrivebaseConstants.kStrafeP,
-                      SwerveDrivebaseConstants.kStrafeI,
-                      SwerveDrivebaseConstants.kStrafeD);
+  private final PIDController m_alignPID =
+    new PIDController(LimelightConstants.kP,
+                      LimelightConstants.kI,
+                      LimelightConstants.kD);
   
   public Swerve() {
     m_gyro.reset();
@@ -91,6 +92,7 @@ public class Swerve extends SubsystemBase {
 
   public void logData() {
     SmartDashboard.putNumber("turnP", 0);
+    /* 
     SmartDashboard.putNumber("turnI", 0);
     SmartDashboard.putNumber("turnD", 0);
 
@@ -99,13 +101,10 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("gyro rate", m_gyro.getRate());
     SmartDashboard.putNumber("gyro pitch", m_gyro.getPitch());
     SmartDashboard.putNumber("gyro roll", m_gyro.getRoll());
+    */
   }
 
-  // Need to configure setpoint in Constants.java for REEF poles relative to AprilTag
-  public void limelightStrafe() {
-    drive(0, m_strafeController.calculate(LimelightHelpers.getTX(null), 0.0), 0, false);
-  }
-
+  //DRIVE COMMANDS
   public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     SwerveModuleState[] m_swerveModuleStates;
     if(fieldRelative) {
@@ -179,15 +178,50 @@ public class Swerve extends SubsystemBase {
     m_backRight.resetEncoder();
   }
 
+  public void setEncoderDistance(double distance){
+    m_frontLeft.setEncoderDistance(distance);
+    m_frontRight.setEncoderDistance(distance);
+    m_backLeft.setEncoderDistance(distance);
+    m_backRight.setEncoderDistance(distance);
+  }
+
   public double getStraightDistance() { // meters
     return (Math.abs(m_frontLeft.getDriveDistance())  +
             Math.abs(m_frontRight.getDriveDistance()) +
             Math.abs(m_backLeft.getDriveDistance())   +
             Math.abs(m_backRight.getDriveDistance())) / 4.0;
   }
- 
+
+  // AUTO ALIGN
+  public double calculateDistanceFromAprilTag(){
+    double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight; //meters
+    double angleSum = LimelightConstants.kCamAngle + LimelightHelpers.getTY(LimelightConstants.kName); //degrees
+    double D = Math.abs(h / Math.sin(Math.toRadians(angleSum))); //meters
+    return D * Math.tan(Math.toRadians(LimelightHelpers.getTX(LimelightConstants.kName)));
+  }
+
+  public PIDController getAlignPID() {
+    return m_alignPID;
+  }
+
+  public void setReefAlignSetpoint(double setpoint){
+    m_alignPID.setSetpoint(setpoint);
+  }
+
   public void periodic() {
-    logData();
+    //logData();
+    SmartDashboard.putNumber("TX", LimelightHelpers.getTX(LimelightConstants.kName));
+    SmartDashboard.putNumber("TY", LimelightHelpers.getTY(LimelightConstants.kName));
+    SmartDashboard.putNumber("Straight Distance", this.getStraightDistance());
+    SmartDashboard.putNumber("Offset", this.calculateDistanceFromAprilTag());
+    tunePIDSmartDashboard();
+  }
+
+  public void tunePIDSmartDashboard() {
+    double kP = SmartDashboard.getNumber("turnP", 0);
+    if (kP != m_alignPID.getP()) {
+      m_alignPID.setP(kP);
+    }
   }
 
 }

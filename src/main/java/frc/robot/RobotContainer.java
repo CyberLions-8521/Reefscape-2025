@@ -18,7 +18,11 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.commands.AutoAlignToReefLeft;
+import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.LimelightTester;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
@@ -32,6 +36,7 @@ public class RobotContainer {
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  // private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
     configureBindings();
@@ -40,7 +45,7 @@ public class RobotContainer {
 
  
   private void configureBindings() {
- 
+    //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
 
@@ -49,16 +54,20 @@ public class RobotContainer {
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.15)));
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
     m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     
     m_shooter.register();
+    // limelight.register();
 
+    //SWERVE CONTROLLER
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
+    m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
@@ -77,6 +86,8 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
     
    }
 
