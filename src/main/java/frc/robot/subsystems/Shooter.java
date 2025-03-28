@@ -66,7 +66,6 @@ public class Shooter extends SubsystemBase {
       this);
   }
 
-
   public void setSpeed(double speed) {
     m_master.set(speed);
   }

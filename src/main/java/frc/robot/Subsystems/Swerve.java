@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import java.util.function.Supplier;
 
@@ -193,11 +193,15 @@ public class Swerve extends SubsystemBase {
   }
 
   // AUTO ALIGN
-  public double calculateDistanceFromAprilTag(){
+  public Double calculateDistanceFromAprilTag(){
+    if (!LimelightHelpers.getTV(LimelightConstants.kName)) {
+      return null;
+    }
+
     double h = LimelightConstants.kCamHeight - LimelightConstants.kAprilTagHeight; //meters
     double angleSum = LimelightConstants.kCamAngle + LimelightHelpers.getTY(LimelightConstants.kName); //degrees
     double D = Math.abs(h / Math.sin(Math.toRadians(angleSum))); //meters
-    return D * Math.tan(Math.toRadians(LimelightHelpers.getTX(LimelightConstants.kName)));
+    return Double.valueOf(D * Math.tan(Math.toRadians(LimelightHelpers.getTX(LimelightConstants.kName))));
   }
 
   public PIDController getAlignPID() {

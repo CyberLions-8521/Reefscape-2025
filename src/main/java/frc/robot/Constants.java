@@ -68,6 +68,8 @@ public class Constants {
         public static final double kStrafeP = 0.0;
         public static final double kStrafeI = 0.0;
         public static final double kStrafeD = 0.0;
+
+        public static final double kAutoAlignSpeed = 0.5;
     }
 
     public static class ElevatorConstants {
