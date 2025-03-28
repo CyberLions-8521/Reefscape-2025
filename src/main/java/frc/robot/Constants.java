@@ -120,11 +120,11 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
-        public static final double kCamAngle = -50; //degrees (angle camera needs to see AprilTag). negative as offset angle is also negative
-        public static final double kCamHeight = 0.711; // (Needs Tuning) height of camera from bottom of AprilTag (meters)
-        public static final double kAprilTagHeight = 0.17; //~0.17m according to game manual
+        public static final double kCamAngle = -55; // tuned
+        public static final double kCamHeight = 0.711; // tuned
+        public static final double kAprilTagHeight = 0.3048; 
         public static final double kDistanceToReefThreshold = 0.1;
-        public static final double kDistanceToReefLeft = 0.138; // (Needs Tuning) distance between center of AT to reef (meters).
-        public static final double kDistanceToReefRight = 0.3;
+        public static final double kDistanceToReefLeft = 0.138; // tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefRight = 0.17; // tuned to practice field reef. remeasure at AVR
     }
 }

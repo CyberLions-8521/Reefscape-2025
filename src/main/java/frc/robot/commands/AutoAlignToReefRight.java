@@ -41,7 +41,7 @@ public class AutoAlignToReefRight extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        //stop drive
+        //stop drive.
         m_db.drive(0,0,0, false);
     }
 
