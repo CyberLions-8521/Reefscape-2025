@@ -98,6 +98,13 @@ public class Constants {
         public static final double kL4Setpoint = 6.2;//values from tuning
     }
 
+    public static class AlgaeConstants {
+        public static final int kMotorID = 13;
+
+        public static final double kDefaultState = 0.095;
+        public static final double kBellyPanState = 0.261905;
+    }
+
     public static class OperaterConstants {
         public static final int kDriveControllerPort = 0;
         public static final int kCommandControllerPort = 1;
