@@ -13,18 +13,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.OperaterConstants;
-import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SwerveDrivebaseConstants;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.subsystems.Algae;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.LimelightTester;
 import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
-import frc.robot.Subsystems.Elevator;
-import frc.robot.Subsystems.LimelightTester;
-import frc.robot.Subsystems.Shooter;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.commands.LiftAlgae;
 
 public class RobotContainer {
   private final Swerve m_db = new Swerve();
@@ -35,11 +39,13 @@ public class RobotContainer {
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
+  private final Algae m_algae = new Algae(AlgaeConstants.kMotorID);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   // private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
     configureBindings();
+    configureAutos();
     SmartDashboard.putData(m_chooser);
   }
 
@@ -47,17 +53,21 @@ public class RobotContainer {
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.3));
 
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
+    m_commandController.povRight().whileTrue(m_algae.move(.5));
+    m_commandController.povLeft().whileTrue(m_algae.move(-.3));
+    m_commandController.start().onTrue(m_algae.upForever(0.05));
+    m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
-
-    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
-    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
+    
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.15)));
 
     
     m_shooter.register();
@@ -107,6 +117,11 @@ public class RobotContainer {
       double squaredValue = Math.copySign(deadBandValue * deadBandValue, deadBandValue);
       return limiter.calculate(squaredValue);
     };
+  }
+
+  private void configureAutos() {
+    m_chooser.setDefaultOption("No Auto", null);
+    m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
   }
 
   public Command getAutonomousCommand() {

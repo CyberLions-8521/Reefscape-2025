@@ -81,7 +81,7 @@ public class Constants {
         public static final double kGearRatio = 5;
         public static final double kResetCurrent = 0;   // TODO: need to find
         public static final int kMaxCurrent = 0;        // TODO: need to somehow find
-        public static final double kMaxHeight = 6.00;   // Output revolutions
+        public static final double kMaxHeight = 6.1;   // Output revolutions
         public static final double kMinHeight = 0;      // Output revolutions
         public static final double kGearCircumference = Units.inchesToMeters(0);    // meters TODO: MUST BE CONFIGURED    
         public static final double kRotationToMeters = kGearCircumference / kGearRatio;
@@ -95,7 +95,14 @@ public class Constants {
         public static final double kL1Setpoint = 0.5; //values from tuning
         public static final double kL2Setpoint = 1.433;//values from tuning
         public static final double kL3Setpoint = 3.2;//values from tuning
-        public static final double kL4Setpoint = 4;//values from tuning
+        public static final double kL4Setpoint = 6.2;//values from tuning
+    }
+
+    public static class AlgaeConstants {
+        public static final int kMotorID = 13;
+
+        public static final double kDefaultState = 0.095;
+        public static final double kBellyPanState = 0.261905;
     }
 
     public static class OperaterConstants {
@@ -106,6 +113,10 @@ public class Constants {
     public static class ShooterConstants {
         public static final int kMasterID = 25;
         public static final int kSlaveID = 17;
+    }
+
+    public static class AlgaeConstants {
+        public static final int kMotorID = 13;
     }
 
     public static class LimelightConstants {
