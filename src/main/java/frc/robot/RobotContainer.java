@@ -18,12 +18,14 @@ import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.LimelightTester;
 import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Algae;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
@@ -35,6 +37,7 @@ public class RobotContainer {
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
+  private final Algae m_algae = new Algae(AlgaeConstants.kMotorID);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   // private final LimelightTester limelight = new LimelightTester(0);
 

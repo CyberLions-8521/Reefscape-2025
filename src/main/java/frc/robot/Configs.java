@@ -65,6 +65,15 @@ public class Configs {
                 .idleMode(IdleMode.kCoast);
         }
     }
+
+    public static final class AlgaeConfig {
+        public static final SparkMaxConfig kAlgaeConfig = new SparkMaxConfig();
+
+        static {
+            kAlgaeConfig
+                .idleMode(IdleMode.kBrake);
+        }
+    }
   
     public static final class SwerveModuleConfigs {
         public static final SparkMaxConfig m_configDrive = new SparkMaxConfig();
