@@ -115,9 +115,6 @@ public class Constants {
         public static final int kSlaveID = 17;
     }
 
-    public static class AlgaeConstants {
-        public static final int kMotorID = 13;
-    }
 
     public static class LimelightConstants {
         public static final String kName = "limelight-twoplus";
