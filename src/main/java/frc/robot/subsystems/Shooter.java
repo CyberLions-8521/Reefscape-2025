@@ -55,8 +55,6 @@ public class Shooter extends SubsystemBase {
       this);
   }
 
-
-
   public Command getShootCommand(double speed) {
     return new FunctionalCommand(
       () -> {},

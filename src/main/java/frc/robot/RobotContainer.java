@@ -19,11 +19,16 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
-import frc.robot.commands.LiftAlgae;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.Algae;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.LimelightTester;
+import frc.robot.commands.AutoAlignToReefLeft;
+import frc.robot.commands.AutoAlignToReefRight;
+import frc.robot.commands.LiftAlgae;
 
 public class RobotContainer {
   private final Swerve m_db = new Swerve();
@@ -34,8 +39,9 @@ public class RobotContainer {
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
-  private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   private final Algae m_algae = new Algae(AlgaeConstants.kMotorID);
+  private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  // private final LimelightTester limelight = new LimelightTester(0);
 
   public RobotContainer() {
     configureBindings();
@@ -45,19 +51,19 @@ public class RobotContainer {
 
  
   private void configureBindings() {
- 
+    //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
     m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.3));
 
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
     m_commandController.povRight().whileTrue(m_algae.move(.5));
     m_commandController.povLeft().whileTrue(m_algae.move(-.3));
-    m_commandController.povDown().onTrue(m_algae.upForever(0.05));
-    
+    m_commandController.start().onTrue(m_algae.upForever(0.05));
+    m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
-
+    
     m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
     m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
     m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
@@ -65,9 +71,13 @@ public class RobotContainer {
 
     
     m_shooter.register();
+    // limelight.register();
 
+    //SWERVE CONTROLLER
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
+    m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
+    m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
@@ -86,6 +96,8 @@ public class RobotContainer {
       getJoystickValues(m_driveController::getLeftX, vy_limiter),
       getJoystickValues(m_driveController::getRightX, omega_limiter),
       m_driveController.getHID()::getRightBumperButton));
+
+    m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
     
    }
 
