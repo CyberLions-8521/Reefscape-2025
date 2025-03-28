@@ -19,10 +19,11 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
-import frc.robot.Subsystems.Algae;
-import frc.robot.Subsystems.Elevator;
-import frc.robot.Subsystems.Shooter;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.commands.LiftAlgae;
+import frc.robot.subsystems.Algae;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
   private final Swerve m_db = new Swerve();
@@ -38,6 +39,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+    configureAutos();
     SmartDashboard.putData(m_chooser);
   }
 
@@ -103,6 +105,11 @@ public class RobotContainer {
       double squaredValue = Math.copySign(deadBandValue * deadBandValue, deadBandValue);
       return limiter.calculate(squaredValue);
     };
+  }
+
+  private void configureAutos() {
+    m_chooser.setDefaultOption("No Auto", null);
+    m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
   }
 
   public Command getAutonomousCommand() {

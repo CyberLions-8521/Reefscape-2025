@@ -101,6 +101,9 @@ public class Constants {
 
     public static class AlgaeConstants {
         public static final int kMotorID = 13;
+
+        public static final double kDefaultState = 0.095;
+        public static final double kBellyPanState = 0.261905;
     }
 
     public static class OperaterConstants {
