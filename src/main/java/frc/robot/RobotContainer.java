@@ -53,10 +53,10 @@ public class RobotContainer {
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.3));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.5));
 
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
-    m_commandController.povRight().whileTrue(m_algae.move(.5));
+    m_commandController.povRight().whileTrue(m_algae.move(.8));
     m_commandController.povLeft().whileTrue(m_algae.move(-.3));
     m_commandController.start().onTrue(m_algae.upForever(0.05));
     m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
@@ -65,9 +65,9 @@ public class RobotContainer {
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
     
     m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
-    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.15)));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
 
     
     m_shooter.register();
@@ -76,8 +76,9 @@ public class RobotContainer {
     //SWERVE CONTROLLER
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-    m_driveController.y().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
-    m_driveController.x().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
+    
+    m_driveController.povLeft().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
+    m_driveController.povRight().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
