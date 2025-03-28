@@ -47,17 +47,18 @@ public class RobotContainer {
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.2));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.3));
 
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
+    m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
 
     m_commandController.leftBumper().whileTrue(m_elevator.getManualElevCommand(-0.1));
     m_commandController.rightBumper().whileTrue(m_elevator.getManualElevCommand(0.2));
 
-    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
-    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
-    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
+    m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint)); //need to configure auto shoot command if we decide to have one. 
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.15)));
 
     
     m_shooter.register();
