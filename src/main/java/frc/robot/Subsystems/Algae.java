@@ -32,7 +32,7 @@ public class Algae extends SubsystemBase {
     return new FunctionalCommand(
       () -> {
         this.m_encoder.setPosition(0.0);
-        this.m_motor.set(.34);
+        this.m_motor.set(.50);
       },
       () -> {},
       interrupted -> this.m_motor.set(0.0),
