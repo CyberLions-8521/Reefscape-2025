@@ -135,7 +135,7 @@ public class RobotContainer {
       new AutoAlignToReefLeft(m_db, 0),
       m_shooter.getShootCommand(0.5),
       //reverse gyro for teleop
-      m_db.setGyro(-180)
+      m_db.setGyroCommand(180)
     ));
   }
 

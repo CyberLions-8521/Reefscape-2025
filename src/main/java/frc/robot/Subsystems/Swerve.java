@@ -142,10 +142,15 @@ public class Swerve extends SubsystemBase {
 
   public void resetGyro() {
     m_gyro.reset();
+    this.setGyro(0);
   }
 
   public void setGyro(double angle){
     m_gyro.setAngleAdjustment(angle);
+  }
+
+  public Command setGyroCommand(double angle) {
+    return this.runOnce(() -> this.setGyro(angle));
   }
 
   public void stopModules() {
