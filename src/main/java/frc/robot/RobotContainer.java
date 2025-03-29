@@ -66,8 +66,8 @@ public class RobotContainer {
     m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
     m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
 
-    NamedCommands.registerCommand("Shoot", m_shooter.getShootCommand(0.5)); //implement later
-    NamedCommands.registerCommand("Intake", m_shooter.getIntakeCommand(0.5)); //implement later
+    NamedCommands.registerCommand("Shoot", m_shooter.getShootCommand(0.5)); 
+    NamedCommands.registerCommand("Intake", m_shooter.getIntakeCommand(0.5)); 
     NamedCommands.registerCommand("Elevator L4", m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
     NamedCommands.registerCommand("Elevator L3", m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
     NamedCommands.registerCommand("Elevator L2", m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
