@@ -11,6 +11,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.AlgaeConstants;
@@ -123,6 +125,18 @@ public class RobotContainer {
   private void configureAutos() {
     m_chooser.setDefaultOption("No Auto", null);
     m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
+    m_chooser.addOption("Pos2L2Auto", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L2
+      new ParallelCommandGroup( 
+        m_db.driveStraightDistCommand(1),
+        m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
+      ),
+      //align and shoot
+      new AutoAlignToReefLeft(m_db, 0),
+      m_shooter.getShootCommand(0.5),
+      //reverse gyro for teleop
+      m_db.setGyro(-180)
+    ));
   }
 
   public Command getAutonomousCommand() {
