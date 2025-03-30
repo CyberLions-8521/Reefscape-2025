@@ -128,13 +128,17 @@ public class RobotContainer {
     m_chooser.addOption("Pos2L2Auto", new SequentialCommandGroup(
       //moves to reef while elevator goes to L2
       new ParallelCommandGroup( 
-        m_db.driveStraightDistCommand(1),
+        m_db.driveStraightDistCommand(2), //estimated distance between reef and starting line according to FIRST (https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings.pdf) 
         m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
       ),
       //align and shoot
       new AutoAlignToReefLeft(m_db, 0),
       m_shooter.getShootCommand(0.5),
       //reverse gyro for teleop
+      m_db.setGyroCommand(180)
+    ));
+    m_chooser.addOption("Taxi", new SequentialCommandGroup(
+      m_db.driveStraightDistCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST
       m_db.setGyroCommand(180)
     ));
   }
