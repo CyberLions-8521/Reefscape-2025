@@ -21,14 +21,14 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.Subsystems.Algae;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Shooter;
-import frc.robot.Subsystems.Swerve;
-import frc.robot.Subsystems.LimelightTester;
+import frc.robot.subs.Elevator;
+import frc.robot.subs.Shooter;
 import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.commands.LiftAlgae;
+import frc.robot.subs.Algae;
+import frc.robot.subs.LimelightTester;
+import frc.robot.subs.Swerve;
 
 public class RobotContainer {
   private final Swerve m_db = new Swerve();
@@ -53,10 +53,10 @@ public class RobotContainer {
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.5));
-
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.6));
+    
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
-    m_commandController.povRight().whileTrue(m_algae.move(0.2));
+    m_commandController.povRight().whileTrue(m_algae.move(0.5));
     m_commandController.povLeft().whileTrue(m_algae.move(-0.2));
     m_commandController.start().onTrue(m_algae.upForever(0.05));
     m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));

@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subs;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
