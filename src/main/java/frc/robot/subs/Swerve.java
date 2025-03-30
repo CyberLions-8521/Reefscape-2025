@@ -131,8 +131,26 @@ public class Swerve extends SubsystemBase {
       this);
   }
 
+  public FunctionalCommand driveStraightDistCommand(double distance){
+    return new FunctionalCommand(
+      () -> this.setEncoderDistance(distance),
+      () -> this.drive(0.5, 0, 0, false),
+      interrupted -> this.drive(0, 0, 0, false),
+      () -> MathUtil.isNear(distance, this.getStraightDistance(), 0.1),
+      this);
+  }
+
   public void resetGyro() {
     m_gyro.reset();
+    this.setGyro(0);
+  }
+
+  public void setGyro(double angle){
+    m_gyro.setAngleAdjustment(angle);
+  }
+
+  public Command setGyroCommand(double angle) {
+    return this.runOnce(() -> this.setGyro(angle));
   }
 
   public void stopModules() {
