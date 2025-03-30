@@ -23,7 +23,7 @@ public class Configs {
 
         static {
             kAlgaeConfig
-                .idleMode(IdleMode.kBrake);
+                .idleMode(IdleMode.kBrake).smartCurrentLimit(20);
         }
     }
     public static final class ElevatorConfigs {

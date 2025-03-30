@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.subs;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
