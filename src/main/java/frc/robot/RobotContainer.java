@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperaterConstants;
@@ -29,6 +30,7 @@ import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
 import frc.robot.commands.LiftAlgae;
 import frc.robot.subs.Algae;
+import frc.robot.subs.Climber;
 import frc.robot.subs.LimelightTester;
 import frc.robot.subs.Swerve;
 
@@ -36,6 +38,7 @@ public class RobotContainer {
   private final Swerve m_db = new Swerve();
   private final Elevator m_elevator = new Elevator(ElevatorConstants.kMaster, ElevatorConstants.kSlave);
   private final Shooter m_shooter = new Shooter(ShooterConstants.kMasterID, ShooterConstants.kSlaveID);
+  private final Climber m_climber = new Climber(ClimberConstants.kMotorID);
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
   private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
@@ -81,6 +84,13 @@ public class RobotContainer {
     
     m_driveController.povLeft().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
     m_driveController.povRight().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
+
+    m_driveController.povUp().whileTrue(m_climber.moveClimberCommand(0.5));
+    m_driveController.povDown().whileTrue(m_climber.moveClimberCommand(-0.5));
+
+    m_climber.setDefaultCommand(m_climber.moveClimberCommand(0));
+
+
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 

@@ -112,4 +112,22 @@ public class Configs {
                 .positionWrappingInputRange(-SwerveConstants.kAngleConversion / 2.0, SwerveConstants.kAngleConversion / 2.0); 
         }
     }
+
+    public static final class ClimberConfigs {
+        public static final TalonFXConfiguration kKrakenConfig = new TalonFXConfiguration();
+
+        static {
+            kKrakenConfig.Slot0
+                .withKP(ElevatorConstants.kP)
+                .withKD(ElevatorConstants.kD)
+                .withKI(ElevatorConstants.kI);
+            kKrakenConfig.CurrentLimits
+                .withSupplyCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(80);
+            kKrakenConfig.MotorOutput
+                .withNeutralMode(NeutralModeValue.Brake);
+            kKrakenConfig.Feedback
+                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kGearCircumference);
+        }
+    }
 }

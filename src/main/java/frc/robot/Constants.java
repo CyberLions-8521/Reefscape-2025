@@ -137,4 +137,15 @@ public class Constants {
         public static final double kDistanceToReefLeft = 0.138; // tuned to practice field reef. remeasure at AVR
         public static final double kDistanceToReefRight = 0.2; // tuned to practice field reef. remeasure at AVR
     }
+
+    public static class ClimberConstants {
+        public static final int kMotorID = 30;
+
+        public static final  double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double kHomePosition = 0.0;
+        public static final double kMaxExtenstion = 0.0;
+    }
 }
