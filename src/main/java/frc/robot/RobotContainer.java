@@ -124,9 +124,16 @@ public class RobotContainer {
 
   private void configureAutos() {
     m_chooser.setDefaultOption("No Auto", null);
-    m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
+    //m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
+    m_chooser.addOption("Taxi", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),
+      m_db.driveStraightDistCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
+      m_db.setGyroCommand(180)
+    ));
+
     m_chooser.addOption("Pos2L2Auto", new SequentialCommandGroup(
       //moves to reef while elevator goes to L2
+      m_db.resetEncodersCommand(),
       new ParallelCommandGroup( 
         m_db.driveStraightDistCommand(2), //estimated distance between reef and starting line according to FIRST (https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings.pdf) 
         m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
@@ -137,8 +144,16 @@ public class RobotContainer {
       //reverse gyro for teleop
       m_db.setGyroCommand(180)
     ));
-    m_chooser.addOption("Taxi", new SequentialCommandGroup(
-      m_db.driveStraightDistCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST
+
+    m_chooser.addOption("Pos2L4Auto", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),
+      new ParallelCommandGroup(
+        m_db.driveStraightDistCommand(2),
+        m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint)
+      ),
+      new AutoAlignToReefLeft(m_db, 0),
+      m_shooter.getShootCommand(0.5),
       m_db.setGyroCommand(180)
     ));
   }
