@@ -91,17 +91,17 @@ public class Swerve extends SubsystemBase {
   //DATA LOGGING
 
   public void logData() {
-    SmartDashboard.putNumber("turnP", 0);
-    /* 
-    SmartDashboard.putNumber("turnI", 0);
-    SmartDashboard.putNumber("turnD", 0);
+    // SmartDashboard.putNumber("turnP", 0);
+    // /
+    // SmartDashboard.putNumber("turnI", 0);
+    // SmartDashboard.putNumber("turnD", 0);
 
-    //not necessary but can be useful for debugging
-    SmartDashboard.putNumber("gyro", m_gyro.getAngle());
-    SmartDashboard.putNumber("gyro rate", m_gyro.getRate());
-    SmartDashboard.putNumber("gyro pitch", m_gyro.getPitch());
-    SmartDashboard.putNumber("gyro roll", m_gyro.getRoll());
-    */
+    // //not necessary but can be useful for debugging
+    SmartDashboard.putNumber("gyro", -m_gyro.getAngle());
+    // SmartDashboard.putNumber("gyro rate", m_gyro.getRate());
+    // SmartDashboard.putNumber("gyro pitch", m_gyro.getPitch());
+    // SmartDashboard.putNumber("gyro roll", m_gyro.getRoll());
+    
   }
 
   //DRIVE COMMANDS
@@ -231,7 +231,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void periodic() {
-    //logData();
+    logData();
     SmartDashboard.putNumber("TX", LimelightHelpers.getTX(LimelightConstants.kName));
     SmartDashboard.putNumber("TY", LimelightHelpers.getTY(LimelightConstants.kName));
     SmartDashboard.putNumber("Straight Distance", this.getStraightDistance());

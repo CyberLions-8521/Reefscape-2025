@@ -54,8 +54,8 @@ public class RobotContainer {
  
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
-    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.2));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.6));
+    m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.3));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.45));
     
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
     m_commandController.povRight().whileTrue(m_algae.move(0.5));
