@@ -95,8 +95,8 @@ public class Constants {
         public static final double kA = 0.2; //values from tuning
         public static final double kBaseSetpoint = 0;  //values from tuning
         public static final double kL1Setpoint = 0.5; //values from tuning
-        public static final double kL2Setpoint = 1.433;//values from tuning
-        public static final double kL3Setpoint = 3.2;//values from tuning
+        public static final double kL2Setpoint = 1.32;//values from tuning
+        public static final double kL3Setpoint = 3.5;//values from tuning
         public static final double kL4Setpoint = 6.2;//values from tuning
     }
 
