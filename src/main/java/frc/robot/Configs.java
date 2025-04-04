@@ -23,7 +23,7 @@ public class Configs {
 
         static {
             kAlgaeConfig
-                .idleMode(IdleMode.kBrake).smartCurrentLimit(20);
+                .idleMode(IdleMode.kBrake).smartCurrentLimit(40, 40);
         }
     }
     public static final class ElevatorConfigs {
@@ -110,6 +110,24 @@ public class Configs {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(-SwerveConstants.kAngleConversion / 2.0, SwerveConstants.kAngleConversion / 2.0); 
+        }
+    }
+
+    public static final class ClimberConfigs {
+        public static final TalonFXConfiguration kKrakenConfig = new TalonFXConfiguration();
+
+        static {
+            kKrakenConfig.Slot0
+                .withKP(ElevatorConstants.kP)
+                .withKD(ElevatorConstants.kD)
+                .withKI(ElevatorConstants.kI);
+            kKrakenConfig.CurrentLimits
+                .withSupplyCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(80);
+            kKrakenConfig.MotorOutput
+                .withNeutralMode(NeutralModeValue.Brake);
+            kKrakenConfig.Feedback
+                .withSensorToMechanismRatio(ElevatorConstants.kGearRatio / ElevatorConstants.kGearCircumference);
         }
     }
 }

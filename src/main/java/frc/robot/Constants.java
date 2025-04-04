@@ -56,7 +56,7 @@ public class Constants {
         public static final double kWheelBase = Units.inchesToMeters(23.25);    // x-direction of robot
         public static final double kTrackWidth = Units.inchesToMeters(23.25);   // y-direction of robot
 
-        public static final double kMaxMetersPerSecond = 4.0;
+        public static final double kMaxMetersPerSecond = 3.0;
         public static final double kMaxAngularSpeed = 2 * Math.PI;  // radians
 
         public static final double kCANcoderAbsDiscontPoint = 0.5;
@@ -94,10 +94,10 @@ public class Constants {
         public static final double kV = 0.75;  //values from tuning
         public static final double kA = 0.2; //values from tuning
         public static final double kBaseSetpoint = 0;  //values from tuning
-        public static final double kL1Setpoint = 0.5; //values from tuning
-        public static final double kL2Setpoint = 1.433;//values from tuning
-        public static final double kL3Setpoint = 3.2;//values from tuning
-        public static final double kL4Setpoint = 6.2;//values from tuning
+        public static final double kL1Setpoint = 0.5; //values from tuningdw
+        public static final double kL2Setpoint = 1.35;//values from tuning
+        public static final double kL3Setpoint = 3.11;//values from tuning
+        public static final double kL4Setpoint = 6.04;//values from tuning
     }
 
     public static class AlgaeConstants {
@@ -135,6 +135,17 @@ public class Constants {
         public static final double kAprilTagHeight = 0.3048; 
         public static final double kDistanceToReefThreshold = 0.1;
         public static final double kDistanceToReefLeft = 0.138; // tuned to practice field reef. remeasure at AVR
-        public static final double kDistanceToReefRight = 0.17; // tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefRight = 0.2; // tuned to practice field reef. remeasure at AVR
+    }
+
+    public static class ClimberConstants {
+        public static final int kMotorID = 30;
+
+        public static final  double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double kHomePosition = 0.0;
+        public static final double kMaxExtenstion = 0.0;
     }
 }
