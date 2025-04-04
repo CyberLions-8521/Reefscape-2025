@@ -131,12 +131,12 @@ public class Swerve extends SubsystemBase {
       this);
   }
 
-  public FunctionalCommand driveStraightDistCommand(double distance){
-    return new FunctionalCommand(
-      () -> this.setEncoderDistance(distance),
-      () -> this.drive(0.5, 0, 0, false),
-      interrupted -> this.drive(0, 0, 0, false),
-      () -> MathUtil.isNear(distance, this.getStraightDistance(), 0.1),
+  public FunctionalCommand getReversedDriveCommand(double distance) {
+    return new FunctionalCommand (
+      () -> this.resetEncoders(),
+      () -> this.drive(-1.0, 0, 0,true),
+      interrupted -> this.drive(0, 0, 0, true), 
+      () -> MathUtil.isNear(distance, this.getStraightDistance(), 0.1), 
       this);
   }
 

@@ -137,7 +137,15 @@ public class RobotContainer {
     //m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
     m_chooser.addOption("Taxi", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
       m_db.getDriveCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("Reversed Taxi", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
+      m_db.getReversedDriveCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
       m_db.setGyroCommand(180)
     ));
 
@@ -157,16 +165,19 @@ public class RobotContainer {
     ));
     */
 
-    m_chooser.addOption("Pos2L4Auto", new SequentialCommandGroup(
+    m_chooser.addOption("StraightL4Preload", new SequentialCommandGroup(
       //moves to reef while elevator goes to L4
       m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
       new ParallelCommandGroup(
-        m_db.getDriveCommand(2),
+        m_db.getDriveCommand(3),
         m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
       ),
       new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
       m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),
       m_shooter.getShootCommand(0.5),
+      m_db.getReversedDriveCommand(0.2), //drive backwards to prevent collision with algae or reef
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
       m_db.setGyroCommand(180)
     ));
   }
