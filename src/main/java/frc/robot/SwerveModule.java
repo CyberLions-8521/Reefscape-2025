@@ -19,6 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Configs.SwerveModuleConfigs;
@@ -157,6 +158,14 @@ public class SwerveModule {
 
     public SparkMaxConfigAccessor getConfigAccessor() {
         return m_driveMotor.configAccessor;
+    }
+
+    public SwerveModuleState getCurrentState() {
+        return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_turnEncoder.getPosition()));
+    }
+
+    public SwerveModulePosition getSwerveModulePosition() {
+        return new SwerveModulePosition(m_driveEncoder.getPosition(), Rotation2d.fromDegrees(m_turnEncoder.getPosition())); 
     }
 
 }
