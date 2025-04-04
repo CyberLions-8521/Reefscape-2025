@@ -58,7 +58,7 @@ public class RobotContainer {
   private void configureBindings() {
     //SUBSYSTEMS CONTROLLER
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(-0.3));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.45));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.34));
     
     m_commandController.povUp().onTrue(m_shooter.getIntakeCommand(4.7));
     m_commandController.povRight().whileTrue(m_algae.move(0.5));
@@ -141,6 +141,7 @@ public class RobotContainer {
       m_db.setGyroCommand(180)
     ));
 
+    /* 
     m_chooser.addOption("Pos2L2Auto", new SequentialCommandGroup(
       //moves to reef while elevator goes to L2
       m_db.resetEncodersCommand(),
@@ -149,20 +150,22 @@ public class RobotContainer {
         m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
       ),
       //align and shoot
-      new AutoAlignToReefLeft(m_db, 0),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
       m_shooter.getShootCommand(0.5),
       //reverse gyro for teleop
       m_db.setGyroCommand(180)
     ));
+    */
 
     m_chooser.addOption("Pos2L4Auto", new SequentialCommandGroup(
       //moves to reef while elevator goes to L4
       m_db.resetEncodersCommand(),
       new ParallelCommandGroup(
         m_db.getDriveCommand(2),
-        m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint)
+        m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint)
       ),
-      new AutoAlignToReefLeft(m_db, 0),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),
       m_shooter.getShootCommand(0.5),
       m_db.setGyroCommand(180)
     ));

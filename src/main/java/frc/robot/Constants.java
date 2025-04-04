@@ -94,10 +94,10 @@ public class Constants {
         public static final double kV = 0.75;  //values from tuning
         public static final double kA = 0.2; //values from tuning
         public static final double kBaseSetpoint = 0;  //values from tuning
-        public static final double kL1Setpoint = 0.5; //values from tuning
-        public static final double kL2Setpoint = 1.32;//values from tuning
-        public static final double kL3Setpoint = 3.5;//values from tuning
-        public static final double kL4Setpoint = 6.2;//values from tuning
+        public static final double kL1Setpoint = 0.5; //values from tuningdw
+        public static final double kL2Setpoint = 1.35;//values from tuning
+        public static final double kL3Setpoint = 3.11;//values from tuning
+        public static final double kL4Setpoint = 6.04;//values from tuning
     }
 
     public static class AlgaeConstants {
