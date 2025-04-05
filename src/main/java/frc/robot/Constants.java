@@ -70,6 +70,7 @@ public class Constants {
         public static final double kStrafeD = 0.0;
 
         public static final double kAutoAlignSpeed = 0.5;
+        //oriiginal: 0.5
     }
 
     public static class ElevatorConstants {
@@ -97,7 +98,7 @@ public class Constants {
         public static final double kL1Setpoint = 0.5; //values from tuningdw
         public static final double kL2Setpoint = 1.35;//values from tuning
         public static final double kL3Setpoint = 3.11;//values from tuning
-        public static final double kL4Setpoint = 6.04;//values from tuning
+        public static final double kL4Setpoint = 6.2;//values from tuning
     }
 
     public static class AlgaeConstants {
@@ -134,8 +135,8 @@ public class Constants {
         public static final double kCamHeight = 0.711; // tuned
         public static final double kAprilTagHeight = 0.3048; 
         public static final double kDistanceToReefThreshold = 0.1;
-        public static final double kDistanceToReefLeft = 0.138; // tuned to practice field reef. remeasure at AVR
-        public static final double kDistanceToReefRight = 0.2; // tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefLeft = 0.1; // tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefRight = 0.163; // tuned to practice field reef. remeasure at AVR
     }
 
     public static class ClimberConstants {
