@@ -9,8 +9,6 @@ public class LimelightTester extends SubsystemBase {
     private final String limelightName = "limelight-twoplus";
     public static final int defaultPipeline = 0;
 
-
-
     public LimelightTester(int pipeline) {
         setPipelineIndex(pipeline);
     }

@@ -131,12 +131,12 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
-        public static final double kCamAngle = -55; // tuned
+        public static final double kCamAngle = -57; // tuned
         public static final double kCamHeight = 0.711; // tuned
         public static final double kAprilTagHeight = 0.3048; 
         public static final double kDistanceToReefThreshold = 0.1;
-        public static final double kDistanceToReefLeft = 0.08; // tuned to practice field reef. remeasure at AVR
-        public static final double kDistanceToReefRight = 0.175; // tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefLeft = 0.10; // meters. tuned to practice field reef. remeasure at AVR
+        public static final double kDistanceToReefRight = 0.25; // meters. tuned to practice field reef. remeasure at AVR
     }
 
     public static class ClimberConstants {

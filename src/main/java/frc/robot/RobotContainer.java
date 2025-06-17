@@ -11,27 +11,26 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OperaterConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SwerveDrivebaseConstants;
-import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.LimelightConstants;
-import frc.robot.subs.Elevator;
-import frc.robot.subs.Shooter;
 import frc.robot.commands.AutoAlignToReefLeft;
 import frc.robot.commands.AutoAlignToReefRight;
-import frc.robot.commands.LiftAlgae;
 import frc.robot.subs.Algae;
 import frc.robot.subs.Climber;
-import frc.robot.subs.LimelightTester;
+import frc.robot.subs.Elevator;
+import frc.robot.subs.Shooter;
 import frc.robot.subs.Swerve;
 
 public class RobotContainer {
@@ -40,11 +39,12 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter(ShooterConstants.kMasterID, ShooterConstants.kSlaveID);
   private final Climber m_climber = new Climber(ClimberConstants.kMotorID);
   private final CommandXboxController m_driveController = new CommandXboxController(OperaterConstants.kDriveControllerPort);
-  private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
+  //private final CommandXboxController m_commandController = new CommandXboxController(OperaterConstants.kCommandControllerPort);
+  private final CommandPS4Controller m_commandController = new CommandPS4Controller(OperaterConstants.kCommandControllerPort);
   private final SlewRateLimiter vx_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter vy_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
   private final SlewRateLimiter omega_limiter = new SlewRateLimiter(SwerveDrivebaseConstants.kSlewRateLimiter);
-  private final Algae m_algae = new Algae(AlgaeConstants.kMotorID);
+  //private final Algae m_algae = new Algae(AlgaeConstants.kMotorID);
   private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   // private final LimelightTester limelight = new LimelightTester(0);
 
@@ -56,12 +56,13 @@ public class RobotContainer {
 
  
   private void configureBindings() {
-    //SUBSYSTEMS CONTROLLER
+    //SUBSYSTEMS CONTROLLER (XBOX)
+    /*
     m_commandController.leftTrigger().whileTrue(m_shooter.getShootCommand(0.17));
-    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.34));
+    m_commandController.rightTrigger().whileTrue(m_shooter.getShootCommand(0.28));
 
-    m_commandController.povUp().whileTrue(m_algae.move(0.5));
-    m_commandController.povDown().whileTrue(m_algae.move(-0.3));
+    m_commandController.back().whileTrue(m_algae.move(0.5));
+    m_commandController.start().whileTrue(m_algae.move(-0.3));
 
     m_commandController.povRight().whileTrue(m_shooter.getShootCommand(0.2));
     m_commandController.povLeft().whileTrue(m_shooter.getShootCommand(-0.2));
@@ -73,18 +74,39 @@ public class RobotContainer {
 
     
     m_commandController.y().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
-    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint).andThen(m_shooter.getShootCommand(0.26)));
+    m_commandController.x().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
     m_commandController.a().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
-    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint).andThen(m_shooter.getShootCommand(0.2)));
+    m_commandController.b().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
+    m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
+     */
+
+    //SUBSYSTEMS CONTROLLER (PS4)
+    m_commandController.L2().whileTrue(m_shooter.getShootCommand(0.17));
+    m_commandController.R2().whileTrue(m_shooter.getShootCommand(0.28));
+
+    //m_commandController.povUp().whileTrue(m_algae.move(0.5));
+    m_commandController.povDown().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint));
+
+    m_commandController.povRight().whileTrue(m_shooter.getShootCommand(0.2));
+    m_commandController.povLeft().whileTrue(m_shooter.getShootCommand(-0.2));
+
+    //m_commandController.options().onTrue(m_algae.upForever(0.05));
+
+    m_commandController.L1().whileTrue(m_elevator.getManualElevCommand(-0.1));
+    m_commandController.R1().whileTrue(m_elevator.getManualElevCommand(0.2));
 
     
-    m_shooter.register();
-    // limelight.register();
+    m_commandController.triangle().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint));
+    m_commandController.square().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint));
+    m_commandController.cross().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint));
+    m_commandController.circle().onTrue(m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint));
 
-    //SWERVE CONTROLLER
+    m_shooter.register();
+    //m_limelight.register();
+
+    //SWERVE CONTROLLER (XBOX)
     m_driveController.b().onTrue(m_db.resetEncodersCommand());
     m_driveController.a().onTrue(m_db.resetGyroCommand());
-
     
     m_driveController.povLeft().onTrue(new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft));
     m_driveController.povRight().onTrue(new AutoAlignToReefRight(m_db, -LimelightConstants.kDistanceToReefRight));
@@ -93,8 +115,6 @@ public class RobotContainer {
     m_driveController.povDown().whileTrue(m_climber.moveClimberCommand(-0.5));
 
     m_climber.setDefaultCommand(m_climber.moveClimberCommand(0));
-
-
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
 
@@ -115,7 +135,6 @@ public class RobotContainer {
       m_driveController.getHID()::getRightBumperButton));
 
     m_elevator.setDefaultCommand(m_elevator.applyAntiGravityFFCommand());
-    
    }
 
    private Command getDriveCommand(double multiplier, Supplier<Double> vx, Supplier<Double> vy, Supplier<Double> omega, Supplier<Boolean> fieldRelative) {
@@ -137,23 +156,23 @@ public class RobotContainer {
   }
 
   private void configureAutos() {
-    m_chooser.setDefaultOption("No Auto", null);
+    m_chooser.addOption("No Auto", null);
     //m_chooser.addOption("Algae Up", new LiftAlgae(m_algae, m_elevator));
-    m_chooser.addOption("Taxi", new SequentialCommandGroup(
+    
+    m_chooser.setDefaultOption("Forward Taxi", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
-      m_db.getDriveCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
+      m_db.getDriveCommand(1), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
       m_db.setGyroCommand(180)
-    ));
+      ));
 
     m_chooser.addOption("Reversed Taxi", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
-      m_db.getReversedDriveCommand(4), //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
-      m_db.setGyroCommand(180)
+      m_db.getReversedDriveCommand(4) //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
     ));
 
-    m_chooser.addOption("StraightL1Pos2", new SequentialCommandGroup(
+    m_chooser.addOption("L1-center", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
       new ParallelCommandGroup(
@@ -162,36 +181,94 @@ public class RobotContainer {
       ),
       m_shooter.getShootCommand(0.2).withTimeout(5),
       m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
       m_db.setGyroCommand(180)
     ));
 
-    m_chooser.addOption("StraightL4Pos2", new SequentialCommandGroup(
-      //moves to reef while elevator goes to L4
+    m_chooser.addOption("L1-left/right", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
       new ParallelCommandGroup(
-        m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
-        m_db.getDriveCommand(3).withTimeout(5)
+        m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint),
+        m_db.getDriveCommand(6).withTimeout(6.5)
       ),
-      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
-      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),
-      m_shooter.getShootCommand(0.5).withTimeout(3),
-      m_db.getReversedDriveCommand(0.2), //drive backwards to prevent collision with algae or reef
+      m_shooter.getShootCommand(0.2).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint)
+    ));
+
+    m_chooser.addOption("L2.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      new ParallelCommandGroup(  //runs multiple commands simultaneously 
+        m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),   
+        m_db.getDriveCommand(3.5).withTimeout(5)
+        //drives forward set distance and brings elevator to specified setpoint
+      ),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),            
+      m_shooter.getShootCommand(0.17).withTimeout(2),
       m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
       m_db.setGyroCommand(180)
     ));
- 
-    m_chooser.addOption("StraightL4Pos1Pos3", new SequentialCommandGroup(
+
+    m_chooser.addOption("TEST.L3.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
+      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("TEST.L4.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
+      m_shooter.getShootCommand(0.28).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("L4.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      new ParallelCommandGroup(  //runs multiple commands simultaneously 
+        m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),   
+        m_db.getDriveCommand(3.5).withTimeout(5)
+        //drives forward set distance and brings elevator to specified setpoint
+      ),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),             
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_db.getReversedDriveCommand(0.2), //drive backwards to prevent collision with algae or reef             
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+    
+    m_chooser.addOption("L4.alignToLeft-left/right", new SequentialCommandGroup(
       //moves to reef while elevator goes to L4
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
       new ParallelCommandGroup(
         m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
-        m_db.getDriveCommand(4).withTimeout(5)
+        m_db.getDriveCommand(6).withTimeout(6.5)
       ),
-      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),
+      new RepeatCommand(
+        new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft)
+      ).withTimeout(3),
       m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),
-      m_shooter.getShootCommand(0.5).withTimeout(3),
+      m_shooter.getShootCommand(0.5).withTimeout(2),
       m_db.getReversedDriveCommand(0.2), //drive backwards to prevent collision with algae or reef
       m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint)
     ));
