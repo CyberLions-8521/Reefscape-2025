@@ -172,6 +172,155 @@ public class RobotContainer {
       m_db.getReversedDriveCommand(4) //estimated sum of distance between starting line and driver side of reef according to FIRST. robot-centric
     ));
 
+    //left from driver station perspective
+    m_chooser.addOption("L3.alignToLeft-left", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),   
+      m_db.resetGyroCommand(), 
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
+      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(120)
+    ));
+
+    m_chooser.addOption("L3.alignToLeft-center", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),   
+      m_db.resetGyroCommand(), 
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
+      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    //right from driver station perspective
+    m_chooser.addOption("L3.alignToLeft-right", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),   
+      m_db.resetGyroCommand(), 
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
+      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(240)
+    ));
+
+    m_chooser.addOption("L4.alignToLeft-left", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),  
+      m_db.resetGyroCommand(),   
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
+      m_shooter.getShootCommand(0.28).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(120)
+    ));
+
+    m_chooser.addOption("L4.alignToLeft-center", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),  
+      m_db.resetGyroCommand(),
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
+      m_shooter.getShootCommand(0.28).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("L4.alignToLeft-right", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      m_db.getDriveCommand(3).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
+      m_shooter.getShootCommand(0.28).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(240)
+    ));
+
+    m_chooser.addOption("L1-left", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
+      new ParallelCommandGroup(
+        m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint),
+        m_db.getDriveCommand(3).withTimeout(5)
+      ),
+      m_shooter.getShootCommand(0.2).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(120)
+    ));
+
+    m_chooser.addOption("L1-center", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
+      new ParallelCommandGroup(
+        m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint),
+        m_db.getDriveCommand(3).withTimeout(5)
+      ),
+      m_shooter.getShootCommand(0.2).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("L1-right", new SequentialCommandGroup(
+      m_db.resetEncodersCommand(),
+      m_db.resetGyroCommand(),
+      new ParallelCommandGroup(
+        m_elevator.getSetpointCommand(ElevatorConstants.kL1Setpoint),
+        m_db.getDriveCommand(3).withTimeout(5)
+      ),
+      m_shooter.getShootCommand(0.2).withTimeout(5),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(240)
+    ));
+
+    /* 
+    m_chooser.addOption("TEST.L3.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
+      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
+      m_shooter.getShootCommand(0.17).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+
+    m_chooser.addOption("TEST.L4.alignToLeft-center", new SequentialCommandGroup(
+      //moves to reef while elevator goes to L4
+      m_db.resetEncodersCommand(),   //resets encoder positions
+      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
+      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
+      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
+      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
+      m_shooter.getShootCommand(0.28).withTimeout(2),
+      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
+      m_db.resetEncodersCommand(),
+      m_db.setGyroCommand(180)
+    ));
+    */
+
+    /* 
     m_chooser.addOption("L1-center", new SequentialCommandGroup(
       m_db.resetEncodersCommand(),
       m_db.resetGyroCommand(),
@@ -212,32 +361,6 @@ public class RobotContainer {
       m_db.setGyroCommand(180)
     ));
 
-    m_chooser.addOption("TEST.L3.alignToLeft-center", new SequentialCommandGroup(
-      //moves to reef while elevator goes to L4
-      m_db.resetEncodersCommand(),   //resets encoder positions
-      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
-      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
-      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft), 
-      m_elevator.getSetpointCommand(ElevatorConstants.kL3Setpoint),          
-      m_shooter.getShootCommand(0.17).withTimeout(2),
-      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
-      m_db.resetEncodersCommand(),
-      m_db.setGyroCommand(180)
-    ));
-
-    m_chooser.addOption("TEST.L4.alignToLeft-center", new SequentialCommandGroup(
-      //moves to reef while elevator goes to L4
-      m_db.resetEncodersCommand(),   //resets encoder positions
-      m_db.resetGyroCommand(),   //resets gyroscope relative to the field
-      m_elevator.getSetpointCommand(ElevatorConstants.kL2Setpoint),
-      new AutoAlignToReefLeft(m_db, LimelightConstants.kDistanceToReefLeft),  
-      m_elevator.getSetpointCommand(ElevatorConstants.kL4Setpoint),          
-      m_shooter.getShootCommand(0.28).withTimeout(2),
-      m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint),
-      m_db.resetEncodersCommand(),
-      m_db.setGyroCommand(180)
-    ));
-
     m_chooser.addOption("L4.alignToLeft-center", new SequentialCommandGroup(
       //moves to reef while elevator goes to L4
       m_db.resetEncodersCommand(),   //resets encoder positions
@@ -272,6 +395,7 @@ public class RobotContainer {
       m_db.getReversedDriveCommand(0.2), //drive backwards to prevent collision with algae or reef
       m_elevator.getSetpointCommand(ElevatorConstants.kBaseSetpoint)
     ));
+    */
   }
 
   public Command getAutonomousCommand() {
